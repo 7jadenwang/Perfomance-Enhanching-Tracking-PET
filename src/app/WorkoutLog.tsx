@@ -13,8 +13,11 @@ import { velocityLoss, compareVelocityTarget } from "../metrics/velocity";
 import { suggestAlternatives } from "../program/alternatives";
 import { Card, Num, Select, fmt, download } from "./fields";
 import SubstitutionPreview from "./SubstitutionPreview";
-import {acceptSubstitution} from "../program/substitutions";
+import { acceptSubstitution } from "../program/substitutions";
 import VelocityGuidance from "./VelocityGuidance";
+import { selectConditionalTarget } from "../program/conditional-targets";
+import { sessionLabel } from "../program/catalog";
+import { weekdays } from "../program/schedule";
 import { Sources } from "./Program";
 export default function WorkoutLog({
   session,
@@ -23,8 +26,10 @@ export default function WorkoutLog({
   onSave,
   onBack,
   workoutId,
+  enrollmentId,
 }: {
   workoutId?: string;
+  enrollmentId: string | null;
   session: Session;
   date: string;
   state: AthleteState;
@@ -34,7 +39,9 @@ export default function WorkoutLog({
   const existing = state.workouts.find((w) =>
     workoutId
       ? w.id === workoutId
-      : w.sessionId === session.id && w.localDate === date,
+      : w.enrollmentId === enrollmentId &&
+        w.sessionId === session.id &&
+        (enrollmentId !== null || w.localDate === date),
   );
   const [w, setW] = useState<Workout>(
     () =>
@@ -42,13 +49,16 @@ export default function WorkoutLog({
       createWorkout({
         id: crypto.randomUUID(),
         sessionId: session.id,
-        targetSnapshot:session.exercises,
+        enrollmentId,
+        targetSnapshot: session.exercises,
         localDate: date,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       }),
   );
-  const prescriptions = w.targetRevisions.at(-1)?.prescriptions ?? (w.targetSnapshot.length ? w.targetSnapshot : session.exercises);
+  const prescriptions =
+    w.targetRevisions.at(-1)?.prescriptions ??
+    (w.targetSnapshot.length ? w.targetSnapshot : session.exercises);
   const [saved, setSaved] = useState(false);
   function update(v: Partial<Workout>) {
     setSaved(false);
@@ -77,7 +87,8 @@ export default function WorkoutLog({
     const row = createRow({
       id: crypto.randomUUID(),
       exerciseId: p?.name ?? "custom",
-      prescriptionId:p?.id??null, movementId:p?.movementId??null,
+      prescriptionId: p?.id ?? null,
+      movementId: p?.movementId ?? null,
       name: p?.name ?? "Custom exercise",
       kind: p?.kind ?? "strength",
       perSide: p?.perSide ?? false,
@@ -88,13 +99,17 @@ export default function WorkoutLog({
   }
   function copy() {
     const rows = prescriptions
-      .filter((p) => p.sets && p.kind !== "other")
+      .filter(
+        (p) =>
+          p.sets && p.kind !== "other" && !p.optional && !p.conditionalGroup,
+      )
       .flatMap((p) =>
         Array.from({ length: Math.min(p.sets![0], 50) }, () =>
           createRow({
             id: crypto.randomUUID(),
             exerciseId: p.name,
-            prescriptionId:p.id, movementId:p.movementId,
+            prescriptionId: p.id,
+            movementId: p.movementId,
             name: p.name,
             kind: p.kind,
             reps: p.reps?.[0] ?? null,
@@ -132,14 +147,75 @@ export default function WorkoutLog({
       <div className="pagehead">
         <p className="eyebrow">TRAINING LOG · {w.localDate}</p>
         <h1>
-          {session.month} · Week {session.week} / Day {session.day}
+          {sessionLabel(session)} · {weekdays[session.day - 1]}
         </h1>
         <p>Keep the prescription. Record the work you actually did.</p>
       </div>
       <Card>
         <Sources session={session} />
-        {prescriptions.map(p=><SubstitutionPreview key={p.id} prescription={p} state={state} date={date} onAccept={preview=>update(acceptSubstitution(w,preview))}/>)}
-        {w.targetRevisions.length>0&&<button type="button" onClick={()=>update({targetRevisions:w.targetRevisions.slice(0,-1)})}>Undo last target change</button>}
+        {[
+          ...new Set(
+            prescriptions.flatMap((p) =>
+              p.conditionalGroup ? [p.conditionalGroup] : [],
+            ),
+          ),
+        ].map((group) => (
+          <div className="notice" key={group}>
+            <h3>Choose one source alternative</h3>
+            <p>
+              {group} · These alternatives are excluded from automatic set
+              copying until selected.
+            </p>
+            {prescriptions
+              .filter((p) => p.conditionalGroup === group)
+              .map((p) => (
+                <button
+                  type="button"
+                  key={p.id}
+                  onClick={() =>
+                    update({
+                      targetRevisions: [
+                        ...w.targetRevisions,
+                        {
+                          id: crypto.randomUUID(),
+                          sessionId: session.id,
+                          prescriptions: selectConditionalTarget(
+                            prescriptions,
+                            group,
+                            p.id,
+                          ),
+                          reason: "Explicit source choice: " + p.name,
+                          createdAt: new Date().toISOString(),
+                          kind: "alternative",
+                        },
+                      ],
+                    })
+                  }
+                >
+                  Choose {p.name}
+                </button>
+              ))}
+          </div>
+        ))}
+        {prescriptions.map((p) => (
+          <SubstitutionPreview
+            key={p.id}
+            prescription={p}
+            state={state}
+            date={date}
+            onAccept={(preview) => update(acceptSubstitution(w, preview))}
+          />
+        ))}
+        {w.targetRevisions.length > 0 && (
+          <button
+            type="button"
+            onClick={() =>
+              update({ targetRevisions: w.targetRevisions.slice(0, -1) })
+            }
+          >
+            Undo last target change
+          </button>
+        )}
         <details>
           <summary>All original prescriptions</summary>
           <p className="sourceText">{session.sourceText}</p>
@@ -154,6 +230,14 @@ export default function WorkoutLog({
         <Card>
           <div className="sectionhead">
             <h2>Session overview</h2>
+            <label className="field">
+              Actual training date
+              <input
+                type="date"
+                value={w.localDate}
+                onChange={(e) => update({ localDate: e.target.value })}
+              />
+            </label>
             <Select
               label="Session status"
               value={w.status}
@@ -404,10 +488,7 @@ export default function WorkoutLog({
             <details>
               <summary>Tempo and measured velocity</summary>
               <p className="sourceText">
-                {
-                  prescriptions.find((p) => p.name === r.exerciseId)
-                    ?.sourceText
-                }
+                {prescriptions.find((p) => p.name === r.exerciseId)?.sourceText}
               </p>
               <Select
                 label="Source target velocity metric"
@@ -442,11 +523,52 @@ export default function WorkoutLog({
                   })()}
                 </p>
               )}
-              <VelocityGuidance prescription={prescriptions.find(p=>p.id===r.prescriptionId||p.name===r.exerciseId)} row={r} state={state} enabled={session.autoregulation!=="none"} onAccept={(p,reason)=>{
-                const targets=prescriptions.map(x=>x.id===p.id?p:x);
-                update({targetRevisions:[...w.targetRevisions,{id:crypto.randomUUID(),sessionId:session.id,prescriptions:targets,reason,createdAt:new Date().toISOString(),kind:"velocity"}]});
-              }}/>
-              {(prescriptions.find(p=>p.id===r.prescriptionId||p.name===r.exerciseId)?.components.length??0)>0&&<Select label="Velocity component" value={r.velocity?.componentId??"unknown"} options={[["unknown","Choose component"],...(prescriptions.find(p=>p.id===r.prescriptionId||p.name===r.exerciseId)?.components??[]).map(c=>[c.id,c.name] as [string,string])]} onChange={v=>velocity(r,{componentId:v==="unknown"?null:v})}/>}
+              <VelocityGuidance
+                prescription={prescriptions.find(
+                  (p) => p.id === r.prescriptionId || p.name === r.exerciseId,
+                )}
+                row={r}
+                state={state}
+                enabled={session.autoregulation !== "none"}
+                onAccept={(p, reason) => {
+                  const targets = prescriptions.map((x) =>
+                    x.id === p.id ? p : x,
+                  );
+                  update({
+                    targetRevisions: [
+                      ...w.targetRevisions,
+                      {
+                        id: crypto.randomUUID(),
+                        sessionId: session.id,
+                        prescriptions: targets,
+                        reason,
+                        createdAt: new Date().toISOString(),
+                        kind: "velocity",
+                      },
+                    ],
+                  });
+                }}
+              />
+              {(prescriptions.find(
+                (p) => p.id === r.prescriptionId || p.name === r.exerciseId,
+              )?.components.length ?? 0) > 0 && (
+                <Select
+                  label="Velocity component"
+                  value={r.velocity?.componentId ?? "unknown"}
+                  options={[
+                    ["unknown", "Choose component"],
+                    ...(
+                      prescriptions.find(
+                        (p) =>
+                          p.id === r.prescriptionId || p.name === r.exerciseId,
+                      )?.components ?? []
+                    ).map((c) => [c.id, c.name] as [string, string]),
+                  ]}
+                  onChange={(v) =>
+                    velocity(r, { componentId: v === "unknown" ? null : v })
+                  }
+                />
+              )}
               <div className="threecols">
                 <label className="field">
                   Tempo instruction

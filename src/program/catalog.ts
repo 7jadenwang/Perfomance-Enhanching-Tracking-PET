@@ -10,6 +10,7 @@ export function getPhase(id: string) {
  return phase;
 }
 export function sessionLabel(s: typeof program.sessions[number]) {
+ if(s.focus==="Custom saved work")return "Saved custom session";
  const phase = getPhase(s.phaseId);
- return `${s.programId.toUpperCase()} · Phase ${phase.number} · W${s.week} D${s.day}`;
+ return `${s.focus==="Familiarization bridge"?"Bridge · ":""}${s.programId.toUpperCase()} · Phase ${phase.number} · W${s.week} D${s.day}`;
 }

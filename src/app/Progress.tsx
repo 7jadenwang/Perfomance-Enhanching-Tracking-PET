@@ -1,242 +1,354 @@
 import { useState } from "react";
-import type { AthleteState, Workout } from "../domain/schema";
-import { program } from "../program/catalog";
-import { addDays, sessionDate } from "../program/schedule";
+import { localToday, type AthleteState, type Workout } from "../domain/schema";
 import {
-  weeklyLoad,
-  externalWork,
-  sessionLoad,
-  loadDifference,
-} from "../metrics/load";
-import { dailyCmj } from "../metrics/recovery";
-import { velocityLoss, velocityHistory } from "../metrics/velocity";
-import { Card, fmt } from "./fields";
+  program,
+  programDefinitions,
+  getSession,
+  sessionLabel,
+} from "../program/catalog";
+import { programDoseSeries, type DoseProfile } from "../metrics/exposure";
+import { sessionLoad } from "../metrics/load";
+import { addDays } from "../program/schedule";
+import { movementFor } from "../program/movements";
+import TimeSeries from "./charts/TimeSeries";
+import RecoveryCharts from "./charts/RecoveryCharts";
+import { Card, Select } from "./fields";
+const metrics: [keyof DoseProfile, string, string][] = [
+  ["strengthReps", "Strength repetitions", "reps"],
+  ["sets", "Sets and blocks", "sets"],
+  ["relativeIntensity", "Prescribed relative intensity", "%1RM"],
+  ["kgReps", "Known external weight volume", "kg·reps"],
+  ["restSeconds", "Mean prescribed rest", "seconds"],
+  ["clusterRestSeconds", "Intra-cluster rest", "seconds"],
+  ["jumpContacts", "Jump contact exposure", "contacts"],
+  ["sprintMetres", "Sprint distance exposure", "metres"],
+  ["conditioningWorkSeconds", "Conditioning work", "seconds"],
+  ["workRestRatio", "Interval work / recovery", "ratio"],
+  ["velocity", "Compatible prescribed velocity", "m/s"],
+];
 export default function Progress({
   state,
   onOpen,
 }: {
   state: AthleteState;
-  onOpen: (workout: Workout) => void;
+  onOpen: (w: Workout) => void;
 }) {
-  const [week, setWeek] = useState(0),
-    start = addDays(state.startDate, week * 7),
-    end = addDays(start, 6),
-    workouts = state.workouts.filter(
-      (w) => w.localDate >= start && w.localDate <= end,
+  const [track, setTrack] = useState<"lp" | "up">("lp"),
+    [enrollment, setEnrollment] = useState(""),
+    [movement, setMovement] = useState(""),
+    [range, setRange] = useState("28");
+  const dose = programDoseSeries(
+      track,
+      state,
+      program,
+      enrollment || undefined,
+      movement || undefined,
     ),
-    prescribed = program.sessions.filter((s) => {
-      const d = state.reschedules[s.id] ?? sessionDate(s, state.startDate);
-      return d >= start && d <= end;
-    }),
-    load = weeklyLoad(workouts, prescribed.length),
-    external = externalWork(workouts),
-    velocities = velocityHistory(workouts);
+    today = localToday(),
+    dates = [
+      ...state.workouts.map((w) => w.localDate),
+      ...state.mornings.map((m) => m.localDate),
+    ],
+    start =
+      range === "all"
+        ? (dates.sort()[0] ?? addDays(today, -83))
+        : addDays(today, 1 - Number(range));
+  const movements = [
+    ...new Set(
+      program.sessions
+        .filter((s) => s.programId === track)
+        .flatMap((s) =>
+          s.exercises
+            .filter((p) => p.kind !== "other")
+            .map((p) => movementFor(p)?.id ?? p.name),
+        ),
+    ),
+  ];
+  const logged = state.workouts.filter(
+      (w) => w.localDate >= start && w.localDate <= today,
+    ),
+    measured = logged.filter(
+      (w) =>
+        ["completed", "partial"].includes(w.status) &&
+        sessionLoad(w.actualDuration, w.actualRpe) !== null,
+    ),
+    load = measured.reduce(
+      (a, w) => a + sessionLoad(w.actualDuration, w.actualRpe)!,
+      0,
+    );
   return (
     <>
       <div className="pagehead">
-        <p className="eyebrow">YOUR TRAINING, IN CONTEXT</p>
-        <h1>Progress over time.</h1>
-        <p>Each measure keeps its own meaning and units.</p>
-      </div>
-      <div className="sectionhead">
-        <button onClick={() => setWeek((w) => w - 1)}>← Previous week</button>
-        <strong>
-          {start} — {end}
-        </strong>
-        <button onClick={() => setWeek((w) => w + 1)}>Next week →</button>
+        <p className="eyebrow">LOAD, PERFORMANCE & RECOVERY</p>
+        <h1>Progress in context.</h1>
+        <p>
+          See prescribed progression and your actual work across separate
+          training demands.
+        </p>
       </div>
       <div className="stats">
         <Card>
-          <p>Planned session load</p>
-          <strong>
-            {load.plannedComplete ? `${load.planned} AU` : "Not estimated"}
-          </strong>
+          <p>Recorded actual load</p>
+          <strong>{measured.length ? `${load} AU` : "No measured load"}</strong>
+          <small>{measured.length} measured sessions</small>
           <small>
-            {load.plannedComplete} / {load.prescribedCount} scheduled sessions
-            estimated
+            Duration × whole-session RPE; missing components remain unknown.
           </small>
         </Card>
         <Card>
-          <p>Recorded actual load</p>
+          <p>Confirmed training dates</p>
           <strong>
-            {load.actualComplete ? `${load.actual} AU` : "No measured load"}
+            {
+              new Set(
+                logged
+                  .filter(
+                    (w) =>
+                      ["completed", "partial"].includes(w.status) &&
+                      (w.rows.some((r) => r.confirmed) ||
+                        sessionLoad(w.actualDuration, w.actualRpe) !== null),
+                  )
+                  .map((w) => w.localDate),
+              ).size
+            }
           </strong>
-          <small>{load.actualComplete} measured sessions</small>
-          <small>{load.confirmedCount} logged · totals may be incomplete</small>
+          <small>All programs and custom physical training</small>
         </Card>
         <Card>
-          <p>Scheduled sessions</p>
-          <strong>{prescribed.length}</strong>
-          <small>Optional sessions remain optional</small>
+          <p>Morning measurements</p>
+          <strong>
+            {
+              state.mornings.filter(
+                (m) => m.localDate >= start && m.localDate <= today,
+              ).length
+            }
+          </strong>
+          <small>Use consistent measurement protocols</small>
         </Card>
       </div>
+      <h2>Planned and actual training dose</h2>
+      <div className="threecols">
+        <Select
+          label="Dose comparison program"
+          value={track}
+          options={programDefinitions.map((p) => [p.id, p.name])}
+          onChange={(v) => {
+            setTrack(v as typeof track);
+            setEnrollment("");
+            setMovement("");
+          }}
+        />
+        <Select
+          label="Dose comparison enrollment"
+          value={enrollment}
+          options={[
+            ["", "Original source plan / actuals across runs"],
+            ...state.enrollments
+              .filter((e) => e.programId === track)
+              .map(
+                (e) =>
+                  [e.id, `${e.startDate} · ${e.status}`] as [string, string],
+              ),
+          ]}
+          onChange={setEnrollment}
+        />
+        <Select
+          label="Dose comparison movement"
+          value={movement}
+          options={[
+            ["", "All movements — dimensions remain separate"],
+            ...movements.map((m) => [m, m] as [string, string]),
+          ]}
+          onChange={setMovement}
+        />
+      </div>
+      <p className="hint">
+        All source weeks are shown before logging. Lines use prescribed range
+        midpoints; bars retain the bounds. Volume totals cover readable known
+        quantities. %1RM/rest summaries describe the selected prescriptions, not
+        universal stress. Conditional choices and unmapped work are disclosed
+        below. Compare individual movements to interpret velocity.
+      </p>
+      {dose.every((w) => w.actual === null) && <p>No actual sessions logged</p>}
+      <div className="chartgrid">
+        {metrics.map(([key, title, unit]) => (
+          <TimeSeries
+            key={key}
+            title={title}
+            unit={unit}
+            points={dose.flatMap((w) => {
+              const v = w.planned[key],
+                planned =
+                  Array.isArray(v) && v.length === 2 && typeof v[0] === "number"
+                    ? (v as [number, number])
+                    : null;
+              let actual: number | null = null;
+              if (w.actual) {
+                if (
+                  key === "strengthReps" ||
+                  key === "kgReps" ||
+                  key === "sprintMetres" ||
+                  key === "conditioningWorkSeconds" ||
+                  key === "restSeconds" ||
+                  key === "sets" ||
+                  key === "relativeIntensity" ||
+                  key === "workRestRatio" ||
+                  key === "velocity"
+                )
+                  actual = w.actual[key];
+                if (key === "jumpContacts")
+                  actual = Object.values(w.actual.jumpContacts).reduce(
+                    (a, b) => a + b,
+                    0,
+                  );
+              }
+              return [
+                {
+                  label: `W${w.week}`,
+                  value: planned ? (planned[0] + planned[1]) / 2 : null,
+                  low: planned?.[0],
+                  high: planned?.[1],
+                  series: "Planned",
+                  segment: w.phaseId,
+                  note: `${w.planned.unknown} incomplete/conditional fields`,
+                },
+                {
+                  label: `W${w.week}`,
+                  value: actual,
+                  series: "Actual",
+                  segment: w.phaseId,
+                  note: w.actual ? `${w.actual.unknown} incomplete fields` : "",
+                },
+              ];
+            })}
+          />
+        ))}
+      </div>
       <Card>
-        <h2>Planned versus actual</h2>
+        <h3>Source dose details and completeness</h3>
         <div className="tablewrap">
-          <table>
+          <table aria-label="Program dose prescriptions">
             <thead>
               <tr>
-                <th>Session / date</th>
-                <th>Status</th>
-                <th>Planned</th>
-                <th>Actual</th>
-                <th>Difference</th>
+                <th>Week</th>
+                <th>Phase</th>
+                <th>Coverage</th>
+                <th>Tempo / velocity / energy instructions</th>
               </tr>
             </thead>
             <tbody>
-              {workouts.map((w) => {
-                const p = sessionLoad(w.plannedDuration, w.plannedRpe),
-                  a =
-                    w.status === "partial" || w.status === "completed"
-                      ? sessionLoad(w.actualDuration, w.actualRpe)
-                      : null,
-                  d = loadDifference(p, a);
-                return (
-                  <tr key={w.id}>
-                    <td>
-                      {w.sessionId}
-                      <small>{w.localDate}</small>
-                    </td>
-                    <td>{w.status}</td>
-                    <td>{fmt(p)} AU</td>
-                    <td>{fmt(a)} AU</td>
-                    <td>
-                      {fmt(d.absolute)} AU · {fmt(d.percent, 1)}%
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-        {!workouts.length && <p>No workout logs in this week.</p>}
-      </Card>
-      <Card>
-        <h2>Exercise-specific work</h2>
-        <div className="tablewrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Exercise</th>
-                <th>Reps / contacts</th>
-                <th>Load-volume</th>
-                <th>Hold / distance / conditioning</th>
-              </tr>
-            </thead>
-            <tbody>
-              {external.map((x, i) => (
-                <tr key={i}>
+              {dose.map((w) => (
+                <tr key={w.week}>
+                  <td>W{w.week}</td>
+                  <td>{w.phaseId}</td>
                   <td>
-                    {x.name}
-                    <small>{x.convention}</small>
+                    {w.planned.count} prescription blocks · {w.planned.unknown}{" "}
+                    incomplete/conditional fields
                   </td>
                   <td>
-                    {fmt(x.reps)}
-                    {x.kind === "jump" ? " jump contacts" : ""}
-                  </td>
-                  <td>{fmt(x.loadVolume)} kg·reps</td>
-                  <td>
-                    {fmt(x.holdSeconds)} s / {fmt(x.distanceMetres)} m /{" "}
-                    {fmt(x.conditioningWorkSeconds)} work s
+                    {w.planned.tempoInstructions.join("; ")}
+                    <details>
+                      <summary>See original dose requirements</summary>
+                      {program.sessions
+                        .filter((s) => w.sessions.includes(s.id))
+                        .flatMap((s) =>
+                          s.exercises.filter(
+                            (p) =>
+                              !movement ||
+                              (movementFor(p)?.id ?? p.name) === movement,
+                          ),
+                        )
+                        .map((p) => (
+                          <p key={p.id}>
+                            {p.sourceText}
+                            {p.velocityVariants.length > 0 && (
+                              <span>
+                                {" "}
+                                ·{" "}
+                                {p.velocityVariants
+                                  .map(
+                                    (v) =>
+                                      `${v.loadPercent[0]}%: ${v.target.join("–")} ${v.metric} m/s, floor ${v.floor}`,
+                                  )
+                                  .join("; ")}
+                              </span>
+                            )}
+                          </p>
+                        ))}
+                    </details>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        <p className="hint">
-          These measures are not combined into one mechanical-load score.
-          Per-side values count both sides only when you marked both done.
-        </p>
       </Card>
+      <h2>Daily recovery and recorded load</h2>
+      <Select
+        label="Recovery chart range"
+        value={range}
+        options={[
+          ["7", "7 days"],
+          ["28", "28 days"],
+          ["84", "84 days"],
+          ["all", "All history"],
+        ]}
+        onChange={setRange}
+      />
+      <RecoveryCharts state={state} start={start} end={today} />
       <Card>
-        <h2>Saved workouts</h2>
+        <h2>Saved training history</h2>
         <p>
-          Historical records keep their original dates when the program is
-          rescheduled.
+          Historical dates stay fixed after scheduling changes. Global recovery
+          includes paused, cancelled and completed runs.
         </p>
-        {state.workouts
-          .slice()
-          .sort((a, b) => b.localDate.localeCompare(a.localDate))
-          .map((w) => (
-            <div className="sectionhead" key={w.id}>
-              <span>
-                {w.localDate} · {w.sessionId ?? "Custom session"} · {w.status}
-              </span>
-              <button onClick={() => onOpen(w)}>Open saved workout</button>
-            </div>
-          ))}
-        {!state.workouts.length && <p>No saved workouts yet.</p>}
-      </Card>
-      <Card>
-        <h2>CMJ history</h2>
-        {state.protocols.map((protocol) => {
-          const records = state.mornings
-            .filter((r) => r.protocolId === protocol.id)
-            .sort((a, b) => a.localDate.localeCompare(b.localDate));
-          return (
-            <div key={protocol.id}>
-              <h3>{protocol.name}</h3>
-              <div className="cmjbars">
-                {records.map((r) => {
-                  const mean = dailyCmj(r).meanCm;
-                  return (
-                    <div key={r.id}>
-                      <span>{r.localDate}</span>
-                      <div
-                        className="bar"
-                        style={{
-                          width: `${Math.min(100, ((mean ?? 0) / 80) * 100)}%`,
-                        }}
-                      />
-                      <strong>{fmt(mean, 1)} cm</strong>
-                      <small>
-                        {dailyCmj(r).eligible
-                          ? "3 valid trials"
-                          : "Limited/excluded data"}
-                      </small>
-                    </div>
-                  );
-                })}
-              </div>
-              {!records.length && <p>No CMJ entries yet.</p>}
-            </div>
-          );
-        })}
-      </Card>
-      <Card>
-        <h2>Measured velocity</h2>
-        {velocities.map((v, i) => {
-          const previous = v.previous;
-          return (
-            <div className="prescription" key={v.row.id}>
-              <strong>
-                {v.row.name} · {v.date}
-              </strong>
-              <p>
-                {v.velocity.metric} ·{" "}
-                {v.velocity.method || "method unspecified"} ·{" "}
-                {v.velocity.loadKg ?? "unknown"} kg ({v.velocity.loadConvention}
-                {v.velocity.loadConvention === "perHand"
-                  ? ` · ${v.velocity.loadedHands ?? "unknown"} loaded hands`
-                  : ""}
-                ) · {v.velocity.rangeOfMotion || "ROM unspecified"}
-              </p>
-              <p>
-                Set average {fmt(v.velocity.setAverage, 2)} m/s; end-of-set loss{" "}
-                {fmt(velocityLoss(v.velocity), 1)}%
-              </p>
-              <small>
-                {previous
-                  ? `Compatible previous entry: ${previous.date}, ${fmt(previous.velocity.setAverage, 2)} m/s`
-                  : "No compatible previous measurement"}
-              </small>
-            </div>
-          );
-        })}
-        {!velocities.length && (
-          <p>No confirmed velocity measurements in this week.</p>
-        )}
+        <div className="tablewrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Session / date</th>
+                <th>Status</th>
+                <th>Planned load</th>
+                <th>Actual load</th>
+                <th>Open</th>
+              </tr>
+            </thead>
+            <tbody>
+              {state.workouts
+                .slice()
+                .sort((a, b) => b.localDate.localeCompare(a.localDate))
+                .map((w) => (
+                  <tr key={w.id}>
+                    <td>
+                      {getSession(w.sessionId ?? "")
+                        ? sessionLabel(getSession(w.sessionId!)!)
+                        : w.sessionId?.startsWith("bridge-")
+                          ? "Familiarization bridge"
+                          : "Custom saved session"}
+                      <small>{w.localDate}</small>
+                    </td>
+                    <td>{w.status}</td>
+                    <td>
+                      {sessionLoad(w.plannedDuration, w.plannedRpe) ??
+                        "Unknown"}{" "}
+                      AU
+                    </td>
+                    <td>
+                      {["completed", "partial"].includes(w.status)
+                        ? (sessionLoad(w.actualDuration, w.actualRpe) ??
+                          "Unknown")
+                        : "Unperformed"}{" "}
+                      AU
+                    </td>
+                    <td>
+                      <button type="button" onClick={() => onOpen(w)}>
+                        Open saved workout
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </div>
       </Card>
     </>
   );

@@ -1,38 +1,104 @@
-import { useOffline } from "../offline";
 import { useEffect, useState } from "react";
+import { useOffline } from "../offline";
 import { useAthleteStore } from "./store";
 import Today from "./Today";
 import Program from "./Program";
 import Progress from "./Progress";
 import Settings from "./Settings";
 import WorkoutLog from "./WorkoutLog";
-import { saveWorkout, saveMorning, saveSettings,saveActivity,exportRawStoredBackup } from "../storage/db";
-import { replaceFromBackup, exportBackup } from "../storage/backup";
-import { program } from "../program/catalog";
-import type { Session } from "../domain/schema";
-import { sessionDate } from "../program/schedule";
+import EnrollmentPanel from "./EnrollmentPanel";
+import TransferPreview from "./TransferPreview";
+import {
+  saveWorkout,
+  saveMorning,
+  saveSettings,
+  saveActivity,
+  exportRawStoredBackup,
+  applyEnrollmentCommand,
+  updateState,
+} from "../storage/db";
+import { replaceFromBackup } from "../storage/backup";
+import { program, programDefinitions, getSession } from "../program/catalog";
+import { scheduledSessions } from "../program/enrollments";
+import {
+  localToday,
+  sessionSchema,
+  type Session,
+  type Workout,
+} from "../domain/schema";
 import { download } from "./fields";
 export default function App() {
   const offline = useOffline(),
     store = useAthleteStore(),
     [tab, setTab] = useState("Today"),
+    [transfer, setTransfer] = useState(false),
     [log, setLog] = useState<{
       session: Session;
       date: string;
+      enrollmentId: string | null;
       workoutId?: string;
     } | null>(null);
   const s = store.state;
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [tab, log]);
+  async function rawBackup() {
+    try {
+      download(await exportRawStoredBackup());
+    } catch (e) {
+      store.setError(String(e));
+    }
+  }
   if (!s)
     return (
       <main className="loading">
         <h1>PET</h1>
         <p>{store.error || "Loading your training companion…"}</p>
         <button onClick={() => store.refresh()}>Retry</button>
+        {store.error && (
+          <button onClick={rawBackup}>Export stored backup</button>
+        )}
       </main>
     );
+  const active = s.enrollments.find((e) => e.status === "active");
+  function openSaved(w: Workout) {
+    const bridge = s!.enrollments
+      .flatMap((e) => e.bridge?.sessions ?? [])
+      .find((p) => p.sessionId === w.sessionId);
+    const source =
+      getSession(w.sessionId ?? "") ??
+      (bridge ? getSession(bridge.sourceSessionId) : undefined);
+    const session = source
+      ? bridge
+        ? {
+            ...source,
+            id: bridge.sessionId,
+            focus: "Familiarization bridge",
+            exercises: bridge.prescriptions,
+          }
+        : source
+      : sessionSchema.parse({
+          id: "custom",
+          programId: "lp",
+          phaseId: "lp-1",
+          month: "Saved",
+          blockIndex: 0,
+          week: 1,
+          day: 1,
+          optional: false,
+          focus: "Custom saved work",
+          sourceText:
+            "Saved custom session. Targets remain in this workout snapshot.",
+          sources: [],
+          exercises: w.targetSnapshot,
+        });
+    setLog({
+      session,
+      date: w.localDate,
+      enrollmentId: w.enrollmentId,
+      workoutId: w.id,
+    });
+  }
   return (
     <div className="app">
       <aside className="sidebar">
@@ -42,11 +108,12 @@ export default function App() {
         <nav>
           {["Today", "Program", "Progress", "Settings"].map((t) => (
             <button
-              className={tab === t && !log ? "active" : ""}
               key={t}
+              className={tab === t && !log ? "active" : ""}
               onClick={() => {
                 setTab(t);
                 setLog(null);
+                setTransfer(false);
               }}
             >
               <span aria-hidden="true">
@@ -63,29 +130,23 @@ export default function App() {
           ))}
         </nav>
         <div className="sidebarfoot">
-          <span className="dot" /> Local to this device
-          <p>Train with intention.</p>
+          <span className="dot" />
+          Local to this device<p>Train with intention.</p>
         </div>
       </aside>
       <main>
         <header className="topbar">
           <span>YOUR TRAINING COMPANION</span>
-          <span>April → June · 12 weeks</span>
+          <span>
+            {active
+              ? programDefinitions.find((p) => p.id === active.programId)?.name
+              : "Choose LP or UP"}
+          </span>
         </header>
         {store.error && (
           <div className="error" role="alert">
             {store.error}
-            <button
-              onClick={async () => {
-                try {
-                  download(await exportRawStoredBackup());
-                } catch (e) {
-                  store.setError(String(e));
-                }
-              }}
-            >
-              Export stored backup
-            </button>
+            <button onClick={rawBackup}>Export stored backup</button>
           </div>
         )}
         {store.saving && <p role="status">Saving…</p>}
@@ -96,8 +157,14 @@ export default function App() {
         )}
         {log ? (
           <WorkoutLog
-            key={log.session.id + log.date + (log.workoutId ?? "")}
+            key={
+              log.session.id +
+              log.date +
+              (log.workoutId ?? "") +
+              (log.enrollmentId ?? "")
+            }
             session={log.session}
+            enrollmentId={log.enrollmentId}
             workoutId={log.workoutId}
             date={log.date}
             state={s}
@@ -108,50 +175,85 @@ export default function App() {
           <Today
             state={s}
             onSave={(r) => store.perform(() => saveMorning(r))}
-            onLog={(session, date) => setLog({ session, date })}
-            onActivity={activity=>store.perform(()=>saveActivity(activity))}
+            onActivity={(a) => store.perform(() => saveActivity(a))}
+            onLog={(session, date) =>
+              setLog({ session, date, enrollmentId: active?.id ?? null })
+            }
           />
         ) : tab === "Program" ? (
-          <Program
-            state={s}
-            onLog={(session) =>
-              setLog({
-                session,
-                date:
-                  s.reschedules[session.id] ??
-                  sessionDate(session, s.startDate),
-              })
-            }
-            onSchedule={(id, date) => {
-              void store.perform(() =>
-                saveSettings({
-                  ...s,
-                  reschedules: { ...s.reschedules, [id]: date },
-                }),
-              );
-            }}
-          />
+          <>
+            <EnrollmentPanel
+              state={s}
+              onCommand={(command) =>
+                store.perform(() => applyEnrollmentCommand(command))
+              }
+              onTransfer={() => setTransfer(true)}
+            />
+            {transfer && (
+              <TransferPreview
+                state={s}
+                perform={store.perform}
+                onCancel={() => setTransfer(false)}
+              />
+            )}
+            <Program
+              state={s}
+              onLog={(session, enrollmentId) => {
+                const run = s.enrollments.find((e) => e.id === enrollmentId)!;
+                const date = scheduledSessions(run, program).find(
+                  (p) => p.session.id === session.id,
+                )!.date;
+                setLog({ session, date, enrollmentId });
+              }}
+              onSchedule={(sessionId, date, enrollmentId) =>
+                void store.perform(() =>
+                  applyEnrollmentCommand({
+                    type: "reschedule",
+                    id: enrollmentId,
+                    sessionId,
+                    date,
+                  }),
+                )
+              }
+              onSkip={(enrollmentId, sessionId) =>
+                void store.perform(() =>
+                  applyEnrollmentCommand({
+                    type: "skip",
+                    id: enrollmentId,
+                    sessionId,
+                    date: localToday(),
+                  }),
+                )
+              }
+              onTarget={(enrollmentId, sessionId, prescriptions, reason) =>
+                store.perform(() =>
+                  updateState((current) => ({
+                    ...current,
+                    enrollments: current.enrollments.map((e) =>
+                      e.id === enrollmentId
+                        ? {
+                            ...e,
+                            targetRevisions: [
+                              ...e.targetRevisions,
+                              {
+                                id: crypto.randomUUID(),
+                                sessionId,
+                                prescriptions,
+                                reason,
+                                kind: "alternative",
+                                createdAt: new Date().toISOString(),
+                              },
+                            ],
+                          }
+                        : e,
+                    ),
+                  })),
+                )
+              }
+            />
+          </>
         ) : tab === "Progress" ? (
-          <Progress
-            state={s}
-            onOpen={(w) => {
-              const session = program.sessions.find(
-                (x) => x.id === w.sessionId,
-              ) ?? {
-                id: w.sessionId ?? "custom",
-                month: "Saved",
-                programId: "lp" as const, phaseId:"lp-1", focus:"Saved session", sourceConflict:null, conditionalSources:[], alternativePlans:[], autoregulation:"source" as const,
-                blockIndex: 0,
-                week: 1,
-                day: 1,
-                optional: false,
-                sourceText: "No bundled source for this saved session.",
-                sources: [],
-                exercises: [],
-              };
-              setLog({ session, date: w.localDate, workoutId: w.id });
-            }}
-          />
+          <Progress state={s} onOpen={openSaved} />
         ) : (
           <Settings
             state={s}

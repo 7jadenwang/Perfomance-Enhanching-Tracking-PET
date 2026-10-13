@@ -16,8 +16,8 @@ export function useAthleteStore() {
   }
   useEffect(() => {
     void refresh();
-    window.addEventListener("pet-storage-changed",refresh);
-    return ()=>window.removeEventListener("pet-storage-changed",refresh);
+    window.addEventListener("pet-storage-changed", refresh);
+    return () => window.removeEventListener("pet-storage-changed", refresh);
   }, []);
   async function perform(action: () => Promise<void>) {
     setSaving(true);

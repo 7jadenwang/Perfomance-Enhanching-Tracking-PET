@@ -6,6 +6,7 @@ import {
   exportBackup,
   replaceFromBackup,
 } from "../storage/backup";
+import { movementLibrary, equipmentStatus } from "../program/movements";
 import { Card, Num, Select, download } from "./fields";
 export default function Settings({
   state,
@@ -49,7 +50,17 @@ export default function Settings({
       >
         <Card>
           <h2>Program and equipment</h2>
-          <Select label="Velocity training experience" value={s.velocityExperience} options={["unconfirmed","beginner","experienced"]} onChange={v=>setS({...s,velocityExperience:v as AthleteState["velocityExperience"]})}/>
+          <Select
+            label="Velocity training experience"
+            value={s.velocityExperience}
+            options={["unconfirmed", "beginner", "experienced"]}
+            onChange={(v) =>
+              setS({
+                ...s,
+                velocityExperience: v as AthleteState["velocityExperience"],
+              })
+            }
+          />
           <label className="field">
             Program start date
             <input
@@ -60,8 +71,8 @@ export default function Settings({
             />
           </label>
           <p>
-            April, May, June each occupy four weeks. Rescheduling never moves
-            historical records.
+            D1 is Monday and D7 is Sunday. New enrollments use this default
+            date. Rescheduling never moves historical records.
           </p>
           <div className="threecols">
             {(["rowing", "skiErg", "airBike"] as const).map((key) => (
@@ -86,6 +97,55 @@ export default function Settings({
             Running is always available. Ordinary strength equipment is assumed
             available.
           </p>
+          <details>
+            <summary>Gym equipment and movement familiarity</summary>
+            <div className="threecols">
+              {[...new Set(movementLibrary.flatMap((m) => m.equipment))]
+                .filter(
+                  (id) =>
+                    !["running", "rowing", "skiErg", "airBike"].includes(id),
+                )
+                .map((id) => (
+                  <Select
+                    key={id}
+                    label={"Equipment: " + id}
+                    value={equipmentStatus(id, s.equipment)}
+                    options={["available", "unavailable", "unconfirmed"]}
+                    onChange={(v) =>
+                      setS({
+                        ...s,
+                        equipment: {
+                          ...s.equipment,
+                          extra: {
+                            ...s.equipment.extra,
+                            [id]: v as
+                              "available" | "unavailable" | "unconfirmed",
+                          },
+                        },
+                      })
+                    }
+                  />
+                ))}
+            </div>
+            {movementLibrary.map((m) => (
+              <label className="check" key={m.id}>
+                <input
+                  aria-label={"Familiar: " + m.name + " · " + m.english}
+                  type="checkbox"
+                  checked={s.familiarity.includes(m.id)}
+                  onChange={(e) =>
+                    setS({
+                      ...s,
+                      familiarity: e.target.checked
+                        ? [...s.familiarity, m.id]
+                        : s.familiarity.filter((id) => id !== m.id),
+                    })
+                  }
+                />
+                {m.name} · {m.english}
+              </label>
+            ))}
+          </details>
           <button className="primary" type="submit">
             Save settings
           </button>
@@ -295,7 +355,47 @@ export default function Settings({
           guarantee of readiness, and the app never changes your plan
           automatically.
         </p>
+        <p>
+          Transfer comparisons use actual global exposure and recovery coverage.
+          Program labels describe the supplied source emphasis. They do not
+          prove that one track is superior for jump height.
+        </p>
         <ul>
+          <li>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/35044672/">
+              Moesgaard (2022): periodization review
+            </a>
+          </li>
+          <li>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/25200666/">
+              Halson (2014): internal/external load and recovery
+            </a>
+          </li>
+          <li>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/32502973/">
+              Impellizzeri (2020): ACWR limitations
+            </a>
+          </li>
+          <li>
+            <a href="https://www.mdpi.com/2075-4663/9/4/47">
+              Weakley (2021): velocity-based training
+            </a>
+          </li>
+          <li>
+            <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10432349/">
+              Load–velocity prediction review (2023)
+            </a>
+          </li>
+          <li>
+            <a href="https://www.frontiersin.org/journals/physiology/articles/10.3389/fphys.2023.1181781/full">
+              Drop-jump volume and intensity review (2023)
+            </a>
+          </li>
+          <li>
+            <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/">
+              ACSM (2026): resistance training overview
+            </a>
+          </li>
           <li>
             <a href="https://pubmed.ncbi.nlm.nih.gov/11708692/">
               Foster (2001): session RPE load

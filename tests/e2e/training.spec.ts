@@ -1,4 +1,12 @@
 import { test, expect } from "@playwright/test";
+test.beforeEach(async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Program", exact: true }).click();
+  await page.getByLabel("Requested program start").fill("2026-10-12");
+  await page.getByRole("button", { name: "Queue selected program" }).click();
+  await page.getByRole("button", { name: "Start queued program" }).click();
+  await page.getByRole("button", { name: "Today", exact: true }).click();
+});
 test("logs actual partial work without copying targets into completed totals", async ({
   page,
 }) => {
@@ -7,16 +15,22 @@ test("logs actual partial work without copying targets into completed totals", a
   await page.getByLabel("Program start date").fill("2026-10-13");
   await page.getByRole("button", { name: "Save settings" }).click();
   await page.getByRole("button", { name: "Program", exact: true }).click();
-  await page.getByRole("button", { name: "April W1 D1", exact: true }).click();
+  await page
+    .getByRole("button", { name: "LP · Phase 1 · W1 D1 · Monday", exact: true })
+    .click();
   await page.getByRole("button", { name: "Log this session" }).click();
+  await page.getByLabel("Actual training date").fill("2026-10-13");
   await page.getByRole("button", { name: "Copy planned sets" }).click();
   await page.getByRole("button", { name: "Save workout" }).click();
   await page.reload();
   await page.getByRole("button", { name: "Progress", exact: true }).click();
   await expect(page.getByText("0 measured sessions")).toBeVisible();
   await page.getByRole("button", { name: "Program", exact: true }).click();
-  await page.getByRole("button", { name: "April W1 D1", exact: true }).click();
+  await page
+    .getByRole("button", { name: "LP · Phase 1 · W1 D1 · Monday", exact: true })
+    .click();
   await page.getByRole("button", { name: "Log this session" }).click();
+  await page.getByLabel("Actual training date").fill("2026-10-13");
   await page.getByLabel("Session status").selectOption("partial");
   await page.getByLabel("Actual duration (minutes)").fill("60");
   await page.getByLabel("Actual session RPE").fill("6");
@@ -42,8 +56,11 @@ test("matches measured velocity only after confirming the target metric", async 
 }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Program", exact: true }).click();
-  await page.getByRole("button", { name: "April W1 D1", exact: true }).click();
+  await page
+    .getByRole("button", { name: "LP · Phase 1 · W1 D1 · Monday", exact: true })
+    .click();
   await page.getByRole("button", { name: "Log this session" }).click();
+  await page.getByLabel("Actual training date").fill("2026-10-13");
   await page.getByRole("button", { name: "Copy planned sets" }).click();
   await page
     .getByText("Tempo and measured velocity", { exact: true })
@@ -129,13 +146,18 @@ test("reopens historical workout identity after its session is rescheduled", asy
   await page.getByLabel("Program start date").fill("2026-10-13");
   await page.getByRole("button", { name: "Save settings" }).click();
   await page.getByRole("button", { name: "Program", exact: true }).click();
-  await page.getByRole("button", { name: "April W1 D1", exact: true }).click();
+  await page
+    .getByRole("button", { name: "LP · Phase 1 · W1 D1 · Monday", exact: true })
+    .click();
   await page.getByRole("button", { name: "Log this session" }).click();
+  await page.getByLabel("Actual training date").fill("2026-10-13");
   await page.getByLabel("Actual duration (minutes)").fill("42");
   await page.getByRole("button", { name: "Save workout" }).click();
   await expect(page.getByText("Saved on this device").last()).toBeVisible();
   await page.getByRole("button", { name: "Program", exact: true }).click();
-  await page.getByRole("button", { name: "April W1 D1", exact: true }).click();
+  await page
+    .getByRole("button", { name: "LP · Phase 1 · W1 D1 · Monday", exact: true })
+    .click();
   await page.getByLabel("Reschedule date").fill("2026-11-10");
   await page.getByRole("button", { name: "Progress", exact: true }).click();
   await page.getByRole("button", { name: "Open saved workout" }).click();
@@ -148,8 +170,11 @@ test("retains an unsaved entry and offers export when persistence fails", async 
 }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Program", exact: true }).click();
-  await page.getByRole("button", { name: "April W1 D1", exact: true }).click();
+  await page
+    .getByRole("button", { name: "LP · Phase 1 · W1 D1 · Monday", exact: true })
+    .click();
   await page.getByRole("button", { name: "Log this session" }).click();
+  await page.getByLabel("Actual training date").fill("2026-10-13");
   await page.getByLabel("Actual duration (minutes)").fill("42");
   await page.evaluate(() => {
     IDBObjectStore.prototype.put = function () {
