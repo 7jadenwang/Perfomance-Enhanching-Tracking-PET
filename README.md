@@ -42,8 +42,8 @@ GitHub stores the source code, lockfile, tests, specifications, and original pro
 ## Calculations and limits
 
 - Internal session load: minutes × whole-session RPE (0–10), in arbitrary units. Planned duration/RPE must be entered explicitly. Missing measurements remain unknown and totals show completeness.
-- External work retains its units: kilograms/repetitions, jumps, holds, sprint distances, interval work, and velocity are not added into a fictional universal score. Confirm per-hand versus total external load and per-side conventions.
-- A matching dated 1RM can produce target kilograms only where the source specifies its reference exercise. Different exercises and ranges of motion do not automatically share references.
+- External work retains its units: kilograms/repetitions, jumps, holds, sprint distances, interval work, and velocity are not added into a fictional universal score. Confirm per-hand versus total external load and per-side conventions. For per-hand weights, enter whether one or two hands carry a weight per repetition; this is independent of doing both working sides.
+- A matching dated 1RM can produce target kilograms only where the source specifies its reference exercise. Different exercises and ranges of motion do not automatically share references. Saved historical workouts can be reopened from Progress even after rescheduling.
 - CMJ baseline: first 14 eligible daily averages of three valid trials, mean and sample standard deviation. Establish it in Settings; it remains frozen until explicitly recalibrated. Prior baseline versions are retained.
 - Low-CMJ signal: below baseline mean minus two SD. Zero variance suppresses the statistical flag. Questionnaire concern: fatigue/soreness/stress 4–5 or sleep quality 1–2. These are provisional product heuristics, not validated fatigue predictions. No flag detected does not guarantee readiness.
 - Technique and take-off/landing posture affect flight-time-derived jump height. Height alone can miss fatigue-related changes in movement strategy.

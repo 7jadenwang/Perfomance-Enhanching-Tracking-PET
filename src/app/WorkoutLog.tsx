@@ -19,15 +19,19 @@ export default function WorkoutLog({
   state,
   onSave,
   onBack,
+  workoutId,
 }: {
+  workoutId?: string;
   session: Session;
   date: string;
   state: AthleteState;
   onSave: (w: Workout) => Promise<boolean>;
   onBack: () => void;
 }) {
-  const existing = state.workouts.find(
-    (w) => w.sessionId === session.id && w.localDate === date,
+  const existing = state.workouts.find((w) =>
+    workoutId
+      ? w.id === workoutId
+      : w.sessionId === session.id && w.localDate === date,
   );
   const [w, setW] = useState<Workout>(
     () =>
@@ -49,7 +53,19 @@ export default function WorkoutLog({
     setSaved(false);
     setW((w) => ({
       ...w,
-      rows: w.rows.map((r) => (r.id === id ? { ...r, ...v } : r)),
+      rows: w.rows.map((r) => {
+        if (r.id !== id) return r;
+        const next = { ...r, ...v };
+        if (next.velocity)
+          next.velocity = {
+            ...next.velocity,
+            loadKg: next.loadKg,
+            loadConvention: next.loadConvention,
+            loadedHands: next.loadedHands,
+            exerciseId: next.exerciseId,
+          };
+        return next;
+      }),
     }));
   }
   function add(p?: Prescription) {
@@ -296,6 +312,24 @@ export default function WorkoutLog({
                   })
                 }
               />
+              {r.loadConvention === "perHand" && (
+                <Select
+                  label="Loaded hands per repetition"
+                  value={
+                    r.loadedHands === null ? "unknown" : String(r.loadedHands)
+                  }
+                  options={[
+                    ["unknown", "Unconfirmed"],
+                    ["1", "One loaded hand"],
+                    ["2", "Two loaded hands"],
+                  ]}
+                  onChange={(v) =>
+                    updateRow(r.id, {
+                      loadedHands: v === "unknown" ? null : Number(v),
+                    })
+                  }
+                />
+              )}
               {r.kind === "hold" && (
                 <Num
                   label="Hold duration (seconds)"

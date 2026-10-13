@@ -76,8 +76,22 @@ it("does not double-count two hands when unilateral reps already count both side
     loadKg: 10,
     perSide: true,
     loadConvention: "perHand",
+    loadedHands: 1,
   });
   expect(
     externalWork([makeWorkout({ status: "partial", rows: [r] })])[0].loadVolume,
   ).toBe(100);
+});
+it("counts two dumbbells independently of working sides", () => {
+  const r = makeRow({
+    confirmed: true,
+    reps: 5,
+    loadKg: 10,
+    perSide: true,
+    loadConvention: "perHand",
+    loadedHands: 2,
+  });
+  expect(
+    externalWork([makeWorkout({ status: "partial", rows: [r] })])[0].loadVolume,
+  ).toBe(200);
 });

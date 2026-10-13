@@ -51,7 +51,7 @@ export function calibrate(
 }
 export function recoverySignals(r: MorningRecord, b: Baseline | null) {
   const cmj = dailyCmj(r),
-    compatible = b && b.protocolId === r.protocolId && cmj.eligible;
+    compatible = b && b.protocolId === r.protocolId && cmj.validTrials === 3;
   const reasons: string[] = [];
   for (const key of ["fatigue", "soreness", "stress"] as const)
     if (r[key] !== null && r[key]! >= 4) reasons.push(`${key}: ${r[key]}/5`);

@@ -66,6 +66,10 @@ export type Program = z.infer<typeof programSchema>;
 export const velocitySchema = z.object({
   exerciseId: z.string(),
   loadKg: nullable,
+  loadConvention: z
+    .enum(["totalExternal", "perHand", "bodyweight", "unknown"])
+    .default("unknown"),
+  loadedHands: z.number().int().min(1).max(2).nullable().default(null),
   rangeOfMotion: z.string(),
   metric: z.enum(["mean", "meanPropulsive", "peak"]),
   method: z.string(),
@@ -82,6 +86,7 @@ export const rowSchema = z.object({
   reps: nullable,
   loadKg: nullable,
   loadConvention: z.enum(["totalExternal", "perHand", "bodyweight", "unknown"]),
+  loadedHands: z.number().int().min(1).max(2).nullable().default(null),
   perSide: z.boolean(),
   holdSeconds: nullable,
   distanceMetres: nullable,

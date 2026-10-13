@@ -45,3 +45,47 @@ test("does not advertise offline readiness when caching fails", async ({
     page.getByText("Offline unavailable · retry", { exact: true }),
   ).toBeVisible({ timeout: 30000 });
 });
+
+test("a waiting service-worker update does not discard an open entry", async ({
+  page,
+}) => {
+  const fs = await import("node:fs/promises");
+  const original = await fs.readFile("dist/sw.js", "utf8");
+  try {
+    await page.goto("/");
+    await expect(
+      page.getByText("Offline ready", { exact: true }),
+    ).toBeVisible();
+    await page.reload();
+    await page.getByRole("button", { name: "Program", exact: true }).click();
+    await page
+      .getByRole("button", { name: "April W1 D1", exact: true })
+      .click();
+    await page.getByRole("button", { name: "Log this session" }).click();
+    await page.getByLabel("Actual duration (minutes)").fill("42");
+    await fs.writeFile("dist/sw.js", original + "\n// e2e update revision\n");
+    await page.evaluate(async () => {
+      const r = await navigator.serviceWorker.getRegistration();
+      await r!.update();
+    });
+    await expect(
+      page.getByRole("button", {
+        name: "Update ready · save entries before reload",
+      }),
+    ).toBeVisible({ timeout: 15000 });
+    await expect(page.getByLabel("Actual duration (minutes)")).toHaveValue(
+      "42",
+    );
+    page.once("dialog", (d) => d.dismiss());
+    await page
+      .getByRole("button", {
+        name: "Update ready · save entries before reload",
+      })
+      .click();
+    await expect(page.getByLabel("Actual duration (minutes)")).toHaveValue(
+      "42",
+    );
+  } finally {
+    await fs.writeFile("dist/sw.js", original);
+  }
+});

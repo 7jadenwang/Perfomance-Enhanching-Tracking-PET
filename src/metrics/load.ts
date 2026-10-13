@@ -67,11 +67,12 @@ export function externalWork(workouts: Workout[]): ExternalWork[] {
             loadVolume:
               reps === null ||
               r.loadKg === null ||
-              !["totalExternal", "perHand"].includes(r.loadConvention)
+              !["totalExternal", "perHand"].includes(r.loadConvention) ||
+              (r.loadConvention === "perHand" && r.loadedHands === null)
                 ? null
                 : reps *
                   r.loadKg *
-                  (r.loadConvention === "perHand" && !r.perSide ? 2 : 1),
+                  (r.loadConvention === "perHand" ? r.loadedHands! : 1),
             holdSeconds: r.holdSeconds === null ? null : r.holdSeconds * sides,
             distanceMetres:
               r.distanceMetres === null || reps === null

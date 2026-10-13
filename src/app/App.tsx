@@ -8,6 +8,7 @@ import Settings from "./Settings";
 import WorkoutLog from "./WorkoutLog";
 import { saveWorkout, saveMorning, saveSettings } from "../storage/db";
 import { replaceFromBackup, exportBackup } from "../storage/backup";
+import { program } from "../program/catalog";
 import type { Session } from "../domain/schema";
 import { sessionDate } from "../program/schedule";
 import { download } from "./fields";
@@ -15,7 +16,11 @@ export default function App() {
   const offline = useOffline(),
     store = useAthleteStore(),
     [tab, setTab] = useState("Today"),
-    [log, setLog] = useState<{ session: Session; date: string } | null>(null);
+    [log, setLog] = useState<{
+      session: Session;
+      date: string;
+      workoutId?: string;
+    } | null>(null);
   const s = store.state;
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -91,8 +96,9 @@ export default function App() {
         )}
         {log ? (
           <WorkoutLog
-            key={log.session.id + log.date}
+            key={log.session.id + log.date + (log.workoutId ?? "")}
             session={log.session}
+            workoutId={log.workoutId}
             date={log.date}
             state={s}
             onBack={() => setLog(null)}
@@ -125,7 +131,25 @@ export default function App() {
             }}
           />
         ) : tab === "Progress" ? (
-          <Progress state={s} />
+          <Progress
+            state={s}
+            onOpen={(w) => {
+              const session = program.sessions.find(
+                (x) => x.id === w.sessionId,
+              ) ?? {
+                id: w.sessionId ?? "custom",
+                month: "Saved",
+                blockIndex: 0,
+                week: 1,
+                day: 1,
+                optional: false,
+                sourceText: "No bundled source for this saved session.",
+                sources: [],
+                exercises: [],
+              };
+              setLog({ session, date: w.localDate, workoutId: w.id });
+            }}
+          />
         ) : (
           <Settings
             state={s}

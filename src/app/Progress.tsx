@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { AthleteState } from "../domain/schema";
+import type { AthleteState, Workout } from "../domain/schema";
 import { program } from "../program/catalog";
 import { addDays, sessionDate } from "../program/schedule";
 import {
@@ -9,9 +9,15 @@ import {
   loadDifference,
 } from "../metrics/load";
 import { dailyCmj } from "../metrics/recovery";
-import { velocityLoss, compatibleVelocity } from "../metrics/velocity";
+import { velocityLoss, velocityHistory } from "../metrics/velocity";
 import { Card, fmt } from "./fields";
-export default function Progress({ state }: { state: AthleteState }) {
+export default function Progress({
+  state,
+  onOpen,
+}: {
+  state: AthleteState;
+  onOpen: (workout: Workout) => void;
+}) {
   const [week, setWeek] = useState(0),
     start = addDays(state.startDate, week * 7),
     end = addDays(start, 6),
@@ -24,13 +30,7 @@ export default function Progress({ state }: { state: AthleteState }) {
     }),
     load = weeklyLoad(workouts, prescribed.length),
     external = externalWork(workouts),
-    velocities = workouts
-      .filter((w) => w.status === "partial" || w.status === "completed")
-      .flatMap((w) =>
-        w.rows
-          .filter((r) => r.confirmed && r.velocity)
-          .map((r) => ({ date: w.localDate, row: r, velocity: r.velocity! })),
-      );
+    velocities = velocityHistory(workouts);
   return (
     <>
       <div className="pagehead">
@@ -150,6 +150,25 @@ export default function Progress({ state }: { state: AthleteState }) {
         </p>
       </Card>
       <Card>
+        <h2>Saved workouts</h2>
+        <p>
+          Historical records keep their original dates when the program is
+          rescheduled.
+        </p>
+        {state.workouts
+          .slice()
+          .sort((a, b) => b.localDate.localeCompare(a.localDate))
+          .map((w) => (
+            <div className="sectionhead" key={w.id}>
+              <span>
+                {w.localDate} · {w.sessionId ?? "Custom session"} · {w.status}
+              </span>
+              <button onClick={() => onOpen(w)}>Open saved workout</button>
+            </div>
+          ))}
+        {!state.workouts.length && <p>No saved workouts yet.</p>}
+      </Card>
+      <Card>
         <h2>CMJ history</h2>
         {state.protocols.map((protocol) => {
           const records = state.mornings
@@ -188,10 +207,7 @@ export default function Progress({ state }: { state: AthleteState }) {
       <Card>
         <h2>Measured velocity</h2>
         {velocities.map((v, i) => {
-          const previous = velocities
-            .slice(0, i)
-            .filter((x) => compatibleVelocity(x.velocity, v.velocity))
-            .at(-1);
+          const previous = v.previous;
           return (
             <div className="prescription" key={v.row.id}>
               <strong>
@@ -200,8 +216,11 @@ export default function Progress({ state }: { state: AthleteState }) {
               <p>
                 {v.velocity.metric} ·{" "}
                 {v.velocity.method || "method unspecified"} ·{" "}
-                {v.velocity.loadKg ?? "unknown"} kg ·{" "}
-                {v.velocity.rangeOfMotion || "ROM unspecified"}
+                {v.velocity.loadKg ?? "unknown"} kg ({v.velocity.loadConvention}
+                {v.velocity.loadConvention === "perHand"
+                  ? ` · ${v.velocity.loadedHands ?? "unknown"} loaded hands`
+                  : ""}
+                ) · {v.velocity.rangeOfMotion || "ROM unspecified"}
               </p>
               <p>
                 Set average {fmt(v.velocity.setAverage, 2)} m/s; end-of-set loss{" "}

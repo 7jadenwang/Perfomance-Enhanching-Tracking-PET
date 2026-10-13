@@ -79,13 +79,11 @@ test("imports a reviewed backup and preserves calibration when saving settings",
   );
   await page.goto("/");
   await page.getByRole("button", { name: "Settings", exact: true }).click();
-  await page
-    .getByLabel("Import backup")
-    .setInputFiles({
-      name: "backup.json",
-      mimeType: "application/json",
-      buffer: Buffer.from(JSON.stringify(state)),
-    });
+  await page.getByLabel("Import backup").setInputFiles({
+    name: "backup.json",
+    mimeType: "application/json",
+    buffer: Buffer.from(JSON.stringify(state)),
+  });
   await expect(
     page.getByText("Compatible backup:", { exact: false }),
   ).toBeVisible();
@@ -111,16 +109,60 @@ test("rejects corrupt backup without replacing existing morning records", async 
   await page.getByRole("button", { name: "Save morning" }).click();
   await expect(page.getByText("30.0 cm", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Settings", exact: true }).click();
-  await page
-    .getByLabel("Import backup")
-    .setInputFiles({
-      name: "broken.json",
-      mimeType: "application/json",
-      buffer: Buffer.from("{"),
-    });
+  await page.getByLabel("Import backup").setInputFiles({
+    name: "broken.json",
+    mimeType: "application/json",
+    buffer: Buffer.from("{"),
+  });
   await expect(page.getByRole("alert")).toContainText(
     "Existing records are unchanged",
   );
   await page.getByRole("button", { name: "Today", exact: true }).click();
   await expect(page.getByText("30.0 cm", { exact: true })).toBeVisible();
+});
+
+test("reopens historical workout identity after its session is rescheduled", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Settings", exact: true }).click();
+  await page.getByLabel("Program start date").fill("2026-10-13");
+  await page.getByRole("button", { name: "Save settings" }).click();
+  await page.getByRole("button", { name: "Program", exact: true }).click();
+  await page.getByRole("button", { name: "April W1 D1", exact: true }).click();
+  await page.getByRole("button", { name: "Log this session" }).click();
+  await page.getByLabel("Actual duration (minutes)").fill("42");
+  await page.getByRole("button", { name: "Save workout" }).click();
+  await expect(page.getByText("Saved on this device").last()).toBeVisible();
+  await page.getByRole("button", { name: "Program", exact: true }).click();
+  await page.getByRole("button", { name: "April W1 D1", exact: true }).click();
+  await page.getByLabel("Reschedule date").fill("2026-11-10");
+  await page.getByRole("button", { name: "Progress", exact: true }).click();
+  await page.getByRole("button", { name: "Open saved workout" }).click();
+  await expect(page.getByLabel("Actual duration (minutes)")).toHaveValue("42");
+  await expect(page.getByText("TRAINING LOG · 2026-10-13")).toBeVisible();
+});
+
+test("retains an unsaved entry and offers export when persistence fails", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Program", exact: true }).click();
+  await page.getByRole("button", { name: "April W1 D1", exact: true }).click();
+  await page.getByRole("button", { name: "Log this session" }).click();
+  await page.getByLabel("Actual duration (minutes)").fill("42");
+  await page.evaluate(() => {
+    IDBObjectStore.prototype.put = function () {
+      throw new DOMException("Storage unavailable", "QuotaExceededError");
+    };
+  });
+  await page.getByRole("button", { name: "Save workout" }).click();
+  await expect(page.getByRole("alert")).toContainText("Save failed");
+  await expect(page.getByLabel("Actual duration (minutes)")).toHaveValue("42");
+  await expect(
+    page.getByText("Saved on this device", { exact: true }),
+  ).toHaveCount(0);
+  const download = page.waitForEvent("download");
+  await page.getByRole("button", { name: "Export this entry" }).click();
+  expect((await download).suggestedFilename()).toBe("pet-unsaved-workout.json");
 });

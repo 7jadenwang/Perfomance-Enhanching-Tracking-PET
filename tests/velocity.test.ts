@@ -22,3 +22,17 @@ it("refuses incompatible metrics, loads, methods and ranges", () => {
   ])
     expect(compatibleVelocity(makeVelocity(), makeVelocity(o))).toBe(false);
 });
+it("keeps load convention and loaded hands separate from raw kilograms", () => {
+  expect(
+    compatibleVelocity(
+      makeVelocity({ loadConvention: "totalExternal" }),
+      makeVelocity({ loadConvention: "perHand", loadedHands: 2 }),
+    ),
+  ).toBe(false);
+  expect(
+    compatibleVelocity(
+      makeVelocity({ loadConvention: "perHand", loadedHands: 1 }),
+      makeVelocity({ loadConvention: "perHand", loadedHands: 2 }),
+    ),
+  ).toBe(false);
+});

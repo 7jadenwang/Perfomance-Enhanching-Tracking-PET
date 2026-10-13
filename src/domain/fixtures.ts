@@ -9,6 +9,8 @@ export const makeVelocity = (
 ): VelocityRecord => ({
   exerciseId: "squat",
   loadKg: 50,
+  loadConvention: "totalExternal",
+  loadedHands: null,
   rangeOfMotion: "full",
   metric: "mean",
   method: "device",
@@ -25,6 +27,7 @@ export const makeRow = (o: Partial<ActualRow> = {}): ActualRow => ({
   reps: null,
   loadKg: null,
   loadConvention: "totalExternal",
+  loadedHands: null,
   perSide: false,
   holdSeconds: null,
   distanceMetres: null,

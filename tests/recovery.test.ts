@@ -54,3 +54,18 @@ it("explains concerns without certifying readiness or changing a program", () =>
     false,
   );
 });
+it("compares valid CMJ measurements even when illness excludes them from baseline", () => {
+  const b = calibrate(days, "default")!;
+  const r = makeMorning({
+    baselineEligible: false,
+    exclusionReason: "Illness",
+    trials: [20, 20, 20].map((heightCm) => ({
+      heightCm,
+      excluded: false,
+      reason: "",
+    })),
+  });
+  expect(dailyCmj(r).eligible).toBe(false);
+  expect(recoverySignals(r, b).lowCmj).toBe(true);
+  expect(recoverySignals(r, b).percentageChange).toBeLessThan(0);
+});
