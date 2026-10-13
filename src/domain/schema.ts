@@ -11,58 +11,8 @@ export const dateSchema = z
   }, "Invalid calendar date");
 export type LocalDate = z.infer<typeof dateSchema>;
 const range = z.tuple([n, n]).refine(([a, b]) => a <= b);
-export const prescriptionSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  sourceText: z.string(),
-  kind: z.enum([
-    "strength",
-    "jump",
-    "throw",
-    "hold",
-    "sprint",
-    "conditioning",
-    "other",
-  ]),
-  sets: range.nullable(),
-  reps: range.nullable(),
-  perSide: z.boolean(),
-  loadPercent: range.nullable(),
-  referenceExerciseId: z.string().nullable(),
-  tempo: z.string().nullable(),
-  velocityTarget: range.nullable(),
-  velocityComparison: z.enum(["min", "range"]).default("range"),
-  velocityMetric: z.enum(["mean", "meanPropulsive", "peak"]).nullable(),
-  restSeconds: range.nullable(),
-  holdSeconds: range.nullable(),
-  distanceMetres: range.nullable(),
-  workSeconds: range.nullable(),
-  rounds: range.nullable(),
-  optional: z.boolean(),
-  groupId: z.string().nullable(),
-  ambiguity: z.string().nullable(),
-  purpose: z.enum(["generalAerobic", "conditioning", "technique", "other"]),
-});
-export type Prescription = z.infer<typeof prescriptionSchema>;
-export const sessionSchema = z.object({
-  id: z.string(),
-  month: z.string(),
-  blockIndex: z.number().int().min(0).max(2),
-  week: z.number().int().min(1).max(4),
-  day: z.number().int().min(1).max(7),
-  optional: z.boolean(),
-  sourceText: z.string(),
-  sources: z.array(z.string()),
-  exercises: z.array(prescriptionSchema),
-});
-export type Session = z.infer<typeof sessionSchema>;
-export const programSchema = z.object({
-  version: z.string(),
-  sourceCommit: z.string(),
-  sources: z.array(z.string()),
-  sessions: z.array(sessionSchema),
-});
-export type Program = z.infer<typeof programSchema>;
+import { prescriptionSchema } from "./program-schema";
+export * from "./program-schema";
 export const velocitySchema = z.object({
   exerciseId: z.string(),
   loadKg: nullable,
@@ -214,7 +164,6 @@ export const stateSchema = z
       });
   });
 export type AthleteState = z.infer<typeof stateSchema>;
-export const parseProgram = (x: unknown): Program => programSchema.parse(x);
 export const parseState = (x: unknown): AthleteState => stateSchema.parse(x);
 export function localToday(): LocalDate {
   const d = new Date();

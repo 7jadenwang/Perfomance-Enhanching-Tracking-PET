@@ -18,8 +18,9 @@ export function sessionsForDate(
   date: LocalDate,
   start: LocalDate,
   reschedules: Record<string, LocalDate>,
+  programId: "lp" | "up" = "lp",
 ): Session[] {
   return p.sessions.filter(
-    (s) => (reschedules[s.id] ?? sessionDate(s, start)) === date,
+    (s) => s.programId === programId && (reschedules[s.id] ?? sessionDate(s, start)) === date,
   );
 }

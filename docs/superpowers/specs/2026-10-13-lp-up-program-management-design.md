@@ -40,7 +40,7 @@ Calendar progress and training progress are separate. Show elapsed calendar days
 
 Elapsed dates never mark workouts completed. A passed unlogged session remains unresolved. Pausing freezes the continuation position and unscheduled future work. Resume asks for a restart date and shifts only unresolved future sessions; past logs retain their IDs, dates, enrollment, and prescriptions. If overdue unresolved work remains, preview explicit reschedule or skip choices. Skipping resolves the schedule position without claiming work occurred. Optional sessions do not block completion.
 
-Enrollment scheduling uses source day offsets from the chosen entry, preserving prescribed spacing. The active training position is the first unresolved required session, not a count of calendar days. Existing logs can still be reopened/edited by stable workout ID after scheduling changes. All physical training remains relevant to global recovery regardless of enrollment status.
+D1–D7 correspond to Monday–Sunday. New D1 schedules anchor to the first Monday on or after the requested start date; a chosen midweek entry or resumed session starts on its next prescribed weekday. Explicit reschedules display the actual date/weekday separately from the source day label. Never rewrite historical workout dates. Enrollment scheduling uses source day offsets from the chosen entry, preserving prescribed spacing. The active training position is the first unresolved required session, not a count of calendar days. Existing logs can still be reopened/edited by stable workout ID after scheduling changes. All physical training remains relevant to global recovery regardless of enrollment status.
 
 ## Prescriptions and measured velocity
 
@@ -75,6 +75,8 @@ Retain the current three-trial CMJ protocol, frozen 14-eligible-day baseline, ba
 Keep sleep hours, sleep quality, perceived fatigue, soreness, stress, and pain/location. Add optional body mass (kg), resting heart rate (bpm), illness flag/notes, and HRV value with metric, unit, measurement method, and protocol. HRV methods/metrics cannot be pooled into a trend without matching definitions; no standalone HRV readiness algorithm is introduced. Preserve existing scale directions and show them beside inputs.
 
 Add an explicit daily activity annotation: rest confirmed, training confirmed, or unknown. Confirmed rest can contribute zero load; an unlogged day stays unknown. Incomplete workout load on a training day remains incomplete. Multiple workouts sum their valid session loads while exposing missing components.
+
+Add a complete planned-dose comparison across all LP/UP source weeks even before any workout is logged, with separate intensity (%1RM/known kg), set/repetition volume, rest/tempo, compatible velocity target ranges, jump/sprint exposure and conditioning work/recovery panels. Overlay each enrollment’s actual measurements in matching units; do not combine those dimensions into a universal score or assume every LP dimension increases linearly. Program transfer comparisons use the same dose profiles.
 
 The dashboard follows the supplied visual structure with summary cards and readable time-series panels:
 

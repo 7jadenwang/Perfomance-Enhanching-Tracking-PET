@@ -1,6 +1,6 @@
 """Build catalogue from visually reviewed prescriptions and bundled source images."""
 import json,re,pathlib
-curated=json.load(open('scripts/reviewed-prescriptions.json'));files=sorted(pathlib.Path('public/program').glob('*/*.jpg'));groups={};entries=[]
+curated=json.load(open('scripts/reviewed-prescriptions.json'));files=sorted(f for f in pathlib.Path('public/program').glob('*/*.jpg') if f.parent.name in ['April','May','June']);groups={};entries=[]
 for f in files:
  m=re.search(r'W(\d)D(\d)',f.name);key=f'{f.parent.name}-W{m[1]}D{m[2]}';p=str(f).removeprefix('public/');groups.setdefault(key,[]).append(p);entries.append({'path':p,'sessionId':key,'supporting':'_Sheet' in p,'review':'visually-inspected; reviewed summary; original retained'})
 def rng(text,unit):
@@ -33,5 +33,45 @@ for key,sources in groups.items():
   ambiguity='Complex structure: use original instructions; record each actual set separately.' if complex_ else '1RM reference is not specified by the source.' if load and not ref else None
   exercises.append({'id':key+f'-{i+1}','name':name,'sourceText':chunk.replace('｜','\n'),'kind':kind,'sets':None if complex_ else sets,'reps':None if complex_ else reps,'perSide':bool(re.search(r'/侧|每侧|每方向|/手',details)),'loadPercent':load,'referenceExerciseId':ref,'tempo':tempo[0] if tempo else None,'velocityTarget':velocity,'velocityMetric':None,'velocityComparison':'min' if v and v[1] else 'range','restSeconds':restRange,'holdSeconds':hold,'distanceMetres':distance,'workSeconds':work,'rounds':None if complex_ else rng(details,'轮'),'optional':any(x in name+details for x in ['选做','自愿','有条件']),'groupId':key+'-complex' if complex_ else None,'ambiguity':ambiguity,'purpose':'generalAerobic' if kind=='conditioning' and any(x in name for x in ['冷身','有氧']) else 'conditioning' if kind=='conditioning' and '代谢' not in name else 'other'})
  sessions.append({'id':key,'month':month,'blockIndex':['April','May','June'].index(month),'week':w,'day':d,'optional':any('Optional' in p for p in sources),'sourceText':curated[key].replace('；','\n\n').replace('｜','\n'),'sources':sources,'exercises':exercises})
-p={'version':'april-june-v1','sourceCommit':'6e89e968fffe011c76eccb2f697237572eacdf8a','sources':[e['path'] for e in entries],'sessions':sorted(sessions,key=lambda s:(s['blockIndex'],s['week'],s['day']))}
-pathlib.Path('src/program/catalog.json').write_text(json.dumps(p,ensure_ascii=False,indent=2));pathlib.Path('src/program/source-manifest.json').write_text(json.dumps({'sourceCommit':p['sourceCommit'],'entries':entries},ensure_ascii=False,indent=2));print(len(entries),'images;',len(sessions),'sessions;',sum(len(s['exercises']) for s in sessions),'prescription blocks')
+
+# UP is a reviewed structured input, not raw OCR-derived prescriptions.
+up=json.loads(pathlib.Path('scripts/reviewed-up-prescriptions.json').read_text())
+metadata=json.loads(pathlib.Path('scripts/reviewed-program-metadata.json').read_text())
+for session in sessions:
+ session.update(programId='lp',phaseId='lp-'+str(session['blockIndex']+1))
+for folder,index in [('July',0),('August',1)]:
+ grouped={}
+ for f in sorted(pathlib.Path('public/program',folder).glob('*.jpg')):
+  w,d=re.search(r'W(\d)D(\d)',f.name).groups()
+  key=f'{folder}-W{w}D{d}'
+  path=str(f).removeprefix('public/')
+  grouped.setdefault(key,[]).append(path)
+  entries.append(dict(path=path,sessionId=key,role='alternative' if ('Supplement' in path or 'Warmup' in path) else 'continuation' if 'Continued' in path else 'session',review='visual review; structured summary; original authority retained'))
+ for key,paths in grouped.items():
+  if key not in up:raise ValueError('Missing reviewed UP entry '+key)
+  w,d=map(int,re.search(r'W(\d)D(\d)',key).groups())
+  ex=up[key]
+  for n,prescription in enumerate(ex):prescription['id']=f'{key}-{n+1}'
+  s=dict(id=key,programId='up',phaseId=f'up-{index+1}',month=folder,blockIndex=index,week=w,day=d,optional=any('Optional' in p for p in paths),sourceText='\n\n'.join(p['sourceText'] for p in ex),sources=paths,exercises=ex,conditionalSources=[p for p in paths if 'Supplement' in p or 'Warmup' in p],alternativePlans=[])
+  if key=='July-W3D2':
+   alt=up['July-W3D2-treadmill']
+   for n,prescription in enumerate(alt):prescription['id']=f'{key}-treadmill-{n+1}'
+   s['alternativePlans']=[dict(id='treadmill',name='跑步机替代整套场地计划（不是附加训练）',sources=s['conditionalSources'],exercises=alt)]
+  if key=='August-W2D1':
+   s['autoregulation']='none'
+   s['sourceConflict']='Warmup文件含另一整套能量系统训练，非附加热身；请选择并确认归属。'
+   alt=up['August-W2D1-energy']
+   for n,prescription in enumerate(alt):prescription['id']=f'{key}-energy-{n+1}'
+   s['alternativePlans']=[dict(id='energy',name='能量系统文件（归属需确认，不叠加）',sources=s['conditionalSources'],exercises=alt)]
+  if key=='August-W1D3':s['sourceConflict']='文件D3但原图标题第一周第四天；暂按文件排序，需确认。'
+  if key=='August-W1D4':s['sourceConflict']='文件D4但原图标题第一周第五天；暂按文件排序，需确认。'
+  sessions.append(s)
+for definition in metadata:
+ for phase in definition['phases']:
+  phase['entrySessionIds']=[min((s for s in sessions if s['phaseId']==phase['id'] and s['week']==week),key=lambda s:s['day'])['id'] for week in range(1,5)]
+  for session in sessions:
+   if session['phaseId']==phase['id']:session['focus']=phase['weeklyFocus'][session['week']-1]
+p=dict(version='lp-up-v2',sourceCommit='27a9ac924647066eba52f782edbea4e269fe20b8',definitions=metadata,sources=[e['path'] for e in entries],sessions=sorted(sessions,key=lambda s:(s['programId'],s['blockIndex'],s['week'],s['day'])))
+pathlib.Path('src/program/catalog.json').write_text(json.dumps(p,ensure_ascii=False,indent=2))
+pathlib.Path('src/program/source-manifest.json').write_text(json.dumps(dict(sourceCommit=p['sourceCommit'],entries=entries),ensure_ascii=False,indent=2))
+print(len(entries),'images;',len(sessions),'sessions;',sum(len(s['exercises']) for s in sessions),'reviewed prescription blocks')

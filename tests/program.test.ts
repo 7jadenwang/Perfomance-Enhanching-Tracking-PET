@@ -2,7 +2,7 @@ import { it, expect } from "vitest";
 import { program } from "../src/program/catalog";
 import { parseState, initialState } from "../src/domain/schema";
 it("imports all 78 original images without duplicating continuation sessions", () => {
-  expect(program.sources.length).toBe(78);
+  expect(program.sources.filter(p=>/program\/(April|May|June)\//.test(p)).length).toBe(78);
   expect(new Set(program.sessions.map((s) => s.id)).size).toBe(
     program.sessions.length,
   );

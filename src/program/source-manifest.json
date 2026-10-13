@@ -1,5 +1,5 @@
 {
-  "sourceCommit": "6e89e968fffe011c76eccb2f697237572eacdf8a",
+  "sourceCommit": "27a9ac924647066eba52f782edbea4e269fe20b8",
   "entries": [
     {
       "path": "program/April/April_W1D1.jpg",
@@ -468,6 +468,252 @@
       "sessionId": "May-W4D5",
       "supporting": false,
       "review": "visually-inspected; reviewed summary; original retained"
+    },
+    {
+      "path": "program/July/July_W1D1.jpg",
+      "sessionId": "July-W1D1",
+      "role": "session",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/July/July_W1D2.jpg",
+      "sessionId": "July-W1D2",
+      "role": "session",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/July/July_W1D2_Continued.jpg",
+      "sessionId": "July-W1D2",
+      "role": "continuation",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/July/July_W1D2_Continued_2.jpg",
+      "sessionId": "July-W1D2",
+      "role": "continuation",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/July/July_W1D4.jpg",
+      "sessionId": "July-W1D4",
+      "role": "session",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/July/July_W1D5.jpg",
+      "sessionId": "July-W1D5",
+      "role": "session",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/July/July_W1D6.jpg",
+      "sessionId": "July-W1D6",
+      "role": "session",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/July/July_W2D1.jpg",
+      "sessionId": "July-W2D1",
+      "role": "session",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/July/July_W2D2.jpg",
+      "sessionId": "July-W2D2",
+      "role": "session",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/July/July_W2D4.jpg",
+      "sessionId": "July-W2D4",
+      "role": "session",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/July/July_W2D5.jpg",
+      "sessionId": "July-W2D5",
+      "role": "session",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/July/July_W2D6.jpg",
+      "sessionId": "July-W2D6",
+      "role": "session",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/July/July_W3D2.jpg",
+      "sessionId": "July-W3D2",
+      "role": "session",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/July/July_W3D2_Supplement.jpg",
+      "sessionId": "July-W3D2",
+      "role": "alternative",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/July/July_W3D3.jpg",
+      "sessionId": "July-W3D3",
+      "role": "session",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/July/July_W3D5.jpg",
+      "sessionId": "July-W3D5",
+      "role": "session",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/July/July_W3D6.jpg",
+      "sessionId": "July-W3D6",
+      "role": "session",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/July/July_W3D7_Optional.jpg",
+      "sessionId": "July-W3D7",
+      "role": "session",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/July/July_W4D1.jpg",
+      "sessionId": "July-W4D1",
+      "role": "session",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/July/July_W4D3.jpg",
+      "sessionId": "July-W4D3",
+      "role": "session",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/July/July_W4D4.jpg",
+      "sessionId": "July-W4D4",
+      "role": "session",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/July/July_W4D5.jpg",
+      "sessionId": "July-W4D5",
+      "role": "session",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/August/Aug_W1D1.jpg",
+      "sessionId": "August-W1D1",
+      "role": "session",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/August/Aug_W1D2.jpg",
+      "sessionId": "August-W1D2",
+      "role": "session",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/August/Aug_W1D3.jpg",
+      "sessionId": "August-W1D3",
+      "role": "session",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/August/Aug_W1D4.jpg",
+      "sessionId": "August-W1D4",
+      "role": "session",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/August/Aug_W1D6.jpg",
+      "sessionId": "August-W1D6",
+      "role": "session",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/August/Aug_W2D1.jpg",
+      "sessionId": "August-W2D1",
+      "role": "session",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/August/Aug_W2D1_Warmup.jpg",
+      "sessionId": "August-W2D1",
+      "role": "alternative",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/August/Aug_W2D4.jpg",
+      "sessionId": "August-W2D4",
+      "role": "session",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/August/Aug_W2D5.jpg",
+      "sessionId": "August-W2D5",
+      "role": "session",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/August/Aug_W2D6.jpg",
+      "sessionId": "August-W2D6",
+      "role": "session",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/August/Aug_W3D1.jpg",
+      "sessionId": "August-W3D1",
+      "role": "session",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/August/Aug_W3D2.jpg",
+      "sessionId": "August-W3D2",
+      "role": "session",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/August/Aug_W3D4.jpg",
+      "sessionId": "August-W3D4",
+      "role": "session",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/August/Aug_W3D5.jpg",
+      "sessionId": "August-W3D5",
+      "role": "session",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/August/Aug_W3D6.jpg",
+      "sessionId": "August-W3D6",
+      "role": "session",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/August/Aug_W4D1.jpg",
+      "sessionId": "August-W4D1",
+      "role": "session",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/August/Aug_W4D2.jpg",
+      "sessionId": "August-W4D2",
+      "role": "session",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/August/Aug_W4D4.jpg",
+      "sessionId": "August-W4D4",
+      "role": "session",
+      "review": "visual review; structured summary; original authority retained"
+    },
+    {
+      "path": "program/August/Aug_W4D6.jpg",
+      "sessionId": "August-W4D6",
+      "role": "session",
+      "review": "visual review; structured summary; original authority retained"
     }
   ]
 }

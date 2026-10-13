@@ -139,6 +139,7 @@ export default function App() {
               ) ?? {
                 id: w.sessionId ?? "custom",
                 month: "Saved",
+                programId: "lp" as const, phaseId:"lp-1", focus:"Saved session", sourceConflict:null, conditionalSources:[], alternativePlans:[], autoregulation:"source" as const,
                 blockIndex: 0,
                 week: 1,
                 day: 1,
