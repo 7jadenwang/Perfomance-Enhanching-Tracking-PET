@@ -13,6 +13,9 @@ export default function SyncSettings({ sync }: { sync: DeviceSync }) {
   const [linkChoices, setLinkChoices] = useState<
     Record<string, "local" | "remote">
   >({});
+  const [batchChoices, setBatchChoices] = useState<
+    Record<string, "local" | "remote" | "manual">
+  >({});
   async function action(fn: () => Promise<unknown>, success = "") {
     setBusy(true);
     setError("");
@@ -81,11 +84,26 @@ export default function SyncSettings({ sync }: { sync: DeviceSync }) {
               {sync.meta?.linked ? (
                 <>
                   <button
-                    disabled={busy}
+                    disabled={busy || sync.meta?.paused}
                     onClick={() => void action(() => sync.now())}
                   >
                     Sync now
                   </button>
+                  <button
+                    disabled={busy}
+                    onClick={() =>
+                      void action(() => sync.setPaused(!sync.meta?.paused))
+                    }
+                  >
+                    {sync.meta?.paused
+                      ? "Resume account sync"
+                      : "Pause account sync"}
+                  </button>
+                  <p>
+                    Pausing sync keeps this account cache available for local
+                    training and queues saved edits. An upload already in
+                    progress may finish.
+                  </p>
                   <p>
                     {sync.meta.pending.length} pending documents · Last
                     successful sync: {sync.meta.lastSuccess ?? "not yet"}
@@ -235,7 +253,7 @@ export default function SyncSettings({ sync }: { sync: DeviceSync }) {
                   <button
                     disabled={busy}
                     onClick={() =>
-                      void action(() => sync.resolve(c.identity, "local"))
+                      void action(() => sync.resolve(c.identity, "local", c))
                     }
                   >
                     Keep device version
@@ -243,7 +261,7 @@ export default function SyncSettings({ sync }: { sync: DeviceSync }) {
                   <button
                     disabled={busy}
                     onClick={() =>
-                      void action(() => sync.resolve(c.identity, "remote"))
+                      void action(() => sync.resolve(c.identity, "remote", c))
                     }
                   >
                     Keep cloud version
@@ -264,6 +282,7 @@ export default function SyncSettings({ sync }: { sync: DeviceSync }) {
                           sync.resolve(
                             c.identity,
                             JSON.parse(manual[c.identity]),
+                            c,
                           ),
                         )
                       }
@@ -273,6 +292,74 @@ export default function SyncSettings({ sync }: { sync: DeviceSync }) {
                   </details>
                 </div>
               ))}
+              {(sync.meta?.conflicts.length ?? 0) > 1 && (
+                <div className="notice">
+                  <h3>Resolve related conflicts together</h3>
+                  <p>
+                    Choose each version, then validate and apply the whole group
+                    atomically. Baselines and their linked morning records must
+                    remain consistent.
+                  </p>
+                  {sync.meta!.conflicts.map((c) => (
+                    <Select
+                      key={c.identity}
+                      label={"Conflict batch choice " + c.identity}
+                      value={batchChoices[c.identity] ?? ""}
+                      options={[
+                        ["", "Choose after reviewing"],
+                        ["local", "Device version"],
+                        ["remote", "Cloud version"],
+                        ["manual", "Manual document above"],
+                      ]}
+                      onChange={(v) =>
+                        setBatchChoices({
+                          ...batchChoices,
+                          [c.identity]: v as "local" | "remote" | "manual",
+                        })
+                      }
+                    />
+                  ))}
+                  <button
+                    disabled={
+                      busy ||
+                      sync.meta!.conflicts.some(
+                        (c) =>
+                          !batchChoices[c.identity] ||
+                          (batchChoices[c.identity] === "manual" &&
+                            !manual[c.identity]),
+                      )
+                    }
+                    onClick={() =>
+                      void action(() =>
+                        sync.resolveBatch(
+                          sync.meta!.conflicts.map((c) => ({
+                            conflict: c,
+                            choice:
+                              batchChoices[c.identity] === "manual"
+                                ? JSON.parse(manual[c.identity])
+                                : (batchChoices[c.identity] as
+                                    "local" | "remote"),
+                          })),
+                        ),
+                      )
+                    }
+                  >
+                    Apply reviewed conflict batch
+                  </button>
+                </div>
+              )}
+              {(sync.meta?.conflictArchive?.length ?? 0) > 0 && (
+                <button
+                  onClick={() =>
+                    download(
+                      JSON.stringify(sync.meta?.conflictArchive, null, 2),
+                      "pet-conflict-version-history.json",
+                    )
+                  }
+                >
+                  Export conflict version history
+                </button>
+              )}
               {(sync.meta?.resolvedConflicts?.length ?? 0) > 0 && (
                 <button
                   onClick={() =>

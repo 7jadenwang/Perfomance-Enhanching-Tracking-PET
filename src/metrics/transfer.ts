@@ -138,23 +138,34 @@ export function adviseTransfer(
         ),
       ];
       const increases: string[] = [];
-      if (dose.kgReps && dose.kgReps[1] > actual.kgReps)
+      if (
+        dose.kgReps &&
+        actual.kgReps !== null &&
+        actual.coverage.kgReps.measured === actual.coverage.kgReps.expected &&
+        dose.kgReps[1] > actual.kgReps
+      )
         increases.push("Known external weight volume");
       if (
         dose.relativeIntensity &&
         actual.relativeIntensity !== null &&
+        actual.coverage.relativeIntensity.measured ===
+          actual.coverage.relativeIntensity.expected &&
         dose.relativeIntensity[1] > actual.relativeIntensity
       )
         increases.push("Relative intensity");
       if (
         dose.restSeconds &&
         actual.restSeconds !== null &&
+        actual.coverage.restSeconds.measured ===
+          actual.coverage.restSeconds.expected &&
         dose.restSeconds[0] < actual.restSeconds
       )
         increases.push("Shorter rest");
       if (
         dose.workRestRatio &&
         actual.workRestRatio !== null &&
+        actual.coverage.workRestRatio.measured ===
+          actual.coverage.workRestRatio.expected &&
         dose.workRestRatio[1] > actual.workRestRatio
       )
         increases.push("Work/recovery density");
@@ -170,18 +181,76 @@ export function adviseTransfer(
         );
       if (dose.relativeIntensity && actual.relativeIntensity === null)
         missing.push("Measured relative intensity for " + entrySessionId);
-      if (dose.strengthReps && dose.strengthReps[1] > actual.strengthReps)
+      if (
+        dose.strengthReps &&
+        actual.strengthReps !== null &&
+        actual.coverage.strengthReps.measured ===
+          actual.coverage.strengthReps.expected &&
+        dose.strengthReps[1] > actual.strengthReps
+      )
         increases.push("Strength repetitions");
-      if (dose.sprintMetres && dose.sprintMetres[1] > actual.sprintMetres)
+      if (
+        dose.sprintMetres &&
+        actual.sprintMetres !== null &&
+        actual.coverage.sprintMetres.measured ===
+          actual.coverage.sprintMetres.expected &&
+        dose.sprintMetres[1] > actual.sprintMetres
+      )
         increases.push("Sprint distance");
       if (
         dose.conditioningWorkSeconds &&
+        actual.conditioningWorkSeconds !== null &&
+        actual.coverage.conditioningWorkSeconds.measured ===
+          actual.coverage.conditioningWorkSeconds.expected &&
         dose.conditioningWorkSeconds[1] > actual.conditioningWorkSeconds
       )
         increases.push("Conditioning work time");
       for (const [demand, contacts] of Object.entries(dose.jumpDemand))
-        if (contacts[1] > (actual.jumpContacts[demand] ?? 0))
+        if (
+          actual.jumpContactTotal !== null &&
+          actual.coverage.jumpContactTotal.measured ===
+            actual.coverage.jumpContactTotal.expected &&
+          contacts[1] > (actual.jumpContacts[demand] ?? 0)
+        )
           increases.push(`${demand} jump contacts`);
+      for (const dimension of [
+        "relativeIntensity",
+        "restSeconds",
+        "workRestRatio",
+      ] as const) {
+        const c = actual.coverage[dimension];
+        if (
+          dose[dimension] &&
+          (actual[dimension] === null || c.measured < c.expected)
+        )
+          missing.push(
+            `Complete actual ${dimension} measurements for ${entrySessionId}`,
+          );
+      }
+      for (const dimension of [
+        "strengthReps",
+        "kgReps",
+        "sprintMetres",
+        "conditioningWorkSeconds",
+      ] as const) {
+        const coverage = actual.coverage[dimension];
+        if (
+          dose[dimension] &&
+          (actual[dimension] === null || coverage.measured < coverage.expected)
+        )
+          missing.push(
+            `Complete actual ${dimension} measurements for ${entrySessionId}`,
+          );
+      }
+      if (
+        Object.keys(dose.jumpDemand).length &&
+        (actual.jumpContactTotal === null ||
+          actual.coverage.jumpContactTotal.measured <
+            actual.coverage.jumpContactTotal.expected)
+      )
+        missing.push(
+          "Complete actual jump contacts by demand for " + entrySessionId,
+        );
       return {
         entrySessionId,
         phaseId: phase.id,
@@ -197,7 +266,13 @@ export function adviseTransfer(
       };
     }),
   );
-  if(status==='reviewCandidate'&&missing.length){status='insufficient';reasons.push('Essential intensity/velocity comparison data is missing; entries remain provisional.');for(const c of candidates)c.provisional=true;}
+  if (status === "reviewCandidate" && missing.length) {
+    status = "insufficient";
+    reasons.push(
+      "Essential intensity/velocity comparison data is missing; entries remain provisional.",
+    );
+    for (const c of candidates) c.provisional = true;
+  }
   if (status === "reviewCandidate")
     candidates.sort(
       (a, b) =>

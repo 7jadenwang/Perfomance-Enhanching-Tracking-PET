@@ -1,6 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { syncClient, supabaseTransport } from "./client";
-import { syncOnce, resolveConflict, lastSyncError } from "./engine";
+import {
+  syncOnce,
+  resolveConflict,
+  resolveConflicts,
+  type ConflictSelection,
+  lastSyncError,
+} from "./engine";
 import {
   db,
   loadState,
@@ -10,10 +16,12 @@ import {
   linkAccount,
 } from "../storage/db";
 import { initialState, type AthleteState } from "../domain/schema";
+import { completeAccountLink } from "./link";
 import { firstLinkPreview, resolveFirstLink } from "./reconcile";
 import { stateToDocuments } from "./documents";
 import type { SyncStatus, SyncDocument, SyncMeta } from "./types";
 export const statusLabels: Record<SyncStatus, string> = {
+  paused: "Account sync paused",
   localOnly: "Local only",
   syncing: "Syncing",
   synced: "Synced",
@@ -29,6 +37,8 @@ export function useDeviceSync() {
     [error, setError] = useState(""),
     [meta, setMeta] = useState<SyncMeta | null>(null),
     [preview, setPreview] = useState<{
+      namespace: string;
+      generation: number;
       remote: SyncDocument[];
       guest: AthleteState;
     } | null>(null),
@@ -91,8 +101,8 @@ export function useDeviceSync() {
         const m = await getSyncMeta("account:" + next.id);
         if (token !== generation.current) return;
         setMeta(m);
-        setStatus(m.linked ? "pending" : "linkRequired");
-        if (m.linked) void runRef.current();
+        setStatus(m.paused ? "paused" : m.linked ? "pending" : "linkRequired");
+        if (m.linked && !m.paused) void runRef.current();
       } else setStatus("localOnly");
     }
     void syncClient.auth.getSession().then(({ data }) => account(data.session));
@@ -134,33 +144,50 @@ export function useDeviceSync() {
     };
   }, []);
   async function previewLink() {
-    const u = userRef.current;
+    const u = userRef.current,
+      token = generation.current;
     if (!u) throw Error("Sign in first");
+    const ns = "account:" + u.id;
     const remote = await supabaseTransport(u.id).snapshot();
+    if (
+      token !== generation.current ||
+      userRef.current?.id !== u.id ||
+      storageNamespace() !== ns
+    )
+      throw Error("Account changed");
     const guest = (await db.state.get("athlete"))?.value ?? initialState();
-    if (userRef.current?.id !== u.id) throw Error("Account changed");
-    setPreview({ remote, guest });
+    if (
+      token !== generation.current ||
+      userRef.current?.id !== u.id ||
+      storageNamespace() !== ns
+    )
+      throw Error("Account changed");
+    setPreview({ remote, guest, namespace: ns, generation: token });
   }
   async function connect(
     choice: "cloud" | "device" | "merge",
     choices: Record<string, "local" | "remote" | SyncDocument> = {},
   ) {
-    const u = userRef.current;
+    const u = userRef.current,
+      token = generation.current;
     if (!u || !preview) throw Error("Preview link first");
-    const latest = await supabaseTransport(u.id).snapshot();
-    if (JSON.stringify(latest) !== JSON.stringify(preview.remote))
-      throw Error("Cloud changed; preview the link again");
-    if (choice === "device" && latest.length)
-      throw Error(
-        "Cloud already has records. Use cloud history, then explicitly import a backup to review its replacement effects.",
-      );
-    await linkAccount(latest, choice === "device" ? preview.guest : null);
+    const ns = "account:" + u.id;
+    if (preview.namespace !== ns || preview.generation !== token)
+      throw Error("Account changed; preview the link again");
+    const guard = () =>
+      token === generation.current && userRef.current?.id === u.id;
+    await completeAccountLink(
+      { namespace: ns, preview, choice, choices, isCurrent: guard },
+      supabaseTransport(u.id),
+    );
+    if (!guard() || storageNamespace() !== ns) throw Error("Account changed");
     setPreview(null);
     await now();
   }
   async function resolve(
     id: string,
     choice: "local" | "remote" | SyncDocument,
+    reviewed?: import("./types").SyncConflict,
   ) {
     const u = userRef.current;
     if (!u) throw Error("Sign in first");
@@ -169,8 +196,41 @@ export function useDeviceSync() {
       id,
       choice,
       supabaseTransport(u.id),
+      reviewed,
     );
+    if (
+      userRef.current?.id !== u.id ||
+      storageNamespace() !== "account:" + u.id
+    )
+      throw Error("Account changed");
     await now();
+  }
+  async function resolveBatch(selections: ConflictSelection[]) {
+    const u = userRef.current,
+      token = generation.current;
+    if (!u) throw Error("Sign in first");
+    await resolveConflicts(
+      "account:" + u.id,
+      selections,
+      supabaseTransport(u.id),
+    );
+    if (token !== generation.current || userRef.current?.id !== u.id)
+      throw Error("Account changed");
+    await now();
+  }
+  async function setPaused(paused: boolean) {
+    const u = userRef.current;
+    if (!u) throw Error("Sign in first");
+    const ns = "account:" + u.id;
+    await db.transaction("rw", db.sync, async () => {
+      if (storageNamespace() !== ns) throw Error("Account changed");
+      const m = await getSyncMeta(ns);
+      await db.sync.put({ ...m, paused });
+    });
+    if (storageNamespace() !== ns) return;
+    setStatus(paused ? "paused" : "pending");
+    await refresh();
+    if (!paused) await now();
   }
   return {
     configured: !!syncClient,
@@ -188,6 +248,8 @@ export function useDeviceSync() {
     previewLink,
     connect,
     resolve,
+    resolveBatch,
+    setPaused,
     refresh,
     setRecovery,
   };

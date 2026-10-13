@@ -154,3 +154,23 @@ it("coordinates simultaneous sync requests and reports authentication failure", 
   };
   expect(await syncOnce("account:a", failure)).toBe("authRequired");
 });
+it.each(["during-flight", "lost-ack"] as const)(
+  "keeps a deletion pending after a creation %s",
+  async (mode) => {
+    const server = new Server();
+    await syncOnce("account:a", server);
+    const r = createMorning({ id: "temporary" });
+    await saveMorning(r);
+    const { updateState } = await import("../src/storage/db");
+    if (mode === "during-flight")
+      server.during = () => updateState((s) => ({ ...s, mornings: [] }));
+    else server.drop = true;
+    await syncOnce("account:a", server);
+    if (mode === "lost-ack") await updateState((s) => ({ ...s, mornings: [] }));
+    expect((await loadState()).mornings).toHaveLength(0);
+    await syncOnce("account:a", server);
+    await syncOnce("account:a", server);
+    expect((await loadState()).mornings).toHaveLength(0);
+    expect(server.docs.find((d) => d.kind === "morning")?.deleted).toBe(true);
+  },
+);

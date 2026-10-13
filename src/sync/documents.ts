@@ -1,3 +1,5 @@
+import { validateCatalogState } from "../domain/catalog-state";
+import { program } from "../program/catalog";
 import { parseState, type AthleteState } from "../domain/schema";
 import type { SyncDocument, DocumentKind } from "./types";
 export function stateToDocuments(state: AthleteState): SyncDocument[] {
@@ -81,5 +83,5 @@ export function documentsToState(docs: SyncDocument[]): AthleteState {
     )
       throw Error("Sync document identity mismatch");
   }
-  return state;
+  return validateCatalogState(state, program);
 }

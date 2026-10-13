@@ -52,7 +52,9 @@ In Supabase Authentication → URL Configuration set **Site URL** to that HTTPS 
 
 Saved edits synchronize after saving, reconnect/focus, and every 30 seconds while the app is visible. **Saved on this device** is different from **Synced**. Offline edits remain in an account-specific durable queue. Sign-out stops that account's synchronization and shows guest records; it retains isolated unsynced account data for the next sign-in.
 
-Concurrent changes to different records merge. Concurrent changes to the same workout, morning date/protocol, settings or schedule require review in Settings. Export both variants, choose one or supply a reviewed merged document. A deleted record is a tombstone; it cannot silently return from an older offline device. Invalid downloads leave the last valid local state intact. Incoming changes retain dirty editor drafts and require review before saving them.
+Use **Pause account sync** to keep training in the isolated account cache without uploading new changes; **Resume account sync** uploads the durable pending queue. An upload already in progress may finish. Sign-out switches to guest history instead.
+
+Concurrent changes to different records merge. Concurrent changes to the same workout, morning date/protocol, settings or schedule require review in Settings. Export both variants, choose one or supply a reviewed merged document. Resolve linked configuration/baseline and morning conflicts together with **Apply reviewed conflict batch**. A newer local or cloud change invalidates a stale conflict review; Sync now refreshes it and preserves version history. A deleted record is a tombstone; it cannot silently return from an older offline device. Invalid downloads leave the last valid local state intact. Incoming changes retain dirty editor drafts and require review before saving them.
 
 ## 5. Verify your real setup
 

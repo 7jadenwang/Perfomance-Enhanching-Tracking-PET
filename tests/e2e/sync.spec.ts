@@ -115,12 +115,29 @@ test("two independent devices converge saved dates and preserve same-record conf
   await expect
     .poll(
       () =>
-        [...docs.values()].find((d) => d.kind === "morning")?.payload.trials[0]
-          .heightCm,
+        [...docs.values()].find(
+          (d) => d.kind === "morning" && d.key === "2026-10-13|default",
+        )?.payload.trials[0].heightCm,
     )
     .toBe(33);
+  await phone.goto("/");
+  await phone.getByLabel("Training date", { exact: true }).fill("2026-10-12");
+  await phone.getByLabel("CMJ trial 1 (cm)").fill("31");
+  await phone.getByRole("button", { name: "Save morning" }).click();
   await login(phone);
-  await phone.getByRole("button", { name: "Use cloud history" }).click();
+  await phone
+    .getByText("Merge guest and cloud histories", { exact: true })
+    .click();
+  for (const select of await phone.getByLabel(/Link choice/).all())
+    await select.selectOption("remote");
+  await phone
+    .getByRole("button", { name: "Accept reviewed history merge" })
+    .click();
+  await expect
+    .poll(
+      () => docs.get("morning|2026-10-12|default")?.payload.trials[0].heightCm,
+    )
+    .toBe(31);
   await phone.getByRole("button", { name: "Today", exact: true }).click();
   await phone.getByLabel("Training date", { exact: true }).fill("2026-10-13");
   await expect(phone.getByLabel("CMJ trial 1 (cm)")).toHaveValue("33");
@@ -134,8 +151,9 @@ test("two independent devices converge saved dates and preserve same-record conf
   await expect
     .poll(
       () =>
-        [...docs.values()].find((d) => d.kind === "morning")?.payload.trials[0]
-          .heightCm,
+        [...docs.values()].find(
+          (d) => d.kind === "morning" && d.key === "2026-10-13|default",
+        )?.payload.trials[0].heightCm,
     )
     .toBe(35);
   await phone.bringToFront();
@@ -163,8 +181,9 @@ test("two independent devices converge saved dates and preserve same-record conf
   await expect
     .poll(
       () =>
-        [...docs.values()].find((d) => d.kind === "morning")?.payload.trials[0]
-          .heightCm,
+        [...docs.values()].find(
+          (d) => d.kind === "morning" && d.key === "2026-10-13|default",
+        )?.payload.trials[0].heightCm,
     )
     .toBe(36);
   offlineContexts.delete(c2);
@@ -177,6 +196,19 @@ test("two independent devices converge saved dates and preserve same-record conf
   await phone.getByRole("button", { name: "Keep cloud version" }).click();
   await phone.getByRole("button", { name: "Today", exact: true }).click();
   await expect(phone.getByLabel("CMJ trial 1 (cm)")).toHaveValue("36");
+  await phone.getByRole("button", { name: "Settings", exact: true }).click();
+  await phone.getByRole("button", { name: "Pause account sync" }).click();
+  await expect(
+    phone.getByText("Account sync paused", { exact: true }).first(),
+  ).toBeVisible();
+  await phone.getByRole("button", { name: "Today", exact: true }).click();
+  await phone.getByLabel("Sleep hours").fill("8");
+  await phone.getByRole("button", { name: "Save morning" }).click();
+  await phone.getByRole("button", { name: "Settings", exact: true }).click();
+  await phone.getByRole("button", { name: "Resume account sync" }).click();
+  await expect
+    .poll(() => docs.get("morning|2026-10-13|default")?.payload.sleepHours)
+    .toBe(8);
   await c1.close();
   await c2.close();
 });

@@ -34,6 +34,7 @@ export type SyncTransport = {
   commit(requestId: string, changes: OutboxMutation[]): Promise<CommitResult>;
 };
 export type SyncStatus =
+  | "paused"
   | "localOnly"
   | "syncing"
   | "synced"
@@ -56,11 +57,13 @@ export const same = (
 export type SyncMeta = {
   id: string;
   linked: boolean;
+  paused?: boolean;
   base: SyncDocument[];
   pending: OutboxMutation[];
   inflight: { requestId: string; changes: OutboxMutation[] } | null;
   conflicts: SyncConflict[];
   resolvedConflicts?: SyncConflict[];
+  conflictArchive?: SyncConflict[];
   generation: number;
   lastSuccess: string | null;
 };

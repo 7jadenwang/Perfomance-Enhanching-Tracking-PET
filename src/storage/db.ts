@@ -1,3 +1,4 @@
+import { validateCatalogState } from "../domain/catalog-state";
 import Dexie, { type Table } from "dexie";
 import {
   initialState,
@@ -78,12 +79,25 @@ export function queueState(meta: SyncMeta, state: AthleteState): SyncMeta {
     ids = new Set(desired.map(identity)),
     pending = [...meta.pending];
   let generation = meta.generation;
-  const all = [
-    ...desired,
-    ...meta.base
-      .filter((d) => !d.deleted && !ids.has(identity(d)))
-      .map((d) => ({ ...d, payload: null, deleted: true })),
+  const known = [
+    ...meta.base,
+    ...meta.pending,
+    ...(meta.inflight?.changes ?? []),
   ];
+  const absent = [...new Set(known.map(identity))].filter((id) => !ids.has(id));
+  const deletions: SyncDocument[] = [];
+  for (const id of absent) {
+    const base = meta.base.find((d) => identity(d) === id),
+      frozen = meta.inflight?.changes.find((d) => identity(d) === id);
+    if ((!base || base.deleted) && !frozen) {
+      const index = pending.findIndex((d) => identity(d) === id);
+      if (index >= 0) pending.splice(index, 1);
+      continue;
+    }
+    const original = base ?? frozen ?? known.find((d) => identity(d) === id)!;
+    deletions.push({ ...original, payload: null, deleted: true });
+  }
+  const all = [...desired, ...deletions];
   for (const d of all) {
     const id = identity(d),
       base = meta.base.find((x) => identity(x) === id),
@@ -108,7 +122,7 @@ export async function updateState(fn: (s: AthleteState) => AthleteState) {
     if (namespace !== ns) throw Error("Account changed; review before saving");
     const stored = await db.state.get(stateKey(ns)),
       s = stored ? migrateState(stored.value, program) : initialState(),
-      next = parseState(fn(s));
+      next = validateCatalogState(parseState(fn(s)), program);
     const meta = await getSyncMeta(ns);
     await db.state.put({ id: stateKey(ns), value: next });
     if (ns !== "guest") await db.sync.put(queueState(meta, next));
@@ -121,17 +135,20 @@ export async function linkAccount(
   remote: SyncDocument[],
   local: AthleteState | null,
   reviewedRemote = false,
+  expectedNamespace = namespace,
 ) {
-  const ns = namespace;
+  const ns = expectedNamespace;
+  if (namespace !== ns) throw Error("Account changed");
   if (ns === "guest") throw Error("Sign in first");
   const next = local
-    ? parseState(local)
+    ? validateCatalogState(parseState(local), program)
     : remote.length
       ? documentsToState(remote)
       : await loadState();
   await db.transaction("rw", db.state, db.sync, async () => {
     if (namespace !== ns) throw Error("Account changed");
     const old = await getSyncMeta(ns);
+    if (namespace !== ns) throw Error("Account changed");
     if (old.linked) throw Error("Account already linked");
     const meta = {
       ...old,

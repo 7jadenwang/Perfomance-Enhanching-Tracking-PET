@@ -173,12 +173,24 @@ export function plannedDose(
     ],
   };
 }
+export type ExposureDimension =
+  | "strengthReps"
+  | "kgReps"
+  | "jumpContactTotal"
+  | "sprintMetres"
+  | "conditioningWorkSeconds"
+  | "restSeconds"
+  | "relativeIntensity"
+  | "workRestRatio"
+  | "velocity";
 export type ExposureSummary = {
-  strengthReps: number;
-  kgReps: number;
-  jumpContacts: Record<string, number>;
-  sprintMetres: number;
-  conditioningWorkSeconds: number;
+  strengthReps: number | null;
+  kgReps: number | null;
+  jumpContacts: Record<string, number | null>;
+  jumpContactTotal: number | null;
+  sprintMetres: number | null;
+  conditioningWorkSeconds: number | null;
+  coverage: Record<ExposureDimension, { measured: number; expected: number }>;
   heavyLowerSets: number;
   sets: number;
   relativeIntensity: number | null;
@@ -200,6 +212,20 @@ export function summarizeExposure(
     strengthReps: 0,
     kgReps: 0,
     jumpContacts: {},
+    jumpContactTotal: null,
+    coverage: Object.fromEntries(
+      [
+        "strengthReps",
+        "kgReps",
+        "jumpContactTotal",
+        "sprintMetres",
+        "conditioningWorkSeconds",
+        "restSeconds",
+        "relativeIntensity",
+        "workRestRatio",
+        "velocity",
+      ].map((d) => [d, { measured: 0, expected: 0 }]),
+    ) as ExposureSummary["coverage"],
     sprintMetres: 0,
     conditioningWorkSeconds: 0,
     heavyLowerSets: 0,
@@ -210,6 +236,10 @@ export function summarizeExposure(
     movements: [],
     restSeconds: null,
     velocity: null,
+  };
+  const record = (key: ExposureDimension, value: number | null) => {
+    result.coverage[key].expected++;
+    if (value !== null) result.coverage[key].measured++;
   };
   const measures = externalWork(workouts);
   for (let i = 0; i < rows.length; i++) {
@@ -225,24 +255,53 @@ export function summarizeExposure(
     if (!m) result.unknown++;
     result.movements.push(m?.id ?? r.exerciseId);
     if (r.kind === "strength") {
-      result.strengthReps += external.reps ?? 0;
-      result.kgReps += external.loadVolume ?? 0;
+      record("strengthReps", external.reps);
+      record("kgReps", external.loadVolume);
+      result.strengthReps = (result.strengthReps ?? 0) + (external.reps ?? 0);
+      result.kgReps = (result.kgReps ?? 0) + (external.loadVolume ?? 0);
       if (r.reps === null || external.loadVolume === null) result.unknown++;
     }
     if (r.kind === "jump") {
       const key = m?.demand ?? "unknown";
+      record("jumpContactTotal", external.jumpContacts);
       result.jumpContacts[key] =
-        (result.jumpContacts[key] ?? 0) + (external.jumpContacts ?? 0);
+        external.jumpContacts !== null
+          ? (result.jumpContacts[key] ?? 0) + external.jumpContacts
+          : (result.jumpContacts[key] ?? null);
       if (external.jumpContacts === null) result.unknown++;
     }
     if (r.kind === "sprint") {
-      result.sprintMetres += external.distanceMetres ?? 0;
+      record("sprintMetres", external.distanceMetres);
+      result.sprintMetres =
+        (result.sprintMetres ?? 0) + (external.distanceMetres ?? 0);
       if (external.distanceMetres === null) result.unknown++;
     }
     if (r.kind === "conditioning") {
-      result.conditioningWorkSeconds += external.conditioningWorkSeconds ?? 0;
+      record("conditioningWorkSeconds", external.conditioningWorkSeconds);
+      result.conditioningWorkSeconds =
+        (result.conditioningWorkSeconds ?? 0) +
+        (external.conditioningWorkSeconds ?? 0);
       if (external.conditioningWorkSeconds === null) result.unknown++;
     }
+  }
+  for (const row of rows) {
+    record("restSeconds", row.restSeconds);
+    if (row.kind === "conditioning")
+      record(
+        "workRestRatio",
+        row.workSeconds !== null &&
+          row.restSeconds !== null &&
+          row.restSeconds > 0
+          ? row.workSeconds / row.restSeconds
+          : null,
+      );
+    if (row.kind === "strength" || row.velocity)
+      record(
+        "velocity",
+        row.velocity && row.velocity.method && row.velocity.rangeOfMotion
+          ? row.velocity.setAverage
+          : null,
+      );
   }
   const rests = rows.flatMap((r) =>
     r.restSeconds !== null ? [r.restSeconds] : [],
@@ -276,6 +335,9 @@ export function summarizeExposure(
     result.velocity =
       velocities.reduce((a, v) => a + v.setAverage!, 0) / velocities.length;
   const intensities: number[] = [];
+  result.coverage.relativeIntensity.expected = rows.filter(
+    (r) => r.kind === "strength",
+  ).length;
   if (state)
     for (const w of workouts.filter((w) =>
       ["completed", "partial"].includes(w.status),
@@ -302,8 +364,22 @@ export function summarizeExposure(
         if (ref && p?.name === r.name)
           intensities.push((100 * r.loadKg!) / ref.kg);
       }
+  result.coverage.relativeIntensity.measured = intensities.length;
   result.relativeIntensity = intensities.length
     ? intensities.reduce((a, b) => a + b, 0) / intensities.length
+    : null;
+  for (const dimension of [
+    "strengthReps",
+    "kgReps",
+    "sprintMetres",
+    "conditioningWorkSeconds",
+  ] as const)
+    if (!result.coverage[dimension].measured) result[dimension] = null;
+  result.jumpContactTotal = result.coverage.jumpContactTotal.measured
+    ? Object.values(result.jumpContacts).reduce<number>(
+        (sum, v) => sum + (v ?? 0),
+        0,
+      )
     : null;
   // Velocity is reported only for compatible exercise, component, load, method and ROM.
   result.movements = [...new Set(result.movements)];

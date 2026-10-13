@@ -136,3 +136,52 @@ it("shows measured set count density and velocity only within one compatible mov
   expect(e.velocity).toBe(0.5);
   expect(e.restSeconds).toBe(120);
 });
+it("keeps entirely missing actual dimensions null and labels partial known totals", () => {
+  const unknown = summarizeExposure([
+    createWorkout({
+      status: "completed",
+      rows: [
+        createRow({
+          confirmed: true,
+          kind: "strength",
+          reps: null,
+          loadKg: null,
+        }),
+        createRow({
+          confirmed: true,
+          kind: "sprint",
+          distanceMetres: null,
+          reps: 2,
+        }),
+        createRow({ confirmed: true, kind: "jump", reps: null }),
+        createRow({
+          confirmed: true,
+          kind: "conditioning",
+          rounds: null,
+          workSeconds: null,
+        }),
+      ],
+    }),
+  ]);
+  expect(unknown.strengthReps).toBeNull();
+  expect(unknown.kgReps).toBeNull();
+  expect(unknown.sprintMetres).toBeNull();
+  expect(unknown.jumpContactTotal).toBeNull();
+  expect(unknown.conditioningWorkSeconds).toBeNull();
+  const partial = summarizeExposure([
+    createWorkout({
+      status: "completed",
+      rows: [
+        createRow({ confirmed: true, kind: "strength", reps: 5, loadKg: 100 }),
+        createRow({
+          confirmed: true,
+          kind: "strength",
+          reps: null,
+          loadKg: null,
+        }),
+      ],
+    }),
+  ]);
+  expect(partial.strengthReps).toBe(5);
+  expect(partial.coverage.strengthReps).toEqual({ measured: 1, expected: 2 });
+});

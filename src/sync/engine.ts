@@ -17,6 +17,7 @@ import {
   type SyncStatus,
   type SyncMeta,
   type SyncDocument,
+  type SyncConflict,
 } from "./types";
 import { reconcile } from "./reconcile";
 const key = (ns: string) => (ns === "guest" ? "athlete" : ns);
@@ -85,20 +86,41 @@ async function run(ns: string, transport: SyncTransport): Promise<SyncStatus> {
   current(ns);
   let meta = await getSyncMeta(ns);
   if (!meta.linked) return "linkRequired";
+  if (meta.paused) return "paused";
   if (meta.conflicts.length) {
     current(ns);
     const latest = await transport.snapshot();
     current(ns);
     validateDocuments(latest);
     if (latest.length) documentsToState(latest);
-    await db.sync.put({
-      ...meta,
-      conflicts: meta.conflicts.map((c) => ({
-        ...c,
-        remote: latest.find((d) => identity(d) === c.identity) ?? null,
-      })),
+    await db.transaction("rw", db.sync, async () => {
+      const m = await getSyncMeta(ns);
+      current(ns);
+      const changed = m.conflicts.filter(
+        (c) =>
+          !same(
+            c.local,
+            m.pending.find((d) => identity(d) === c.identity) ?? c.local,
+          ) ||
+          (c.remote?.revision ?? 0) !==
+            (latest.find((d) => identity(d) === c.identity)?.revision ?? 0),
+      );
+      await db.sync.put({
+        ...m,
+        conflictArchive: [...(m.conflictArchive ?? []), ...changed],
+        conflicts: m.conflicts.map((c) => ({
+          ...c,
+          local: m.pending.find((d) => identity(d) === c.identity) ?? c.local,
+          remote: latest.find((d) => identity(d) === c.identity) ?? null,
+        })),
+      });
     });
-    return "conflict";
+    const fresh = await getSyncMeta(ns);
+    return fresh.conflicts.length
+      ? "conflict"
+      : fresh.pending.length
+        ? "pending"
+        : "synced";
   }
   // Replay frozen requests BEFORE pulling: the server may have committed a lost response.
   if (meta.inflight) {
@@ -130,6 +152,7 @@ async function run(ns: string, transport: SyncTransport): Promise<SyncStatus> {
   notifyStorageChanged();
   meta = await getSyncMeta(ns);
   if (meta.conflicts.length) return "conflict";
+  if (meta.paused) return "paused";
   if (meta.pending.length) {
     await db.transaction("rw", db.sync, async () => {
       const m = await getSyncMeta(ns);
@@ -145,6 +168,7 @@ async function run(ns: string, transport: SyncTransport): Promise<SyncStatus> {
     await acknowledge(ns, await getSyncMeta(ns), transport);
   }
   meta = await getSyncMeta(ns);
+  if (meta.paused) return "paused";
   if (!meta.pending.length && !meta.inflight)
     await db.sync.put({ ...meta, lastSuccess: new Date().toISOString() });
   notifyStorageChanged();
@@ -194,12 +218,33 @@ export async function syncOnce(
       });
   }
 }
+export type ConflictSelection = {
+  conflict: SyncConflict;
+  choice: "local" | "remote" | SyncDocument;
+};
 export async function resolveConflict(
   ns: string,
   id: string,
   choice: "local" | "remote" | SyncDocument,
   transport: SyncTransport,
+  reviewed?: SyncConflict,
 ) {
+  const c =
+    reviewed ??
+    (await getSyncMeta(ns)).conflicts.find((c) => c.identity === id);
+  if (!c) throw Error("Conflict already changed");
+  return resolveConflicts(
+    ns,
+    [{ conflict: structuredClone(c), choice }],
+    transport,
+  );
+}
+export async function resolveConflicts(
+  ns: string,
+  selections: ConflictSelection[],
+  transport: SyncTransport,
+) {
+  if (!selections.length) throw Error("Choose conflicts to resolve");
   current(ns);
   const remote = await transport.snapshot();
   current(ns);
@@ -208,41 +253,68 @@ export async function resolveConflict(
   await db.transaction("rw", db.state, db.sync, async () => {
     current(ns);
     const m = await getSyncMeta(ns),
-      c = m.conflicts.find((c) => c.identity === id);
-    if (!c) throw Error("Conflict already changed");
-    const latest = remote.find((d) => identity(d) === id) ?? null;
-    if ((latest?.revision ?? 0) !== (c.remote?.revision ?? 0))
-      throw Error(
-        "Remote changed again; sync conflict review needs refreshing",
-      );
-    const selected =
-      choice === "local" ? c.local : choice === "remote" ? latest : choice;
-    if (selected && identity(selected) !== id)
-      throw Error("Conflict identity mismatch");
-    const stored = (await db.state.get(key(ns)))!.value;
-    let docs = stateToDocuments(stored).filter((d) => identity(d) !== id);
-    if (selected) docs.push(selected);
-    const next = documentsToState(docs),
-      base = [
-        ...m.base.filter((d) => identity(d) !== id),
-        ...(latest ? [latest] : []),
-      ];
-    const generation = m.generation + 1,
-      pending = m.pending.filter((d) => identity(d) !== id);
-    if (selected && !same(selected, latest))
-      pending.push({
-        ...selected,
-        baseRevision: latest?.revision ?? 0,
-        generation,
-      });
+      stored = (await db.state.get(key(ns)))!.value;
+    if (m.inflight)
+      throw Error("Wait for the current sync request before resolving");
+    let docs = stateToDocuments(stored),
+      base = [...m.base],
+      pending = [...m.pending],
+      generation = m.generation;
+    const resolved: SyncConflict[] = [],
+      ids = new Set<string>();
+    for (const { conflict: reviewed, choice } of selections) {
+      const id = reviewed.identity;
+      if (ids.has(id)) throw Error("Duplicate conflict choice");
+      ids.add(id);
+      const c = m.conflicts.find((c) => c.identity === id),
+        latest = remote.find((d) => identity(d) === id) ?? null;
+      if (!c) throw Error("Conflict review is stale");
+      const local =
+        m.pending.find((d) => identity(d) === id) ??
+        docs.find((d) => identity(d) === id) ??
+        null;
+      if (
+        !same(reviewed.local, local) ||
+        !same(c.local, local) ||
+        JSON.stringify(c) !== JSON.stringify(reviewed)
+      )
+        throw Error(
+          "Conflict review is stale; review the current device version",
+        );
+      if (
+        (latest?.revision ?? 0) !== (reviewed.remote?.revision ?? 0) ||
+        !same(latest, reviewed.remote)
+      )
+        throw Error(
+          "Remote changed again; sync conflict review needs refreshing",
+        );
+      const selected =
+        choice === "local" ? local : choice === "remote" ? latest : choice;
+      if (selected && identity(selected) !== id)
+        throw Error("Conflict identity mismatch");
+      docs = docs.filter((d) => identity(d) !== id);
+      if (selected) docs.push(selected);
+      base = base.filter((d) => identity(d) !== id);
+      if (latest) base.push(latest);
+      pending = pending.filter((d) => identity(d) !== id);
+      if (selected && !same(selected, latest))
+        pending.push({
+          ...selected,
+          baseRevision: latest?.revision ?? 0,
+          generation: ++generation,
+        });
+      resolved.push(c);
+    }
+    const next = documentsToState(docs);
+    current(ns);
     await db.state.put({ id: key(ns), value: next });
     await db.sync.put({
       ...m,
       base,
       pending,
       generation,
-      conflicts: m.conflicts.filter((x) => x.identity !== id),
-      resolvedConflicts: [...(m.resolvedConflicts ?? []), c],
+      conflicts: m.conflicts.filter((c) => !ids.has(c.identity)),
+      resolvedConflicts: [...(m.resolvedConflicts ?? []), ...resolved],
     });
   });
   notifyStorageChanged();

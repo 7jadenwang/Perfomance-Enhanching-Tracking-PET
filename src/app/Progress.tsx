@@ -6,7 +6,11 @@ import {
   getSession,
   sessionLabel,
 } from "../program/catalog";
-import { programDoseSeries, type DoseProfile } from "../metrics/exposure";
+import {
+  programDoseSeries,
+  type DoseProfile,
+  type ExposureDimension,
+} from "../metrics/exposure";
 import { sessionLoad } from "../metrics/load";
 import { addDays } from "../program/schedule";
 import { movementFor } from "../program/movements";
@@ -195,11 +199,7 @@ export default function Progress({
                   key === "velocity"
                 )
                   actual = w.actual[key];
-                if (key === "jumpContacts")
-                  actual = Object.values(w.actual.jumpContacts).reduce(
-                    (a, b) => a + b,
-                    0,
-                  );
+                if (key === "jumpContacts") actual = w.actual.jumpContactTotal;
               }
               return [
                 {
@@ -216,7 +216,19 @@ export default function Progress({
                   value: actual,
                   series: "Actual",
                   segment: w.phaseId,
-                  note: w.actual ? `${w.actual.unknown} incomplete fields` : "",
+                  note: w.actual
+                    ? (() => {
+                        const c =
+                          w.actual.coverage[
+                            (key === "jumpContacts"
+                              ? "jumpContactTotal"
+                              : key) as ExposureDimension
+                          ];
+                        return c
+                          ? `${c.measured}/${c.expected} measured rows${c.measured < c.expected ? " · partial known total" : ""}`
+                          : `${w.actual.unknown} incomplete fields`;
+                      })()
+                    : "",
                 },
               ];
             })}
