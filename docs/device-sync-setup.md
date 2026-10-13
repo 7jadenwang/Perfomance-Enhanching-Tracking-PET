@@ -13,7 +13,7 @@ In Project Settings → API, copy the Project URL and **publishable** key beginn
 In PowerShell, open your actual repository folder:
 
 ```powershell
-cd D:\Perfomance-Enhanching-Tracking-PET
+cd D:\PET_Project\Perfomance-Enhanching-Tracking-PET
 Copy-Item .env.example .env.local
 notepad .env.local
 ```
