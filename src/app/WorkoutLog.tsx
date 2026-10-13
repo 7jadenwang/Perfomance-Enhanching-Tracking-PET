@@ -12,6 +12,9 @@ import { sessionLoad } from "../metrics/load";
 import { velocityLoss, compareVelocityTarget } from "../metrics/velocity";
 import { suggestAlternatives } from "../program/alternatives";
 import { Card, Num, Select, fmt, download } from "./fields";
+import SubstitutionPreview from "./SubstitutionPreview";
+import {acceptSubstitution} from "../program/substitutions";
+import VelocityGuidance from "./VelocityGuidance";
 import { Sources } from "./Program";
 export default function WorkoutLog({
   session,
@@ -39,11 +42,13 @@ export default function WorkoutLog({
       createWorkout({
         id: crypto.randomUUID(),
         sessionId: session.id,
+        targetSnapshot:session.exercises,
         localDate: date,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       }),
   );
+  const prescriptions = w.targetRevisions.at(-1)?.prescriptions ?? (w.targetSnapshot.length ? w.targetSnapshot : session.exercises);
   const [saved, setSaved] = useState(false);
   function update(v: Partial<Workout>) {
     setSaved(false);
@@ -72,6 +77,7 @@ export default function WorkoutLog({
     const row = createRow({
       id: crypto.randomUUID(),
       exerciseId: p?.name ?? "custom",
+      prescriptionId:p?.id??null, movementId:p?.movementId??null,
       name: p?.name ?? "Custom exercise",
       kind: p?.kind ?? "strength",
       perSide: p?.perSide ?? false,
@@ -81,13 +87,14 @@ export default function WorkoutLog({
     update({ rows: [...w.rows, row] });
   }
   function copy() {
-    const rows = session.exercises
+    const rows = prescriptions
       .filter((p) => p.sets && p.kind !== "other")
       .flatMap((p) =>
         Array.from({ length: Math.min(p.sets![0], 50) }, () =>
           createRow({
             id: crypto.randomUUID(),
             exerciseId: p.name,
+            prescriptionId:p.id, movementId:p.movementId,
             name: p.name,
             kind: p.kind,
             reps: p.reps?.[0] ?? null,
@@ -131,6 +138,8 @@ export default function WorkoutLog({
       </div>
       <Card>
         <Sources session={session} />
+        {prescriptions.map(p=><SubstitutionPreview key={p.id} prescription={p} state={state} date={date} onAccept={preview=>update(acceptSubstitution(w,preview))}/>)}
+        {w.targetRevisions.length>0&&<button type="button" onClick={()=>update({targetRevisions:w.targetRevisions.slice(0,-1)})}>Undo last target change</button>}
         <details>
           <summary>All original prescriptions</summary>
           <p className="sourceText">{session.sourceText}</p>
@@ -209,7 +218,7 @@ export default function WorkoutLog({
             partial/completed status before it counts.
           </p>
           <div className="addbuttons">
-            {session.exercises.map((p) => (
+            {prescriptions.map((p) => (
               <button type="button" key={p.id} onClick={() => add(p)}>
                 + {p.name}
               </button>
@@ -396,7 +405,7 @@ export default function WorkoutLog({
               <summary>Tempo and measured velocity</summary>
               <p className="sourceText">
                 {
-                  session.exercises.find((p) => p.name === r.exerciseId)
+                  prescriptions.find((p) => p.name === r.exerciseId)
                     ?.sourceText
                 }
               </p>
@@ -406,6 +415,7 @@ export default function WorkoutLog({
                 options={[
                   ["unknown", "Unconfirmed"],
                   "mean",
+                  "meanConcentric",
                   "meanPropulsive",
                   "peak",
                 ]}
@@ -420,7 +430,7 @@ export default function WorkoutLog({
                 <p>
                   Target comparison:{" "}
                   {(() => {
-                    const p = session.exercises.find(
+                    const p = prescriptions.find(
                       (p) => p.name === r.exerciseId,
                     );
                     return p
@@ -432,6 +442,11 @@ export default function WorkoutLog({
                   })()}
                 </p>
               )}
+              <VelocityGuidance prescription={prescriptions.find(p=>p.id===r.prescriptionId||p.name===r.exerciseId)} row={r} state={state} enabled={session.autoregulation!=="none"} onAccept={(p,reason)=>{
+                const targets=prescriptions.map(x=>x.id===p.id?p:x);
+                update({targetRevisions:[...w.targetRevisions,{id:crypto.randomUUID(),sessionId:session.id,prescriptions:targets,reason,createdAt:new Date().toISOString(),kind:"velocity"}]});
+              }}/>
+              {(prescriptions.find(p=>p.id===r.prescriptionId||p.name===r.exerciseId)?.components.length??0)>0&&<Select label="Velocity component" value={r.velocity?.componentId??"unknown"} options={[["unknown","Choose component"],...(prescriptions.find(p=>p.id===r.prescriptionId||p.name===r.exerciseId)?.components??[]).map(c=>[c.id,c.name] as [string,string])]} onChange={v=>velocity(r,{componentId:v==="unknown"?null:v})}/>}
               <div className="threecols">
                 <label className="field">
                   Tempo instruction
@@ -459,7 +474,7 @@ export default function WorkoutLog({
                 <Select
                   label="Velocity metric"
                   value={r.velocity?.metric ?? "mean"}
-                  options={["mean", "meanPropulsive", "peak"]}
+                  options={["mean", "meanConcentric", "meanPropulsive", "peak"]}
                   onChange={(v) =>
                     velocity(r, { metric: v as VelocityRecord["metric"] })
                   }

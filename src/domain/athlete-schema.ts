@@ -6,7 +6,7 @@ import {dateSchema, type LocalDate} from "./values";
 export {dateSchema, type LocalDate} from "./values";
 import {enrollmentSchema, targetRevisionSchema} from "./enrollment-schema";
 export * from "./enrollment-schema";
-import { prescriptionSchema } from "./program-schema";
+import { prescriptionSchema, velocityMetricSchema } from "./program-schema";
 export * from "./program-schema";
 export const velocitySchema = z.object({
   exerciseId: z.string(),
@@ -16,7 +16,8 @@ export const velocitySchema = z.object({
     .default("unknown"),
   loadedHands: z.number().int().min(1).max(2).nullable().default(null),
   rangeOfMotion: z.string(),
-  metric: z.enum(["mean", "meanPropulsive", "peak"]),
+  metric: velocityMetricSchema,
+  componentId:z.string().nullable().default(null),
   method: z.string(),
   setAverage: nullable,
   repVelocities: z.array(n),
@@ -28,6 +29,8 @@ export const rowSchema = z.object({
   exerciseId: z.string(),
   name: z.string(),
   confirmed: z.boolean(),
+  prescriptionId:z.string().nullable().default(null),
+  movementId:z.string().nullable().default(null),
   reps: nullable,
   loadKg: nullable,
   loadConvention: z.enum(["totalExternal", "perHand", "bodyweight", "unknown"]),
@@ -45,7 +48,7 @@ export const rowSchema = z.object({
   tempoFollowed: z.boolean().nullable(),
   kind: prescriptionSchema.shape.kind,
   sourceVelocityMetric: z
-    .enum(["mean", "meanPropulsive", "peak"])
+    .enum(["mean", "meanConcentric", "meanPropulsive", "peak"])
     .nullable()
     .default(null),
   velocity: velocitySchema.nullable(),
@@ -115,6 +118,7 @@ export const baselineSchema = z.object({
 export type Baseline = z.infer<typeof baselineSchema>;
 const equipmentSchema = z.object({
   running: z.literal(true),
+  extra:z.record(z.string(),z.enum(["available","unavailable","unconfirmed"])).default({}),
   rowing: z.enum(["available", "unavailable", "unconfirmed"]),
   skiErg: z.enum(["available", "unavailable", "unconfirmed"]),
   airBike: z.enum(["available", "unavailable", "unconfirmed"]),
@@ -127,6 +131,7 @@ export const stateSchema = z
     startDate: dateSchema,
     enrollments: z.array(enrollmentSchema).default([]),
     activities: z.array(z.object({localDate:dateSchema,status:z.enum(["rest","training","unknown"]),notes:z.string().default("")})).default([]),
+    velocityExperience:z.enum(["unconfirmed","beginner","experienced"]).default("unconfirmed"),
     familiarity: z.array(z.string()).default([]),
     velocityProfiles: z.array(z.object({exerciseId:z.string(), date:dateSchema, rangeOfMotion:z.string(),metric:z.enum(["mean","meanConcentric","meanPropulsive","peak"]),method:z.string(), loadPercent:z.tuple([n,n]),target:z.tuple([n,n])})).default([]),
     reschedules: z.record(z.string(), dateSchema),
@@ -180,12 +185,14 @@ export function localToday(): LocalDate {
 export function initialState(): AthleteState {
   return {
     schemaVersion: 2,
+    velocityExperience:"unconfirmed",
     enrollments: [], activities: [], familiarity: [], velocityProfiles: [],
     programVersion: "lp-up-v2",
     startDate: localToday(),
     reschedules: {},
     equipment: {
       running: true,
+      extra:{},
       rowing: "unconfirmed",
       skiErg: "unconfirmed",
       airBike: "unconfirmed",

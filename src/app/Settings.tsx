@@ -49,6 +49,7 @@ export default function Settings({
       >
         <Card>
           <h2>Program and equipment</h2>
+          <Select label="Velocity training experience" value={s.velocityExperience} options={["unconfirmed","beginner","experienced"]} onChange={v=>setS({...s,velocityExperience:v as AthleteState["velocityExperience"]})}/>
           <label className="field">
             Program start date
             <input
