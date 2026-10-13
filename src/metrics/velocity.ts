@@ -10,6 +10,7 @@ export function compatibleVelocity(
 ): boolean {
   return (
     a.exerciseId === b.exerciseId &&
+    a.componentId === b.componentId &&
     a.loadKg !== null &&
     a.loadKg === b.loadKg &&
     a.loadConvention !== "unknown" &&

@@ -1,0 +1,1013 @@
+[
+  {
+    "id": "back-squat",
+    "name": "后蹲",
+    "english": "Back squat",
+    "aliases": [
+      "杠铃后蹲",
+      "杠铃背蹲",
+      "背深蹲",
+      "背蹲"
+    ],
+    "pattern": "squat",
+    "intent": "strength",
+    "direction": "vertical",
+    "equipment": [
+      "barbell",
+      "rack"
+    ],
+    "skill": "basic",
+    "demand": "moderate",
+    "unilateral": false,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "front-squat",
+    "name": "前蹲",
+    "english": "Front squat",
+    "aliases": [
+      "杠铃前蹲",
+      "节奏前蹲",
+      "前蹲/SSB安全杠深蹲"
+    ],
+    "pattern": "squat",
+    "intent": "strength",
+    "direction": "vertical",
+    "equipment": [
+      "barbell",
+      "rack"
+    ],
+    "skill": "technical",
+    "demand": "moderate",
+    "unilateral": false,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "goblet-squat",
+    "name": "高脚杯深蹲",
+    "english": "Goblet squat",
+    "aliases": [],
+    "pattern": "squat",
+    "intent": "strength",
+    "direction": "vertical",
+    "equipment": [
+      "dumbbells"
+    ],
+    "skill": "basic",
+    "demand": "low",
+    "unilateral": false,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "ssb-squat",
+    "name": "安全杠深蹲",
+    "english": "Safety-bar squat",
+    "aliases": [
+      "SSB安全杠深蹲"
+    ],
+    "pattern": "squat",
+    "intent": "strength",
+    "direction": "vertical",
+    "equipment": [
+      "safetyBar",
+      "rack"
+    ],
+    "skill": "basic",
+    "demand": "moderate",
+    "unilateral": false,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "box-squat",
+    "name": "箱蹲",
+    "english": "Box squat",
+    "aliases": [],
+    "pattern": "squat",
+    "intent": "strength",
+    "direction": "vertical",
+    "equipment": [
+      "barbell",
+      "rack",
+      "box"
+    ],
+    "skill": "basic",
+    "demand": "moderate",
+    "unilateral": false,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "split-squat",
+    "name": "分腿蹲",
+    "english": "Split squat",
+    "aliases": [],
+    "pattern": "squat",
+    "intent": "strength",
+    "direction": "vertical",
+    "equipment": [
+      "dumbbells"
+    ],
+    "skill": "basic",
+    "demand": "moderate",
+    "unilateral": true,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "bulgarian",
+    "name": "保加利亚分腿蹲",
+    "english": "Rear-foot elevated split squat",
+    "aliases": [],
+    "pattern": "squat",
+    "intent": "strength",
+    "direction": "vertical",
+    "equipment": [
+      "dumbbells",
+      "bench"
+    ],
+    "skill": "basic",
+    "demand": "moderate",
+    "unilateral": true,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "rdl",
+    "name": "RDL",
+    "english": "Romanian deadlift",
+    "aliases": [
+      "杠铃RDL（慢离心）",
+      "罗马尼亚硬拉RDL",
+      "罗马尼亚硬拉"
+    ],
+    "pattern": "hinge",
+    "intent": "strength",
+    "direction": "vertical",
+    "equipment": [
+      "barbell"
+    ],
+    "skill": "basic",
+    "demand": "moderate",
+    "unilateral": false,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "trap-deadlift",
+    "name": "六角杠硬拉",
+    "english": "Trap-bar deadlift",
+    "aliases": [
+      "六角杠硬拉（高把位）"
+    ],
+    "pattern": "hinge",
+    "intent": "strength",
+    "direction": "vertical",
+    "equipment": [
+      "trapBar"
+    ],
+    "skill": "basic",
+    "demand": "moderate",
+    "unilateral": false,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "sumo-deadlift",
+    "name": "相扑硬拉",
+    "english": "Sumo deadlift",
+    "aliases": [
+      "相扑硬拉（宽站距）"
+    ],
+    "pattern": "hinge",
+    "intent": "strength",
+    "direction": "vertical",
+    "equipment": [
+      "barbell"
+    ],
+    "skill": "basic",
+    "demand": "moderate",
+    "unilateral": false,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "db-rdl",
+    "name": "哑铃RDL",
+    "english": "Dumbbell Romanian deadlift",
+    "aliases": [],
+    "pattern": "hinge",
+    "intent": "strength",
+    "direction": "vertical",
+    "equipment": [
+      "dumbbells"
+    ],
+    "skill": "basic",
+    "demand": "moderate",
+    "unilateral": false,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "hip-thrust",
+    "name": "臀推",
+    "english": "Hip thrust",
+    "aliases": [
+      "杠铃臀推"
+    ],
+    "pattern": "hipExtension",
+    "intent": "strength",
+    "direction": "horizontal",
+    "equipment": [
+      "barbell",
+      "bench"
+    ],
+    "skill": "basic",
+    "demand": "moderate",
+    "unilateral": false,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "single-hip-thrust",
+    "name": "单腿臀推",
+    "english": "Single-leg hip thrust",
+    "aliases": [
+      "单腿臀推（肩胛垫高）"
+    ],
+    "pattern": "hipExtension",
+    "intent": "strength",
+    "direction": "horizontal",
+    "equipment": [
+      "bench"
+    ],
+    "skill": "basic",
+    "demand": "moderate",
+    "unilateral": true,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "bench",
+    "name": "卧推",
+    "english": "Bench press",
+    "aliases": [
+      "杠铃卧推"
+    ],
+    "pattern": "horizontalPush",
+    "intent": "strength",
+    "direction": "horizontal",
+    "equipment": [
+      "barbell",
+      "bench"
+    ],
+    "skill": "basic",
+    "demand": "moderate",
+    "unilateral": false,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "db-bench",
+    "name": "哑铃卧推",
+    "english": "Dumbbell bench press",
+    "aliases": [],
+    "pattern": "horizontalPush",
+    "intent": "strength",
+    "direction": "horizontal",
+    "equipment": [
+      "dumbbells",
+      "bench"
+    ],
+    "skill": "basic",
+    "demand": "moderate",
+    "unilateral": false,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "push-up",
+    "name": "俯卧撑",
+    "english": "Push-up",
+    "aliases": [],
+    "pattern": "horizontalPush",
+    "intent": "strength",
+    "direction": "horizontal",
+    "equipment": [
+      "floor"
+    ],
+    "skill": "basic",
+    "demand": "low",
+    "unilateral": false,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "row",
+    "name": "杠铃划船",
+    "english": "Barbell row",
+    "aliases": [
+      "俯身杠铃划船",
+      "杠铃俯身划船（正握）",
+      "杠铃俯身划船（反握）"
+    ],
+    "pattern": "horizontalPull",
+    "intent": "strength",
+    "direction": "horizontal",
+    "equipment": [
+      "barbell"
+    ],
+    "skill": "basic",
+    "demand": "moderate",
+    "unilateral": false,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "db-row",
+    "name": "单臂划船",
+    "english": "Single-arm dumbbell row",
+    "aliases": [],
+    "pattern": "horizontalPull",
+    "intent": "strength",
+    "direction": "horizontal",
+    "equipment": [
+      "dumbbells"
+    ],
+    "skill": "basic",
+    "demand": "moderate",
+    "unilateral": true,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "cable-row",
+    "name": "坐姿绳索划船",
+    "english": "Cable row",
+    "aliases": [],
+    "pattern": "horizontalPull",
+    "intent": "strength",
+    "direction": "horizontal",
+    "equipment": [
+      "cable"
+    ],
+    "skill": "basic",
+    "demand": "moderate",
+    "unilateral": false,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "pull-up",
+    "name": "引体向上",
+    "english": "Pull-up",
+    "aliases": [
+      "负重引体向上",
+      "负重引体",
+      "宽握负重引体"
+    ],
+    "pattern": "verticalPull",
+    "intent": "strength",
+    "direction": "vertical",
+    "equipment": [
+      "pullupBar"
+    ],
+    "skill": "basic",
+    "demand": "moderate",
+    "unilateral": false,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "lat-pull",
+    "name": "高位下拉",
+    "english": "Lat pulldown",
+    "aliases": [],
+    "pattern": "verticalPull",
+    "intent": "strength",
+    "direction": "vertical",
+    "equipment": [
+      "cable"
+    ],
+    "skill": "basic",
+    "demand": "moderate",
+    "unilateral": false,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "strict-press",
+    "name": "实力推",
+    "english": "Strict press",
+    "aliases": [],
+    "pattern": "verticalPush",
+    "intent": "strength",
+    "direction": "vertical",
+    "equipment": [
+      "barbell"
+    ],
+    "skill": "basic",
+    "demand": "moderate",
+    "unilateral": false,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "push-press",
+    "name": "借力推举",
+    "english": "Push press",
+    "aliases": [
+      "借力推"
+    ],
+    "pattern": "verticalPush",
+    "intent": "power",
+    "direction": "vertical",
+    "equipment": [
+      "barbell"
+    ],
+    "skill": "technical",
+    "demand": "moderate",
+    "unilateral": false,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "calf",
+    "name": "坐姿提踵",
+    "english": "Seated calf raise",
+    "aliases": [],
+    "pattern": "ankle",
+    "intent": "strength",
+    "direction": "vertical",
+    "equipment": [
+      "bench",
+      "dumbbells"
+    ],
+    "skill": "basic",
+    "demand": "low",
+    "unilateral": false,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "pallof",
+    "name": "帕罗夫前推",
+    "english": "Pallof press",
+    "aliases": [
+      "分腿弹力带帕罗夫前推"
+    ],
+    "pattern": "trunk",
+    "intent": "control",
+    "direction": "horizontal",
+    "equipment": [
+      "bands"
+    ],
+    "skill": "basic",
+    "demand": "low",
+    "unilateral": false,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "deadbug",
+    "name": "死虫",
+    "english": "Dead bug",
+    "aliases": [
+      "仰卧死虫交替伸展"
+    ],
+    "pattern": "trunk",
+    "intent": "control",
+    "direction": "multiplanar",
+    "equipment": [
+      "floor"
+    ],
+    "skill": "basic",
+    "demand": "low",
+    "unilateral": false,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "copenhagen",
+    "name": "哥本哈根侧桥",
+    "english": "Copenhagen plank",
+    "aliases": [
+      "哥本哈根内收支撑"
+    ],
+    "pattern": "adductor",
+    "intent": "control",
+    "direction": "lateral",
+    "equipment": [
+      "bench"
+    ],
+    "skill": "technical",
+    "demand": "moderate",
+    "unilateral": true,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "farmer",
+    "name": "农夫行走",
+    "english": "Farmer carry",
+    "aliases": [],
+    "pattern": "carry",
+    "intent": "strength",
+    "direction": "horizontal",
+    "equipment": [
+      "dumbbells"
+    ],
+    "skill": "basic",
+    "demand": "moderate",
+    "unilateral": false,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "suitcase",
+    "name": "单手农夫行走",
+    "english": "Suitcase carry",
+    "aliases": [
+      "单侧农夫行走"
+    ],
+    "pattern": "carry",
+    "intent": "strength",
+    "direction": "horizontal",
+    "equipment": [
+      "dumbbells"
+    ],
+    "skill": "basic",
+    "demand": "moderate",
+    "unilateral": true,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "cmj",
+    "name": "CMJ",
+    "english": "Countermovement jump",
+    "aliases": [
+      "CMJ最大跳高测试"
+    ],
+    "pattern": "jump",
+    "intent": "power",
+    "direction": "vertical",
+    "equipment": [
+      "floor"
+    ],
+    "skill": "basic",
+    "demand": "moderate",
+    "unilateral": false,
+    "references": [
+      "https://www.frontiersin.org/journals/physiology/articles/10.3389/fphys.2023.1181781/full"
+    ]
+  },
+  {
+    "id": "box-jump",
+    "name": "跳箱",
+    "english": "Box jump",
+    "aliases": [],
+    "pattern": "jump",
+    "intent": "power",
+    "direction": "vertical",
+    "equipment": [
+      "box"
+    ],
+    "skill": "basic",
+    "demand": "moderate",
+    "unilateral": false,
+    "references": [
+      "https://www.frontiersin.org/journals/physiology/articles/10.3389/fphys.2023.1181781/full"
+    ]
+  },
+  {
+    "id": "pogo",
+    "name": "Pogo Jump",
+    "english": "Pogo jump",
+    "aliases": [
+      "双脚小跳",
+      "原地pogo跳"
+    ],
+    "pattern": "jump",
+    "intent": "reactive",
+    "direction": "vertical",
+    "equipment": [
+      "floor"
+    ],
+    "skill": "basic",
+    "demand": "low",
+    "unilateral": false,
+    "references": [
+      "https://www.frontiersin.org/journals/physiology/articles/10.3389/fphys.2023.1181781/full"
+    ]
+  },
+  {
+    "id": "drop-jump",
+    "name": "Drop Jump",
+    "english": "Drop jump",
+    "aliases": [
+      "低箱刚性落地纵跳"
+    ],
+    "pattern": "jump",
+    "intent": "reactive",
+    "direction": "vertical",
+    "equipment": [
+      "box"
+    ],
+    "skill": "technical",
+    "demand": "high",
+    "unilateral": false,
+    "references": [
+      "https://www.frontiersin.org/journals/physiology/articles/10.3389/fphys.2023.1181781/full"
+    ]
+  },
+  {
+    "id": "broad-jump",
+    "name": "立定跳远",
+    "english": "Standing broad jump",
+    "aliases": [],
+    "pattern": "jump",
+    "intent": "power",
+    "direction": "horizontal",
+    "equipment": [
+      "floor"
+    ],
+    "skill": "basic",
+    "demand": "moderate",
+    "unilateral": false,
+    "references": [
+      "https://www.frontiersin.org/journals/physiology/articles/10.3389/fphys.2023.1181781/full"
+    ]
+  },
+  {
+    "id": "lateral-jump",
+    "name": "侧向反应跳",
+    "english": "Lateral reactive jump",
+    "aliases": [
+      "单腿侧向跨步跳"
+    ],
+    "pattern": "jump",
+    "intent": "reactive",
+    "direction": "lateral",
+    "equipment": [
+      "floor"
+    ],
+    "skill": "technical",
+    "demand": "high",
+    "unilateral": true,
+    "references": [
+      "https://www.frontiersin.org/journals/physiology/articles/10.3389/fphys.2023.1181781/full"
+    ]
+  },
+  {
+    "id": "bound",
+    "name": "跨步跳",
+    "english": "Bounding",
+    "aliases": [
+      "单足跳"
+    ],
+    "pattern": "jump",
+    "intent": "reactive",
+    "direction": "horizontal",
+    "equipment": [
+      "running"
+    ],
+    "skill": "technical",
+    "demand": "high",
+    "unilateral": true,
+    "references": [
+      "https://www.frontiersin.org/journals/physiology/articles/10.3389/fphys.2023.1181781/full"
+    ]
+  },
+  {
+    "id": "med-chest",
+    "name": "药球胸前推",
+    "english": "Medicine-ball chest throw",
+    "aliases": [
+      "跪姿药球胸前推"
+    ],
+    "pattern": "throw",
+    "intent": "power",
+    "direction": "horizontal",
+    "equipment": [
+      "medicineBall",
+      "wall"
+    ],
+    "skill": "basic",
+    "demand": "moderate",
+    "unilateral": false,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "med-rotation",
+    "name": "站姿旋转药球投掷",
+    "english": "Rotational medicine-ball throw",
+    "aliases": [
+      "药球旋转砸墙",
+      "站姿药球旋转砸墙"
+    ],
+    "pattern": "throw",
+    "intent": "power",
+    "direction": "multiplanar",
+    "equipment": [
+      "medicineBall",
+      "wall"
+    ],
+    "skill": "basic",
+    "demand": "moderate",
+    "unilateral": true,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "clean",
+    "name": "高翻",
+    "english": "Power clean",
+    "aliases": [
+      "悬垂高翻"
+    ],
+    "pattern": "weightlifting",
+    "intent": "power",
+    "direction": "vertical",
+    "equipment": [
+      "barbell",
+      "platform"
+    ],
+    "skill": "technical",
+    "demand": "high",
+    "unilateral": false,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "snatch",
+    "name": "抓举",
+    "english": "Snatch",
+    "aliases": [
+      "悬垂抓举",
+      "悬垂高抓"
+    ],
+    "pattern": "weightlifting",
+    "intent": "power",
+    "direction": "vertical",
+    "equipment": [
+      "barbell",
+      "platform"
+    ],
+    "skill": "technical",
+    "demand": "high",
+    "unilateral": false,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "sprint",
+    "name": "加速跑",
+    "english": "Acceleration sprint",
+    "aliases": [
+      "启动加速跑",
+      "10m加速跑",
+      "20m加速跑",
+      "30m加速跑",
+      "20m加速冲刺",
+      "15m加速跑"
+    ],
+    "pattern": "sprint",
+    "intent": "power",
+    "direction": "horizontal",
+    "equipment": [
+      "running"
+    ],
+    "skill": "basic",
+    "demand": "high",
+    "unilateral": false,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "flying",
+    "name": "飞行跑",
+    "english": "Flying sprint",
+    "aliases": [],
+    "pattern": "sprint",
+    "intent": "power",
+    "direction": "horizontal",
+    "equipment": [
+      "running"
+    ],
+    "skill": "technical",
+    "demand": "high",
+    "unilateral": false,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "cod",
+    "name": "505变向",
+    "english": "Change of direction",
+    "aliases": [
+      "45°变向",
+      "45°/90°制动变向"
+    ],
+    "pattern": "changeOfDirection",
+    "intent": "power",
+    "direction": "multiplanar",
+    "equipment": [
+      "running"
+    ],
+    "skill": "technical",
+    "demand": "high",
+    "unilateral": true,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "easy-run",
+    "name": "轻松跑",
+    "english": "Easy running",
+    "aliases": [
+      "连续慢跑",
+      "慢走恢复",
+      "慢走冷身"
+    ],
+    "pattern": "conditioning",
+    "intent": "aerobic",
+    "direction": "horizontal",
+    "equipment": [
+      "running"
+    ],
+    "skill": "basic",
+    "demand": "low",
+    "unilateral": false,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "rowing",
+    "name": "划船机",
+    "english": "Row ergometer",
+    "aliases": [
+      "划船机全力",
+      "划船热身"
+    ],
+    "pattern": "conditioning",
+    "intent": "aerobic",
+    "direction": "horizontal",
+    "equipment": [
+      "rowing"
+    ],
+    "skill": "basic",
+    "demand": "low",
+    "unilateral": false,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "air-bike",
+    "name": "风阻车",
+    "english": "Air bike",
+    "aliases": [
+      "风阻车全力",
+      "风阻车热身",
+      "风阻车冷身"
+    ],
+    "pattern": "conditioning",
+    "intent": "aerobic",
+    "direction": "multiplanar",
+    "equipment": [
+      "airBike"
+    ],
+    "skill": "basic",
+    "demand": "low",
+    "unilateral": false,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "ski",
+    "name": "SkiErg",
+    "english": "Ski ergometer",
+    "aliases": [
+      "SkiErg全力",
+      "SkiErg8s启动"
+    ],
+    "pattern": "conditioning",
+    "intent": "aerobic",
+    "direction": "vertical",
+    "equipment": [
+      "skiErg"
+    ],
+    "skill": "basic",
+    "demand": "low",
+    "unilateral": false,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  },
+  {
+    "id": "bike",
+    "name": "自行车慢骑",
+    "english": "Stationary bike",
+    "aliases": [
+      "自行车冷身",
+      "自行车恢复",
+      "单车慢骑"
+    ],
+    "pattern": "conditioning",
+    "intent": "aerobic",
+    "direction": "multiplanar",
+    "equipment": [
+      "bike"
+    ],
+    "skill": "basic",
+    "demand": "low",
+    "unilateral": false,
+    "references": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "https://www.mdpi.com/2075-4663/9/4/47"
+    ]
+  }
+]

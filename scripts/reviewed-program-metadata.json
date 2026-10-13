@@ -1,0 +1,79 @@
+[
+  {
+    "id": "lp",
+    "name": "Linear Periodization",
+    "phases": [
+      {
+        "id": "lp-1",
+        "number": 1,
+        "purpose": "Force–Power Development",
+        "sourceFolder": "April",
+        "entrySessionIds": [],
+        "weeklyFocus": [
+          "Force–power complexes",
+          "Strength and ballistic work",
+          "Force production and sprint exposure",
+          "Mixed strength–power consolidation"
+        ]
+      },
+      {
+        "id": "lp-2",
+        "number": 2,
+        "purpose": "Strength Capacity & Landing Control",
+        "sourceFolder": "May",
+        "entrySessionIds": [],
+        "weeklyFocus": [
+          "Controlled strength capacity",
+          "Unilateral and landing control",
+          "High-force and mixed power work",
+          "Strength and sprint integration"
+        ]
+      },
+      {
+        "id": "lp-3",
+        "number": 3,
+        "purpose": "Acceleration & Power Expression",
+        "sourceFolder": "June",
+        "entrySessionIds": [],
+        "weeklyFocus": [
+          "Acceleration and complex power",
+          "Power and repeated sprint work",
+          "Athletic power integration",
+          "Mixed sessions with selected reduced-volume work"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "up",
+    "name": "Undulating Periodization",
+    "phases": [
+      {
+        "id": "up-1",
+        "number": 1,
+        "purpose": "Concurrent Strength, Power & Sprint Development",
+        "sourceFolder": "July",
+        "entrySessionIds": [],
+        "weeklyFocus": [
+          "Strength with jumps and sprint work",
+          "Clusters, power and energy systems",
+          "Repeated sprint and mixed strength",
+          "Weightlifting practice, testing and sprint"
+        ]
+      },
+      {
+        "id": "up-2",
+        "number": 2,
+        "purpose": "Velocity-Regulated Strength & Reactive Power",
+        "sourceFolder": "August",
+        "entrySessionIds": [],
+        "weeklyFocus": [
+          "Exercise-specific velocity-regulated strength",
+          "Unilateral/reactive work and segmented lifts",
+          "Capacity, velocity-regulated strength and acceleration",
+          "Mixed conditioning and selected reduced-volume power"
+        ]
+      }
+    ]
+  }
+]

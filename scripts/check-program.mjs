@@ -9,8 +9,9 @@ for (const path of p.sources) {
   )
     throw Error("Invalid source mapping: " + path);
 }
-if (new Set(p.sources).size !== 78 || !m.entries.every((e) => e.review))
+if (new Set(p.sources).size !== 119 || !m.entries.every((e) => e.review))
   throw Error("Incomplete inventory");
+if (p.sessions.length !== 94 || p.sessions.filter(s=>s.programId === "up").length !== 37) throw Error("Incorrect track inventory");
 console.log(
   `${p.sources.length} source images, ${p.sessions.length} sessions; source mappings complete. OCR ambiguities remain labelled.`,
 );

@@ -9,8 +9,8 @@ export default defineConfig({
         name: "PET Training Companion",
         short_name: "PET",
         description: "Training load, measured velocity and recovery signals",
-        theme_color: "#172d29",
-        background_color: "#f3f4ef",
+        theme_color: "#0d1426",
+        background_color: "#090d1b",
         display: "standalone",
         start_url: "/",
         icons: [

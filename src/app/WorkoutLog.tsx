@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import type {
   AthleteState,
   Workout,
@@ -12,6 +12,12 @@ import { sessionLoad } from "../metrics/load";
 import { velocityLoss, compareVelocityTarget } from "../metrics/velocity";
 import { suggestAlternatives } from "../program/alternatives";
 import { Card, Num, Select, fmt, download } from "./fields";
+import SubstitutionPreview from "./SubstitutionPreview";
+import { acceptSubstitution } from "../program/substitutions";
+import VelocityGuidance from "./VelocityGuidance";
+import { selectConditionalTarget } from "../program/conditional-targets";
+import { sessionLabel } from "../program/catalog";
+import { weekdays } from "../program/schedule";
 import { Sources } from "./Program";
 export default function WorkoutLog({
   session,
@@ -20,18 +26,22 @@ export default function WorkoutLog({
   onSave,
   onBack,
   workoutId,
+  enrollmentId,
 }: {
   workoutId?: string;
+  enrollmentId: string | null;
   session: Session;
   date: string;
   state: AthleteState;
-  onSave: (w: Workout) => Promise<boolean>;
+  onSave: (w: Workout, expected: string) => Promise<boolean>;
   onBack: () => void;
 }) {
   const existing = state.workouts.find((w) =>
     workoutId
       ? w.id === workoutId
-      : w.sessionId === session.id && w.localDate === date,
+      : w.enrollmentId === enrollmentId &&
+        w.sessionId === session.id &&
+        (enrollmentId !== null || w.localDate === date),
   );
   const [w, setW] = useState<Workout>(
     () =>
@@ -39,17 +49,37 @@ export default function WorkoutLog({
       createWorkout({
         id: crypto.randomUUID(),
         sessionId: session.id,
+        enrollmentId,
+        targetSnapshot: session.exercises,
         localDate: date,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       }),
   );
-  const [saved, setSaved] = useState(false);
+  const prescriptions =
+    w.targetRevisions.at(-1)?.prescriptions ??
+    (w.targetSnapshot.length ? w.targetSnapshot : session.exercises);
+  const [saved, setSaved] = useState(false),
+    [remoteChanged, setRemoteChanged] = useState(false);
+  const dirty = useRef(false),
+    baseRecord = useRef(JSON.stringify(existing ?? null));
+  const existingSignature = JSON.stringify(existing ?? null);
+  useEffect(() => {
+    if (existingSignature === baseRecord.current) return;
+    if (dirty.current) {
+      setRemoteChanged(true);
+      return;
+    }
+    baseRecord.current = existingSignature;
+    if (existing) setW(existing);
+  }, [existingSignature]);
   function update(v: Partial<Workout>) {
+    dirty.current = true;
     setSaved(false);
     setW((w) => ({ ...w, ...v }));
   }
   function updateRow(id: string, v: Partial<ActualRow>) {
+    dirty.current = true;
     setSaved(false);
     setW((w) => ({
       ...w,
@@ -72,6 +102,8 @@ export default function WorkoutLog({
     const row = createRow({
       id: crypto.randomUUID(),
       exerciseId: p?.name ?? "custom",
+      prescriptionId: p?.id ?? null,
+      movementId: p?.movementId ?? null,
       name: p?.name ?? "Custom exercise",
       kind: p?.kind ?? "strength",
       perSide: p?.perSide ?? false,
@@ -81,13 +113,18 @@ export default function WorkoutLog({
     update({ rows: [...w.rows, row] });
   }
   function copy() {
-    const rows = session.exercises
-      .filter((p) => p.sets && p.kind !== "other")
+    const rows = prescriptions
+      .filter(
+        (p) =>
+          p.sets && p.kind !== "other" && !p.optional && !p.conditionalGroup,
+      )
       .flatMap((p) =>
         Array.from({ length: Math.min(p.sets![0], 50) }, () =>
           createRow({
             id: crypto.randomUUID(),
             exerciseId: p.name,
+            prescriptionId: p.id,
+            movementId: p.movementId,
             name: p.name,
             kind: p.kind,
             reps: p.reps?.[0] ?? null,
@@ -125,26 +162,127 @@ export default function WorkoutLog({
       <div className="pagehead">
         <p className="eyebrow">TRAINING LOG · {w.localDate}</p>
         <h1>
-          {session.month} · Week {session.week} / Day {session.day}
+          {sessionLabel(session)} · {weekdays[session.day - 1]}
         </h1>
         <p>Keep the prescription. Record the work you actually did.</p>
       </div>
       <Card>
         <Sources session={session} />
+        {[
+          ...new Set(
+            prescriptions.flatMap((p) =>
+              p.conditionalGroup ? [p.conditionalGroup] : [],
+            ),
+          ),
+        ].map((group) => (
+          <div className="notice" key={group}>
+            <h3>Choose one source alternative</h3>
+            <p>
+              {group} · These alternatives are excluded from automatic set
+              copying until selected.
+            </p>
+            {prescriptions
+              .filter((p) => p.conditionalGroup === group)
+              .map((p) => (
+                <button
+                  type="button"
+                  key={p.id}
+                  onClick={() =>
+                    update({
+                      targetRevisions: [
+                        ...w.targetRevisions,
+                        {
+                          id: crypto.randomUUID(),
+                          sessionId: session.id,
+                          prescriptions: selectConditionalTarget(
+                            prescriptions,
+                            group,
+                            p.id,
+                          ),
+                          reason: "Explicit source choice: " + p.name,
+                          createdAt: new Date().toISOString(),
+                          kind: "alternative",
+                        },
+                      ],
+                    })
+                  }
+                >
+                  Choose {p.name}
+                </button>
+              ))}
+          </div>
+        ))}
+        {prescriptions.map((p) => (
+          <SubstitutionPreview
+            key={p.id}
+            prescription={p}
+            state={state}
+            date={date}
+            onAccept={(preview) => update(acceptSubstitution(w, preview))}
+          />
+        ))}
+        {w.targetRevisions.length > 0 && (
+          <button
+            type="button"
+            onClick={() =>
+              update({ targetRevisions: w.targetRevisions.slice(0, -1) })
+            }
+          >
+            Undo last target change
+          </button>
+        )}
         <details>
           <summary>All original prescriptions</summary>
           <p className="sourceText">{session.sourceText}</p>
         </details>
       </Card>
+      {remoteChanged && (
+        <div className="notice">
+          <p>This workout changed on another device. Your draft is retained.</p>
+          <details>
+            <summary>Review saved incoming workout</summary>
+            <pre>{JSON.stringify(existing, null, 2)}</pre>
+          </details>
+          <button
+            type="button"
+            onClick={() => {
+              baseRecord.current = existingSignature;
+              setRemoteChanged(false);
+            }}
+          >
+            Keep workout draft after reviewing
+          </button>
+        </div>
+      )}
       <form
         onSubmit={async (e) => {
           e.preventDefault();
-          setSaved(await onSave({ ...w, updatedAt: new Date().toISOString() }));
+          if (remoteChanged) return;
+          const next = { ...w, updatedAt: new Date().toISOString() },
+            previous = baseRecord.current;
+          baseRecord.current = JSON.stringify(next);
+          const ok = await onSave(next, previous);
+          setSaved(ok);
+          if (ok) {
+            dirty.current = false;
+            setW(next);
+          } else {
+            baseRecord.current = previous;
+            dirty.current = true;
+          }
         }}
       >
         <Card>
           <div className="sectionhead">
             <h2>Session overview</h2>
+            <label className="field">
+              Actual training date
+              <input
+                type="date"
+                value={w.localDate}
+                onChange={(e) => update({ localDate: e.target.value })}
+              />
+            </label>
             <Select
               label="Session status"
               value={w.status}
@@ -209,7 +347,7 @@ export default function WorkoutLog({
             partial/completed status before it counts.
           </p>
           <div className="addbuttons">
-            {session.exercises.map((p) => (
+            {prescriptions.map((p) => (
               <button type="button" key={p.id} onClick={() => add(p)}>
                 + {p.name}
               </button>
@@ -395,10 +533,7 @@ export default function WorkoutLog({
             <details>
               <summary>Tempo and measured velocity</summary>
               <p className="sourceText">
-                {
-                  session.exercises.find((p) => p.name === r.exerciseId)
-                    ?.sourceText
-                }
+                {prescriptions.find((p) => p.name === r.exerciseId)?.sourceText}
               </p>
               <Select
                 label="Source target velocity metric"
@@ -406,6 +541,7 @@ export default function WorkoutLog({
                 options={[
                   ["unknown", "Unconfirmed"],
                   "mean",
+                  "meanConcentric",
                   "meanPropulsive",
                   "peak",
                 ]}
@@ -420,7 +556,7 @@ export default function WorkoutLog({
                 <p>
                   Target comparison:{" "}
                   {(() => {
-                    const p = session.exercises.find(
+                    const p = prescriptions.find(
                       (p) => p.name === r.exerciseId,
                     );
                     return p
@@ -431,6 +567,52 @@ export default function WorkoutLog({
                       : "unknown";
                   })()}
                 </p>
+              )}
+              <VelocityGuidance
+                prescription={prescriptions.find(
+                  (p) => p.id === r.prescriptionId || p.name === r.exerciseId,
+                )}
+                row={r}
+                state={state}
+                enabled={session.autoregulation !== "none"}
+                onAccept={(p, reason) => {
+                  const targets = prescriptions.map((x) =>
+                    x.id === p.id ? p : x,
+                  );
+                  update({
+                    targetRevisions: [
+                      ...w.targetRevisions,
+                      {
+                        id: crypto.randomUUID(),
+                        sessionId: session.id,
+                        prescriptions: targets,
+                        reason,
+                        createdAt: new Date().toISOString(),
+                        kind: "velocity",
+                      },
+                    ],
+                  });
+                }}
+              />
+              {(prescriptions.find(
+                (p) => p.id === r.prescriptionId || p.name === r.exerciseId,
+              )?.components.length ?? 0) > 0 && (
+                <Select
+                  label="Velocity component"
+                  value={r.velocity?.componentId ?? "unknown"}
+                  options={[
+                    ["unknown", "Choose component"],
+                    ...(
+                      prescriptions.find(
+                        (p) =>
+                          p.id === r.prescriptionId || p.name === r.exerciseId,
+                      )?.components ?? []
+                    ).map((c) => [c.id, c.name] as [string, string]),
+                  ]}
+                  onChange={(v) =>
+                    velocity(r, { componentId: v === "unknown" ? null : v })
+                  }
+                />
               )}
               <div className="threecols">
                 <label className="field">
@@ -459,7 +641,7 @@ export default function WorkoutLog({
                 <Select
                   label="Velocity metric"
                   value={r.velocity?.metric ?? "mean"}
-                  options={["mean", "meanPropulsive", "peak"]}
+                  options={["mean", "meanConcentric", "meanPropulsive", "peak"]}
                   onChange={(v) =>
                     velocity(r, { metric: v as VelocityRecord["metric"] })
                   }
@@ -593,7 +775,7 @@ export default function WorkoutLog({
             />
           </label>
           <div className="sectionhead">
-            <button className="primary" type="submit">
+            <button className="primary" type="submit" disabled={remoteChanged}>
               Save workout
             </button>
             <button

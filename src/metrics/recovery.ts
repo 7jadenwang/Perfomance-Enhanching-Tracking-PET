@@ -10,6 +10,7 @@ export function dailyCmj(r: MorningRecord) {
       trials.length === 3 &&
       r.baselineEligible &&
       r.pain !== true &&
+      r.illness !== true &&
       !r.exclusionReason,
   };
 }
@@ -70,6 +71,7 @@ export function recoverySignals(r: MorningRecord, b: Baseline | null) {
     reasons,
     multipleConcerns: lowCmj && reasons.length > 0,
     pain: r.pain,
+    illness: r.illness,
     painLocation: r.painLocation,
     limitedData:
       !compatible ||
@@ -83,4 +85,24 @@ export function recoverySignals(r: MorningRecord, b: Baseline | null) {
       ].some((v) => v === null),
     zeroVariance: !!compatible && b.sampleSdCm === 0,
   };
+}
+
+export function baselineForDate(
+  state: import("../domain/schema").AthleteState,
+  protocolId: string,
+  date: string,
+) {
+  return (
+    state.baselines
+      .filter(
+        (b) =>
+          b.protocolId === protocolId &&
+          b.createdAt.slice(0, 10) <= date &&
+          (!b.archivedAt || b.archivedAt.slice(0, 10) > date) &&
+          b.eligibleRecordIds.every((id) =>
+            state.mornings.some((m) => m.id === id && m.localDate <= date),
+          ),
+      )
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt))[0] ?? null
+  );
 }
