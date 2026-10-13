@@ -48,6 +48,7 @@ export const createRow = (o: Partial<ActualRow> = {}): ActualRow => ({
 export const createWorkout = (o: Partial<Workout> = {}): Workout => ({
   id: crypto.randomUUID(),
   sessionId: "April-W1D1",
+  enrollmentId: null, targetSnapshot:[], targetRevisions:[],
   localDate: "2026-10-13",
   status: "draft",
   plannedDuration: null,

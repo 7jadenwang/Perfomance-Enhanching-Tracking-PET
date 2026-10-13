@@ -20,7 +20,7 @@ it("round-trips drafts and rejects corrupt and incompatible backups", async () =
   for (const bad of [
     "{",
     text.replace('"schemaVersion": 1', '"schemaVersion": 99'),
-    text.replace("april-june-v1", "unknown"),
+    text.replace("lp-up-v2", "unknown"),
   ])
     expect(() => previewBackup(bad)).toThrow();
   expect((await loadState()).workouts).toHaveLength(1);

@@ -48,6 +48,7 @@ export const makeRow = (o: Partial<ActualRow> = {}): ActualRow => ({
 export const makeWorkout = (o: Partial<Workout> = {}): Workout => ({
   id: "workout",
   sessionId: "April-W1D1",
+  enrollmentId:null, targetSnapshot:[], targetRevisions:[],
   localDate: "2026-10-13",
   status: "draft",
   plannedDuration: null,

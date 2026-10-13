@@ -2,15 +2,10 @@ import { z } from "zod";
 const n = z.number().finite().nonnegative();
 const nullable = n.nullable();
 const rpe = z.number().min(0).max(10).nullable();
-export const dateSchema = z
-  .string()
-  .regex(/^\d{4}-\d{2}-\d{2}$/)
-  .refine((s) => {
-    const d = new Date(s + "T12:00:00Z");
-    return !isNaN(+d) && d.toISOString().slice(0, 10) === s;
-  }, "Invalid calendar date");
-export type LocalDate = z.infer<typeof dateSchema>;
-const range = z.tuple([n, n]).refine(([a, b]) => a <= b);
+import {dateSchema, type LocalDate} from "./values";
+export {dateSchema, type LocalDate} from "./values";
+import {enrollmentSchema, targetRevisionSchema} from "./enrollment-schema";
+export * from "./enrollment-schema";
 import { prescriptionSchema } from "./program-schema";
 export * from "./program-schema";
 export const velocitySchema = z.object({
@@ -60,6 +55,9 @@ export type ActualRow = z.infer<typeof rowSchema>;
 export const workoutSchema = z.object({
   id: z.string(),
   sessionId: z.string().nullable(),
+  enrollmentId: z.string().nullable().default(null),
+  targetSnapshot: z.array(prescriptionSchema).default([]),
+  targetRevisions: z.array(targetRevisionSchema).default([]),
   localDate: dateSchema,
   status: z.enum(["draft", "partial", "completed", "skipped"]),
   plannedDuration: nullable,
@@ -124,9 +122,13 @@ const equipmentSchema = z.object({
 export type EquipmentProfile = z.infer<typeof equipmentSchema>;
 export const stateSchema = z
   .object({
-    schemaVersion: z.literal(1),
-    programVersion: z.literal("april-june-v1"),
+    schemaVersion: z.literal(2),
+    programVersion: z.literal("lp-up-v2"),
     startDate: dateSchema,
+    enrollments: z.array(enrollmentSchema).default([]),
+    activities: z.array(z.object({localDate:dateSchema,status:z.enum(["rest","training","unknown"]),notes:z.string().default("")})).default([]),
+    familiarity: z.array(z.string()).default([]),
+    velocityProfiles: z.array(z.object({exerciseId:z.string(), date:dateSchema, rangeOfMotion:z.string(),metric:z.enum(["mean","meanConcentric","meanPropulsive","peak"]),method:z.string(), loadPercent:z.tuple([n,n]),target:z.tuple([n,n])})).default([]),
     reschedules: z.record(z.string(), dateSchema),
     equipment: equipmentSchema,
     reference1RMs: z.array(
@@ -143,6 +145,7 @@ export const stateSchema = z
   })
   .superRefine((s, ctx) => {
     for (const key of [
+      "enrollments",
       "workouts",
       "mornings",
       "baselines",
@@ -156,6 +159,8 @@ export const stateSchema = z
           path: [key],
         });
     }
+    for (const status of ["active","queued"]) if(s.enrollments.filter(e=>e.status===status).length>1) ctx.addIssue({code:"custom",message:"Only one "+status+" enrollment allowed"});
+    for(const w of s.workouts) if(w.enrollmentId && !s.enrollments.some(e=>e.id===w.enrollmentId)) ctx.addIssue({code:"custom",message:"Unknown workout enrollment"});
     const dates = s.mornings.map((x) => x.localDate + "|" + x.protocolId);
     if (new Set(dates).size !== dates.length)
       ctx.addIssue({
@@ -171,8 +176,9 @@ export function localToday(): LocalDate {
 }
 export function initialState(): AthleteState {
   return {
-    schemaVersion: 1,
-    programVersion: "april-june-v1",
+    schemaVersion: 2,
+    enrollments: [], activities: [], familiarity: [], velocityProfiles: [],
+    programVersion: "lp-up-v2",
     startDate: localToday(),
     reschedules: {},
     equipment: {
