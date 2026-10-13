@@ -6,7 +6,7 @@ import Program from "./Program";
 import Progress from "./Progress";
 import Settings from "./Settings";
 import WorkoutLog from "./WorkoutLog";
-import { saveWorkout, saveMorning, saveSettings } from "../storage/db";
+import { saveWorkout, saveMorning, saveSettings,exportRawStoredBackup } from "../storage/db";
 import { replaceFromBackup, exportBackup } from "../storage/backup";
 import { program } from "../program/catalog";
 import type { Session } from "../domain/schema";
@@ -78,7 +78,7 @@ export default function App() {
             <button
               onClick={async () => {
                 try {
-                  download(await exportBackup());
+                  download(await exportRawStoredBackup());
                 } catch (e) {
                   store.setError(String(e));
                 }
