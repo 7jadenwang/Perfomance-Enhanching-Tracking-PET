@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import { stateToDocuments } from "../sync/documents";
+import { useDeviceSync } from "../sync/useDeviceSync";
+import { storageNamespace } from "../storage/db";
 import { useOffline } from "../offline";
 import { useAthleteStore } from "./store";
 import Today from "./Today";
@@ -28,6 +31,7 @@ import {
 } from "../domain/schema";
 import { download } from "./fields";
 export default function App() {
+  const sync = useDeviceSync();
   const offline = useOffline(),
     store = useAthleteStore(),
     [tab, setTab] = useState("Today"),
@@ -39,6 +43,10 @@ export default function App() {
       workoutId?: string;
     } | null>(null);
   const s = store.state;
+  useEffect(() => {
+    setLog(null);
+    setTransfer(false);
+  }, [sync.user?.id]);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [tab, log]);
@@ -131,7 +139,8 @@ export default function App() {
         </nav>
         <div className="sidebarfoot">
           <span className="dot" />
-          Local to this device<p>Train with intention.</p>
+          {sync.label}
+          <p>Train with intention.</p>
         </div>
       </aside>
       <main>
@@ -169,12 +178,17 @@ export default function App() {
             date={log.date}
             state={s}
             onBack={() => setLog(null)}
-            onSave={(w) => store.perform(() => saveWorkout(w))}
+            onSave={(w, expected) =>
+              store.perform(() => saveWorkout(w, expected))
+            }
           />
         ) : tab === "Today" ? (
           <Today
+            key={storageNamespace()}
             state={s}
-            onSave={(r) => store.perform(() => saveMorning(r))}
+            onSave={(r, expected) =>
+              store.perform(() => saveMorning(r, expected))
+            }
             onActivity={(a) => store.perform(() => saveActivity(a))}
             onLog={(session, date) =>
               setLog({ session, date, enrollmentId: active?.id ?? null })
@@ -192,6 +206,14 @@ export default function App() {
             {transfer && (
               <TransferPreview
                 state={s}
+                beforeAccept={async () => {
+                  if (sync.user && sync.meta?.linked && navigator.onLine) {
+                    if ((await sync.now()) !== "synced")
+                      throw Error(
+                        "Sync must finish and conflicts must be resolved before an online transfer. Recompute the preview after syncing.",
+                      );
+                  }
+                }}
                 perform={store.perform}
                 onCancel={() => setTransfer(false)}
               />
@@ -256,8 +278,22 @@ export default function App() {
           <Progress state={s} onOpen={openSaved} />
         ) : (
           <Settings
+            key={storageNamespace()}
+            sync={sync}
             state={s}
-            onSave={(state) => store.perform(() => saveSettings(state))}
+            onSave={(state, expected) =>
+              store.perform(() =>
+                saveSettings(
+                  state,
+                  expected ??
+                    JSON.stringify(
+                      stateToDocuments(s).filter((d) =>
+                        ["configuration", "schedule"].includes(d.kind),
+                      ),
+                    ),
+                ),
+              )
+            }
             onImport={(state) => store.perform(() => replaceFromBackup(state))}
           />
         )}

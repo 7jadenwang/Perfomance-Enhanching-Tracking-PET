@@ -1,4 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { stateToDocuments } from "../sync/documents";
+import SyncSettings from "./SyncSettings";
+import type { DeviceSync } from "../sync/useDeviceSync";
 import type { AthleteState } from "../domain/schema";
 import { calibrate, calibrationCount } from "../metrics/recovery";
 import {
@@ -10,11 +13,13 @@ import { movementLibrary, equipmentStatus } from "../program/movements";
 import { Card, Num, Select, download } from "./fields";
 export default function Settings({
   state,
+  sync,
   onSave,
   onImport,
 }: {
   state: AthleteState;
-  onSave: (s: AthleteState) => Promise<boolean>;
+  sync: DeviceSync;
+  onSave: (s: AthleteState, expected?: string) => Promise<boolean>;
   onImport: (s: AthleteState) => Promise<boolean>;
 }) {
   const [s, setS] = useState(state),
@@ -26,7 +31,40 @@ export default function Settings({
     [reference, setReference] = useState(""),
     [kg, setKg] = useState<number | null>(null),
     [refDate, setRefDate] = useState(state.startDate);
-  useEffect(() => setS(state), [state]);
+  const dirty = useRef(false),
+    base = useRef(
+      JSON.stringify(
+        stateToDocuments(state).filter((d) =>
+          ["configuration", "schedule"].includes(d.kind),
+        ),
+      ),
+    ),
+    [remoteChanged, setRemoteChanged] = useState(false);
+  const signature = JSON.stringify(
+    stateToDocuments(state).filter((d) =>
+      ["configuration", "schedule"].includes(d.kind),
+    ),
+  );
+  useEffect(() => {
+    if (dirty.current) {
+      if (signature !== base.current) setRemoteChanged(true);
+      return;
+    }
+    base.current = signature;
+    setS(state);
+  }, [state, signature]);
+  const [cal, setCal] = useState({
+    exerciseId: "front-squat",
+    date: state.startDate,
+    rangeOfMotion: "",
+    method: "",
+    metric:
+      "meanConcentric" as AthleteState["velocityProfiles"][number]["metric"],
+    lo: null as number | null,
+    hi: null as number | null,
+    vlo: null as number | null,
+    vhi: null as number | null,
+  });
   async function backup() {
     try {
       download(await exportBackup());
@@ -42,10 +80,50 @@ export default function Settings({
         <h1>Your setup.</h1>
         <p>One gym. Running available. Your own measurements.</p>
       </div>
+      <SyncSettings sync={sync} />
+      {remoteChanged && (
+        <div className="notice">
+          <p>Settings changed on another device. Your draft is retained.</p>
+          <details>
+            <summary>Review incoming configuration</summary>
+            <pre>{signature}</pre>
+          </details>
+          <button
+            onClick={() => {
+              base.current = signature;
+              setRemoteChanged(false);
+            }}
+          >
+            Keep settings draft after reviewing
+          </button>
+          <button
+            onClick={() => {
+              dirty.current = false;
+              base.current = signature;
+              setRemoteChanged(false);
+              setS(state);
+            }}
+          >
+            Use incoming settings
+          </button>
+        </div>
+      )}
       <form
+        onChangeCapture={() => {
+          dirty.current = true;
+        }}
         onSubmit={async (e) => {
           e.preventDefault();
-          await onSave(s);
+          if (remoteChanged) return;
+          const previous = base.current;
+          base.current = JSON.stringify(
+            stateToDocuments(s).filter((d) =>
+              ["configuration", "schedule"].includes(d.kind),
+            ),
+          );
+          if (await onSave(s, previous)) {
+            dirty.current = false;
+          } else base.current = previous;
         }}
       >
         <Card>
@@ -146,7 +224,7 @@ export default function Settings({
               </label>
             ))}
           </details>
-          <button className="primary" type="submit">
+          <button className="primary" type="submit" disabled={remoteChanged}>
             Save settings
           </button>
         </Card>
@@ -282,6 +360,119 @@ export default function Settings({
         </p>
       </Card>
       <Card>
+        <h2>Reviewed movement velocity calibration</h2>
+        <p>
+          Enter a replacement-specific reviewed target range at the stated
+          intensity, ROM and measurement method. An isolated rep or another
+          exercise cannot establish this calibration.
+        </p>
+        <Select
+          label="Calibration movement"
+          value={cal.exerciseId}
+          options={movementLibrary.map((m) => [
+            m.id,
+            m.name + " · " + m.english,
+          ])}
+          onChange={(v) => setCal({ ...cal, exerciseId: v })}
+        />
+        <div className="twocol">
+          <Num
+            label="Calibration %1RM minimum"
+            value={cal.lo}
+            onChange={(v) => setCal({ ...cal, lo: v })}
+          />
+          <Num
+            label="Calibration %1RM maximum"
+            value={cal.hi}
+            onChange={(v) => setCal({ ...cal, hi: v })}
+          />
+          <Num
+            label="Calibration velocity minimum (m/s)"
+            value={cal.vlo}
+            onChange={(v) => setCal({ ...cal, vlo: v })}
+          />
+          <Num
+            label="Calibration velocity maximum (m/s)"
+            value={cal.vhi}
+            onChange={(v) => setCal({ ...cal, vhi: v })}
+          />
+          <label className="field">
+            Calibration range of motion
+            <input
+              value={cal.rangeOfMotion}
+              onChange={(e) =>
+                setCal({ ...cal, rangeOfMotion: e.target.value })
+              }
+            />
+          </label>
+          <label className="field">
+            Calibration device / method
+            <input
+              value={cal.method}
+              onChange={(e) => setCal({ ...cal, method: e.target.value })}
+            />
+          </label>
+          <Select
+            label="Calibration velocity metric"
+            value={cal.metric}
+            options={["mean", "meanConcentric", "meanPropulsive", "peak"]}
+            onChange={(v) => setCal({ ...cal, metric: v as typeof cal.metric })}
+          />
+          <label className="field">
+            Calibration date
+            <input
+              type="date"
+              value={cal.date}
+              onChange={(e) => setCal({ ...cal, date: e.target.value })}
+            />
+          </label>
+        </div>
+        <button
+          disabled={
+            cal.lo === null ||
+            cal.hi === null ||
+            cal.vlo === null ||
+            cal.vhi === null ||
+            cal.lo > cal.hi ||
+            cal.vlo > cal.vhi ||
+            !cal.rangeOfMotion.trim() ||
+            !cal.method.trim()
+          }
+          onClick={async () => {
+            if (
+              cal.lo !== null &&
+              cal.hi !== null &&
+              cal.vlo !== null &&
+              cal.vhi !== null
+            )
+              await onSave({
+                ...state,
+                velocityProfiles: [
+                  ...state.velocityProfiles,
+                  {
+                    exerciseId: cal.exerciseId,
+                    date: cal.date,
+                    rangeOfMotion: cal.rangeOfMotion.trim(),
+                    method: cal.method.trim(),
+                    metric: cal.metric,
+                    loadPercent: [cal.lo, cal.hi],
+                    target: [cal.vlo, cal.vhi],
+                  },
+                ],
+              });
+          }}
+        >
+          Save reviewed velocity calibration
+        </button>
+        {state.velocityProfiles.map((v, i) => (
+          <p key={i}>
+            {v.exerciseId} · {v.loadPercent.join("–")}%1RM ·{" "}
+            {v.target.join("–")} {v.metric} m/s · {v.rangeOfMotion} · {v.method}{" "}
+            · {v.date}
+          </p>
+        ))}
+      </Card>
+      <Card>
         <h2>Backups</h2>
         <p>
           Your records stay in this browser. Clearing browser data or using
@@ -317,7 +508,10 @@ export default function Settings({
             <p>
               Compatible backup: {preview.counts.workouts} workouts,{" "}
               {preview.counts.mornings} morning records. This replaces your
-              current records and settings.
+              current records and settings.{" "}
+              {sync.meta?.linked
+                ? "This replacement will synchronize to the signed-in account and its other devices."
+                : ""}
             </p>
             <button onClick={backup}>Export current data first</button>
             <button

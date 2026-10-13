@@ -20,7 +20,9 @@ test("caches program images and supports offline records and backups", async ({
   await page.reload();
   await expect(page.getByText("31.0 cm", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Program", exact: true }).click();
-  await page.getByRole("button", { name: "LP · Phase 1 · W1 D1 · Monday", exact: true }).click();
+  await page
+    .getByRole("button", { name: "LP · Phase 1 · W1 D1 · Monday", exact: true })
+    .click();
   await page.getByText("Original plan images (1)").click();
   const img = page.getByRole("img", { name: "April_W1D1.jpg" });
   await expect(img).toBeVisible();
@@ -59,10 +61,13 @@ test("a waiting service-worker update does not discard an open entry", async ({
     await page.reload();
     await page.getByRole("button", { name: "Program", exact: true }).click();
     await page.getByLabel("Requested program start").fill("2026-10-12");
-    await page.getByRole("button", {name:"Queue selected program"}).click();
-    await page.getByRole("button", {name:"Start queued program"}).click();
+    await page.getByRole("button", { name: "Queue selected program" }).click();
+    await page.getByRole("button", { name: "Start queued program" }).click();
     await page
-      .getByRole("button", { name: "LP · Phase 1 · W1 D1 · Monday", exact: true })
+      .getByRole("button", {
+        name: "LP · Phase 1 · W1 D1 · Monday",
+        exact: true,
+      })
       .click();
     await page.getByRole("button", { name: "Log this session" }).click();
     await page.getByLabel("Actual duration (minutes)").fill("42");
@@ -92,11 +97,55 @@ test("a waiting service-worker update does not discard an open entry", async ({
     await fs.writeFile("dist/sw.js", original);
   }
 });
-test('offline readiness verifies every LP and UP source asset',async({page,context})=>{
- await page.goto('/');await expect(page.getByText('Offline ready',{exact:true})).toBeVisible({timeout:30000});await page.reload();await context.setOffline(true);
- const fs=await import('node:fs/promises');const paths=JSON.parse(await fs.readFile('src/program/catalog.json','utf8')) as {sessions:{sources:string[];alternativePlans?:{sources:string[]}[]}[]};const assets=[...new Set(paths.sessions.flatMap(s=>[...s.sources,...(s.alternativePlans??[]).flatMap(a=>a.sources)]))];
- const checks=await page.evaluate(async paths=>Promise.all(paths.map(async p=>{const r=await fetch('/'+p);return r.ok&&(await r.blob()).size>0})),assets);expect(checks.every(Boolean)).toBe(true);
- // A missing cached page must not be called ready just because a controller exists.
- await page.evaluate(async()=>{for(const name of await caches.keys()){const cache=await caches.open(name);for(const req of await cache.keys())if(new URL(req.url).pathname==='/program/August/Aug_W1D1.jpg')await cache.delete(req)}});
- await page.reload();await expect(page.getByText('Offline unavailable · retry',{exact:true})).toBeVisible({timeout:30000});
+test("offline readiness verifies every LP and UP source asset", async ({
+  page,
+  context,
+}) => {
+  await page.goto("/");
+  await expect(page.getByText("Offline ready", { exact: true })).toBeVisible({
+    timeout: 30000,
+  });
+  await page.reload();
+  await context.setOffline(true);
+  const fs = await import("node:fs/promises");
+  const paths = JSON.parse(
+    await fs.readFile("src/program/catalog.json", "utf8"),
+  ) as {
+    sessions: {
+      sources: string[];
+      alternativePlans?: { sources: string[] }[];
+    }[];
+  };
+  const assets = [
+    ...new Set(
+      paths.sessions.flatMap((s) => [
+        ...s.sources,
+        ...(s.alternativePlans ?? []).flatMap((a) => a.sources),
+      ]),
+    ),
+  ];
+  const checks = await page.evaluate(
+    async (paths) =>
+      Promise.all(
+        paths.map(async (p) => {
+          const r = await fetch("/" + p);
+          return r.ok && (await r.blob()).size > 0;
+        }),
+      ),
+    assets,
+  );
+  expect(checks.every(Boolean)).toBe(true);
+  // A missing cached page must not be called ready just because a controller exists.
+  await page.evaluate(async () => {
+    for (const name of await caches.keys()) {
+      const cache = await caches.open(name);
+      for (const req of await cache.keys())
+        if (new URL(req.url).pathname === "/program/August/Aug_W1D1.jpg")
+          await cache.delete(req);
+    }
+  });
+  await page.reload();
+  await expect(
+    page.getByText("Offline unavailable · retry", { exact: true }),
+  ).toBeVisible({ timeout: 30000 });
 });

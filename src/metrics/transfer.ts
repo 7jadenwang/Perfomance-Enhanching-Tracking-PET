@@ -197,6 +197,7 @@ export function adviseTransfer(
       };
     }),
   );
+  if(status==='reviewCandidate'&&missing.length){status='insufficient';reasons.push('Essential intensity/velocity comparison data is missing; entries remain provisional.');for(const c of candidates)c.provisional=true;}
   if (status === "reviewCandidate")
     candidates.sort(
       (a, b) =>

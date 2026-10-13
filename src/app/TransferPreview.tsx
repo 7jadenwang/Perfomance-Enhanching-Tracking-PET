@@ -19,10 +19,12 @@ export default function TransferPreview({
   state,
   perform,
   onCancel,
+  beforeAccept,
 }: {
   state: AthleteState;
   perform: (a: () => Promise<void>) => Promise<boolean>;
   onCancel: () => void;
+  beforeAccept?: () => Promise<void>;
 }) {
   const [destination, setDestination] = useState<"lp" | "up">(
       state.enrollments.find((e) => e.status === "active")?.programId === "lp"
@@ -148,6 +150,11 @@ export default function TransferPreview({
       {preview && (
         <div className="notice">
           <h3>Proposed calendar</h3>
+          <p>
+            Offline changes are pending device changes until synchronization is
+            acknowledged. Online acceptance synchronizes first and requires a
+            current preview.
+          </p>
           {preview.changes.map((c) => (
             <p key={c}>{c}</p>
           ))}
@@ -176,7 +183,12 @@ export default function TransferPreview({
           <button
             type="button"
             onClick={async () => {
-              if (await perform(() => acceptTransferPreview(preview)))
+              if (
+                await perform(async () => {
+                  await beforeAccept?.();
+                  await acceptTransferPreview(preview);
+                })
+              )
                 onCancel();
             }}
           >

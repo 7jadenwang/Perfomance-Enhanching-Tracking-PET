@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   localToday,
   type AthleteState,
@@ -33,7 +33,7 @@ export default function Today({
   onActivity,
 }: {
   state: AthleteState;
-  onSave: (r: MorningRecord) => Promise<boolean>;
+  onSave: (r: MorningRecord, expected: string) => Promise<boolean>;
   onLog: (s: Session, date: string) => void;
   onActivity?: (a: AthleteState["activities"][number]) => Promise<boolean>;
 }) {
@@ -51,11 +51,27 @@ export default function Today({
     [excluded, setExcluded] = useState<boolean[]>(() =>
       [0, 1, 2].map((i) => entry.trials[i]?.excluded ?? false),
     );
+  const dirty = useRef(false),
+    baseRecord = useRef(
+      JSON.stringify(
+        state.mornings.find(
+          (r) => r.localDate === date && r.protocolId === protocol,
+        ) ?? null,
+      ),
+    );
+  const [remoteChanged, setRemoteChanged] = useState(false);
   useEffect(() => {
     const r =
       state.mornings.find(
         (x) => x.localDate === date && x.protocolId === protocol,
       ) ?? fresh(date, protocol);
+    dirty.current = false;
+    setRemoteChanged(false);
+    baseRecord.current = JSON.stringify(
+      state.mornings.find(
+        (r) => r.localDate === date && r.protocolId === protocol,
+      ) ?? null,
+    );
     setEntry(r);
     setTrials([0, 1, 2].map((i) => r.trials[i]?.heightCm ?? null));
     setExcluded([0, 1, 2].map((i) => r.trials[i]?.excluded ?? false));
@@ -108,6 +124,23 @@ export default function Today({
     setHrvProtocol(record?.hrv?.protocol ?? "");
     setHrvMetric(record?.hrv?.metric ?? "rMSSD");
   }, [date, protocol]);
+  const savedSignature = JSON.stringify(saved ?? null);
+  useEffect(() => {
+    if (savedSignature === baseRecord.current) return;
+    if (dirty.current) {
+      setRemoteChanged(true);
+      return;
+    }
+    baseRecord.current = savedSignature;
+    const r = saved ?? fresh(date, protocol);
+    setEntry(r);
+    setTrials([0, 1, 2].map((i) => r.trials[i]?.heightCm ?? null));
+    setExcluded([0, 1, 2].map((i) => r.trials[i]?.excluded ?? false));
+    setHrvValue(r.hrv?.value ?? null);
+    setHrvMethod(r.hrv?.method ?? "");
+    setHrvProtocol(r.hrv?.protocol ?? "");
+    setHrvMetric(r.hrv?.metric ?? "rMSSD");
+  }, [savedSignature]);
   function patch(k: keyof MorningRecord, v: unknown) {
     setEntry((r) => ({ ...r, [k]: v }));
   }
@@ -244,10 +277,34 @@ export default function Today({
             Use the same warm-up, arm position, surface, footwear, and
             measurement method.
           </p>
+          {remoteChanged && (
+            <div className="notice">
+              <p>
+                This morning changed on another device. Your draft is retained.
+              </p>
+              <details>
+                <summary>Review saved incoming morning</summary>
+                <pre>{JSON.stringify(saved, null, 2)}</pre>
+              </details>
+              <button
+                type="button"
+                onClick={() => {
+                  baseRecord.current = savedSignature;
+                  setRemoteChanged(false);
+                }}
+              >
+                Keep draft after reviewing incoming morning
+              </button>
+            </div>
+          )}
           <form
+            onChangeCapture={() => {
+              dirty.current = true;
+            }}
             onSubmit={async (e) => {
               e.preventDefault();
-              await onSave({
+              if (remoteChanged) return;
+              const next: MorningRecord = {
                 ...entry,
                 localDate: date,
                 protocolId: protocol,
@@ -275,7 +332,16 @@ export default function Today({
                       ],
                 ),
                 updatedAt: now(),
-              });
+              };
+              const previous = baseRecord.current;
+              baseRecord.current = JSON.stringify(next);
+              if (await onSave(next, previous)) {
+                dirty.current = false;
+                setEntry(next);
+              } else {
+                baseRecord.current = previous;
+                dirty.current = true;
+              }
             }}
           >
             <details>
@@ -432,7 +498,7 @@ export default function Today({
                 onChange={(e) => patch("exclusionReason", e.target.value)}
               />
             </label>
-            <button className="primary" type="submit">
+            <button className="primary" type="submit" disabled={remoteChanged}>
               Save morning
             </button>
           </form>

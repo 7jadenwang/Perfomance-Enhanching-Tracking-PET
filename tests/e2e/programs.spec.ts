@@ -70,3 +70,24 @@ test("lets users configure equipment and movement familiarity", async ({
   );
   await expect(page.getByLabel("Familiar: 后蹲 · Back squat")).toBeChecked();
 });
+test("records a replacement-specific reviewed velocity calibration", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Settings", exact: true }).click();
+  await page.getByLabel("Calibration movement").selectOption("front-squat");
+  await page.getByLabel("Calibration %1RM minimum").fill("65");
+  await page.getByLabel("Calibration %1RM maximum").fill("75");
+  await page.getByLabel("Calibration velocity minimum (m/s)").fill("0.6");
+  await page.getByLabel("Calibration velocity maximum (m/s)").fill("0.7");
+  await page.getByLabel("Calibration range of motion").fill("full");
+  await page.getByLabel("Calibration device / method").fill("encoder");
+  await page
+    .getByRole("button", { name: "Save reviewed velocity calibration" })
+    .click();
+  await page.reload();
+  await page.getByRole("button", { name: "Settings", exact: true }).click();
+  await expect(
+    page.getByText(/front-squat · 65–75%1RM · 0.6–0.7/),
+  ).toBeVisible();
+});

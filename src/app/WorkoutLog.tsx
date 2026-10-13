@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import type {
   AthleteState,
   Workout,
@@ -33,7 +33,7 @@ export default function WorkoutLog({
   session: Session;
   date: string;
   state: AthleteState;
-  onSave: (w: Workout) => Promise<boolean>;
+  onSave: (w: Workout, expected: string) => Promise<boolean>;
   onBack: () => void;
 }) {
   const existing = state.workouts.find((w) =>
@@ -59,12 +59,27 @@ export default function WorkoutLog({
   const prescriptions =
     w.targetRevisions.at(-1)?.prescriptions ??
     (w.targetSnapshot.length ? w.targetSnapshot : session.exercises);
-  const [saved, setSaved] = useState(false);
+  const [saved, setSaved] = useState(false),
+    [remoteChanged, setRemoteChanged] = useState(false);
+  const dirty = useRef(false),
+    baseRecord = useRef(JSON.stringify(existing ?? null));
+  const existingSignature = JSON.stringify(existing ?? null);
+  useEffect(() => {
+    if (existingSignature === baseRecord.current) return;
+    if (dirty.current) {
+      setRemoteChanged(true);
+      return;
+    }
+    baseRecord.current = existingSignature;
+    if (existing) setW(existing);
+  }, [existingSignature]);
   function update(v: Partial<Workout>) {
+    dirty.current = true;
     setSaved(false);
     setW((w) => ({ ...w, ...v }));
   }
   function updateRow(id: string, v: Partial<ActualRow>) {
+    dirty.current = true;
     setSaved(false);
     setW((w) => ({
       ...w,
@@ -221,10 +236,40 @@ export default function WorkoutLog({
           <p className="sourceText">{session.sourceText}</p>
         </details>
       </Card>
+      {remoteChanged && (
+        <div className="notice">
+          <p>This workout changed on another device. Your draft is retained.</p>
+          <details>
+            <summary>Review saved incoming workout</summary>
+            <pre>{JSON.stringify(existing, null, 2)}</pre>
+          </details>
+          <button
+            type="button"
+            onClick={() => {
+              baseRecord.current = existingSignature;
+              setRemoteChanged(false);
+            }}
+          >
+            Keep workout draft after reviewing
+          </button>
+        </div>
+      )}
       <form
         onSubmit={async (e) => {
           e.preventDefault();
-          setSaved(await onSave({ ...w, updatedAt: new Date().toISOString() }));
+          if (remoteChanged) return;
+          const next = { ...w, updatedAt: new Date().toISOString() },
+            previous = baseRecord.current;
+          baseRecord.current = JSON.stringify(next);
+          const ok = await onSave(next, previous);
+          setSaved(ok);
+          if (ok) {
+            dirty.current = false;
+            setW(next);
+          } else {
+            baseRecord.current = previous;
+            dirty.current = true;
+          }
         }}
       >
         <Card>
@@ -730,7 +775,7 @@ export default function WorkoutLog({
             />
           </label>
           <div className="sectionhead">
-            <button className="primary" type="submit">
+            <button className="primary" type="submit" disabled={remoteChanged}>
               Save workout
             </button>
             <button

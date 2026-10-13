@@ -27,7 +27,7 @@ create function public.pet_sync_commit(request_id uuid,changes jsonb) returns js
 declare uid uuid:=auth.uid();prior public.pet_requests; c jsonb; d public.pet_documents;conflicts jsonb:='[]';ack jsonb:='[]';result jsonb;seen text[]:='{}';identity text;expected bigint;active_count integer;queued_count integer;
 begin
  if uid is null then raise exception 'Authentication required' using errcode='42501';end if;
- if request_id is null or jsonb_typeof(changes)<>'array' or jsonb_array_length(changes) not between 1 and 2000 or octet_length(changes::text)>12000000 then raise exception 'Invalid batch';end if;
+ if request_id is null or jsonb_typeof(changes) is distinct from 'array' or jsonb_array_length(changes) not between 1 and 2000 or octet_length(changes::text)>12000000 then raise exception 'Invalid batch';end if;
  perform pg_catalog.pg_advisory_xact_lock(pg_catalog.hashtextextended(uid::text,0));
  select * into prior from public.pet_requests r where r.owner_id=uid and r.request_id=pet_sync_commit.request_id;
  if found then
@@ -35,7 +35,7 @@ begin
   return prior.result;
  end if;
  for c in select value from jsonb_array_elements(changes) loop
-  if not(c ?& array['kind','key','baseRevision','schemaVersion','catalogueVersion','payload','deleted']) or c->>'kind' not in ('configuration','schedule','workout','morning','activity') or length(c->>'key') not between 1 and 240 or c->>'schemaVersion'<>'2' or c->>'catalogueVersion'<>'lp-up-v2' or jsonb_typeof(c->'deleted')<>'boolean' or (c->>'baseRevision')!~'^[0-9]+$' or ((c->>'deleted')::boolean=false and jsonb_typeof(c->'payload')<>'object') then raise exception 'Invalid document';end if;
+  if not(c ?& array['kind','key','baseRevision','schemaVersion','catalogueVersion','payload','deleted']) or c->>'kind' not in ('configuration','schedule','workout','morning','activity') or length(c->>'key') not between 1 and 240 or c->>'schemaVersion'<>'2' or c->>'catalogueVersion'<>'lp-up-v2' or jsonb_typeof(c->'deleted') is distinct from 'boolean' or (c->>'baseRevision')!~'^[0-9]+$' or ((c->>'deleted')::boolean=false and jsonb_typeof(c->'payload') is distinct from 'object') then raise exception 'Invalid document';end if;
   if c->>'kind' in ('configuration','schedule') and c->>'key'<>c->>'kind' then raise exception 'Invalid aggregate key';end if;
   if c->>'kind' in ('configuration','schedule') and (c->>'deleted')::boolean then raise exception 'Required aggregate cannot be deleted';end if;
   identity:=(c->>'kind')||'|'||(c->>'key');if identity=any(seen) then raise exception 'Duplicate document in batch';end if;seen:=array_append(seen,identity);
@@ -43,7 +43,7 @@ begin
   select * into d from public.pet_documents x where x.owner_id=uid and x.kind=c->>'kind' and x.key=c->>'key';
   if coalesce(d.revision,0)<>expected then conflicts:=conflicts||jsonb_build_array(jsonb_build_object('kind',c->>'kind','key',c->>'key','remote',case when d.revision is null then 'null'::jsonb else public.pet_doc_json(d) end));end if;
   if c->>'kind'='schedule' and not(c->>'deleted')::boolean then
-   if jsonb_typeof(c->'payload'->'enrollments')<>'array' then raise exception 'Invalid schedule';end if;
+   if jsonb_typeof(c->'payload'->'enrollments') is distinct from 'array' then raise exception 'Invalid schedule';end if;
    select count(*) filter(where e->>'status'='active'),count(*) filter(where e->>'status'='queued') into active_count,queued_count from jsonb_array_elements(c->'payload'->'enrollments') e;
    if active_count>1 or queued_count>1 then raise exception 'Only one active/queued enrollment allowed';end if;
   end if;

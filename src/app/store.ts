@@ -1,14 +1,24 @@
-import { useEffect, useState } from "react";
-import { loadState } from "../storage/db";
+import { useEffect, useState, useRef } from "react";
+import { loadState, storageNamespace } from "../storage/db";
 import type { AthleteState } from "../domain/schema";
 export function useAthleteStore() {
   const [state, setState] = useState<AthleteState | null>(null),
     [error, setError] = useState(""),
     [saving, setSaving] = useState(false),
     [message, setMessage] = useState("");
+  const sequence = useRef(0),
+    visibleNamespace = useRef(storageNamespace());
   async function refresh() {
+    const ticket = ++sequence.current,
+      ns = storageNamespace();
+    if (visibleNamespace.current !== ns) {
+      visibleNamespace.current = ns;
+      setState(null);
+    }
     try {
-      setState(await loadState());
+      const next = await loadState();
+      if (ticket !== sequence.current || ns !== storageNamespace()) return;
+      setState(next);
       setError("");
     } catch (e) {
       setError("Could not read local records: " + String(e));

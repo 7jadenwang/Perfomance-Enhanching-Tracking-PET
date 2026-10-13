@@ -20,3 +20,10 @@ jobs:
       - run: npm run typecheck
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
+      - name: Private sync PostgreSQL checks
+        run: scripts/test-sync-sql.sh
+      - name: Two-device sync transport checks
+        run: npm run test:e2e -- tests/e2e/sync.spec.ts
+        env:
+          VITE_SUPABASE_URL: https://pet-sync.example
+          VITE_SUPABASE_PUBLISHABLE_KEY: sb_publishable_browser_test

@@ -1,15 +1,64 @@
-import {identity,same,type SyncDocument,type OutboxMutation,type SyncConflict} from './types';
-export function reconcile(base:SyncDocument[],local:SyncDocument[],remote:SyncDocument[],pending:OutboxMutation[]){
- const documents:SyncDocument[]=[],pushes:OutboxMutation[]=[],conflicts:SyncConflict[]=[];
- const ids=new Set([...base,...local,...remote,...pending].map(identity));
- for(const id of ids){
-  const b=base.find(d=>identity(d)===id)??null,r=remote.find(d=>identity(d)===id)??null,p=pending.find(d=>identity(d)===id),l=p??local.find(d=>identity(d)===id)??null;
-  const changedRemote=(r?.revision??0)!==(b?.revision??0)||!same(r,b);
-  if(p&&changedRemote&&!same(l,r)){
-   conflicts.push({identity:id,base:b,local:p,remote:r});documents.push(p);
-  }else if(p&&!same(p,r)){
-   pushes.push({...p,baseRevision:r?.revision??0});documents.push(p);
-  }else if(r)documents.push(r);
- }
- return {documents,pushes,conflicts};
+import {
+  identity,
+  same,
+  type SyncDocument,
+  type OutboxMutation,
+  type SyncConflict,
+} from "./types";
+export function reconcile(
+  base: SyncDocument[],
+  local: SyncDocument[],
+  remote: SyncDocument[],
+  pending: OutboxMutation[],
+) {
+  const documents: SyncDocument[] = [],
+    pushes: OutboxMutation[] = [],
+    conflicts: SyncConflict[] = [];
+  const ids = new Set([...base, ...local, ...remote, ...pending].map(identity));
+  for (const id of ids) {
+    const b = base.find((d) => identity(d) === id) ?? null,
+      r = remote.find((d) => identity(d) === id) ?? null,
+      p = pending.find((d) => identity(d) === id),
+      l = p ?? local.find((d) => identity(d) === id) ?? null;
+    const changedRemote =
+      (r?.revision ?? 0) !== (b?.revision ?? 0) || !same(r, b);
+    if (p && changedRemote && !same(l, r)) {
+      conflicts.push({ identity: id, base: b, local: p, remote: r });
+      documents.push(p);
+    } else if (p && !same(p, r)) {
+      pushes.push({ ...p, baseRevision: r?.revision ?? 0 });
+      documents.push(p);
+    } else if (r) documents.push(r);
+  }
+  return { documents, pushes, conflicts };
+}
+
+import { stateToDocuments, documentsToState } from "./documents";
+import type { AthleteState } from "../domain/schema";
+export function firstLinkPreview(guest: AthleteState, remote: SyncDocument[]) {
+  if (remote.length) documentsToState(remote);
+  const local = stateToDocuments(guest);
+  return reconcile(
+    [],
+    local,
+    remote,
+    local.map((d) => ({ ...d, baseRevision: 0, generation: 1 })),
+  );
+}
+export function resolveFirstLink(
+  preview: ReturnType<typeof firstLinkPreview>,
+  choices: Record<string, "local" | "remote" | SyncDocument>,
+) {
+  let docs = [...preview.documents];
+  for (const c of preview.conflicts) {
+    const choice = choices[c.identity];
+    if (!choice) throw Error("Choose a version for " + c.identity);
+    const selected =
+      choice === "local" ? c.local : choice === "remote" ? c.remote : choice;
+    if (selected && identity(selected) !== c.identity)
+      throw Error("Link identity mismatch");
+    docs = docs.filter((d) => identity(d) !== c.identity);
+    if (selected) docs.push(selected);
+  }
+  return documentsToState(docs);
 }
