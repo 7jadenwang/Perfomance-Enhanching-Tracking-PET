@@ -68,6 +68,7 @@ export default function Today({
       state.reschedules,
     );
   const [hrvValue,setHrvValue]=useState<number|null>(entry.hrv?.value??null),[hrvMethod,setHrvMethod]=useState(entry.hrv?.method??""),[hrvProtocol,setHrvProtocol]=useState(entry.hrv?.protocol??""),[hrvMetric,setHrvMetric]=useState<"rMSSD"|"SDNN"|"lnRMSSD">(entry.hrv?.metric??"rMSSD");
+  useEffect(()=>{const record=state.mornings.find(m=>m.localDate===date&&m.protocolId===protocol);setHrvValue(record?.hrv?.value??null);setHrvMethod(record?.hrv?.method??"");setHrvProtocol(record?.hrv?.protocol??"");setHrvMetric(record?.hrv?.metric??"rMSSD");},[date,protocol]);
   function patch(k: keyof MorningRecord, v: unknown) {
     setEntry((r) => ({ ...r, [k]: v }));
   }
