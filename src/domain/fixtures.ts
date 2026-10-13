@@ -1,5 +1,82 @@
-import type {Workout,ActualRow,MorningRecord,VelocityRecord} from './schema';
-export const makeVelocity=(o:Partial<VelocityRecord>={}):VelocityRecord=>({exerciseId:'squat',loadKg:50,rangeOfMotion:'full',metric:'mean',method:'device',setAverage:null,repVelocities:[],completeSeries:false,...o});
-export const makeRow=(o:Partial<ActualRow>={}):ActualRow=>({id:'row',exerciseId:'squat',name:'Squat',confirmed:false,reps:null,loadKg:null,loadConvention:'totalExternal',perSide:false,holdSeconds:null,distanceMetres:null,timeSeconds:null,rounds:null,workSeconds:null,restSeconds:null,setRpe:null,rir:null,tempo:'',tempoFollowed:null,kind:'strength',velocity:null,notes:'',...o});
-export const makeWorkout=(o:Partial<Workout>={}):Workout=>({id:'workout',sessionId:'April-W1D1',localDate:'2026-10-13',status:'draft',plannedDuration:null,plannedRpe:null,actualDuration:null,actualRpe:null,rows:[],substitutions:[],notes:'',createdAt:'2026-10-13',updatedAt:'2026-10-13',...o});
-export const makeMorning=(o:Partial<MorningRecord>={}):MorningRecord=>({id:'morning',localDate:'2026-10-13',protocolId:'default',trials:[30,31,32].map(heightCm=>({heightCm,excluded:false,reason:''})),sleepHours:null,sleepQuality:null,fatigue:null,soreness:null,stress:null,pain:null,painLocation:'',baselineEligible:true,exclusionReason:'',createdAt:'2026-10-13',updatedAt:'2026-10-13',...o});
+import type {
+  Workout,
+  ActualRow,
+  MorningRecord,
+  VelocityRecord,
+} from "./schema";
+export const makeVelocity = (
+  o: Partial<VelocityRecord> = {},
+): VelocityRecord => ({
+  exerciseId: "squat",
+  loadKg: 50,
+  rangeOfMotion: "full",
+  metric: "mean",
+  method: "device",
+  setAverage: null,
+  repVelocities: [],
+  completeSeries: false,
+  ...o,
+});
+export const makeRow = (o: Partial<ActualRow> = {}): ActualRow => ({
+  id: "row",
+  exerciseId: "squat",
+  name: "Squat",
+  confirmed: false,
+  reps: null,
+  loadKg: null,
+  loadConvention: "totalExternal",
+  perSide: false,
+  holdSeconds: null,
+  distanceMetres: null,
+  timeSeconds: null,
+  rounds: null,
+  workSeconds: null,
+  restSeconds: null,
+  setRpe: null,
+  rir: null,
+  tempo: "",
+  tempoFollowed: null,
+  kind: "strength",
+  sourceVelocityMetric: null,
+  velocity: null,
+  notes: "",
+  ...o,
+});
+export const makeWorkout = (o: Partial<Workout> = {}): Workout => ({
+  id: "workout",
+  sessionId: "April-W1D1",
+  localDate: "2026-10-13",
+  status: "draft",
+  plannedDuration: null,
+  plannedRpe: null,
+  actualDuration: null,
+  actualRpe: null,
+  rows: [],
+  substitutions: [],
+  notes: "",
+  createdAt: "2026-10-13",
+  updatedAt: "2026-10-13",
+  ...o,
+});
+export const makeMorning = (o: Partial<MorningRecord> = {}): MorningRecord => ({
+  id: "morning",
+  localDate: "2026-10-13",
+  protocolId: "default",
+  trials: [30, 31, 32].map((heightCm) => ({
+    heightCm,
+    excluded: false,
+    reason: "",
+  })),
+  sleepHours: null,
+  sleepQuality: null,
+  fatigue: null,
+  soreness: null,
+  stress: null,
+  pain: null,
+  painLocation: "",
+  baselineEligible: true,
+  exclusionReason: "",
+  createdAt: "2026-10-13",
+  updatedAt: "2026-10-13",
+  ...o,
+});

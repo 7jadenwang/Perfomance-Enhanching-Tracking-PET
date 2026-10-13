@@ -1,21 +1,241 @@
-import {z} from 'zod';
-const n=z.number().finite().nonnegative(); const nullable=n.nullable(); const rpe=z.number().min(0).max(10).nullable();
-export const dateSchema=z.string().regex(/^\d{4}-\d{2}-\d{2}$/).refine(s=>{const d=new Date(s+'T12:00:00Z');return !isNaN(+d)&&d.toISOString().slice(0,10)===s},'Invalid calendar date');
-export type LocalDate=z.infer<typeof dateSchema>;
-const range=z.tuple([n,n]).refine(([a,b])=>a<=b);
-export const prescriptionSchema=z.object({id:z.string(),name:z.string(),sourceText:z.string(),kind:z.enum(['strength','jump','throw','hold','sprint','conditioning','other']),sets:range.nullable(),reps:range.nullable(),perSide:z.boolean(),loadPercent:range.nullable(),referenceExerciseId:z.string().nullable(),tempo:z.string().nullable(),velocityTarget:range.nullable(),velocityMetric:z.enum(['mean','meanPropulsive','peak']).nullable(),restSeconds:range.nullable(),holdSeconds:range.nullable(),distanceMetres:range.nullable(),workSeconds:range.nullable(),rounds:range.nullable(),optional:z.boolean(),groupId:z.string().nullable(),ambiguity:z.string().nullable(),purpose:z.enum(['generalAerobic','conditioning','technique','other'])});
-export type Prescription=z.infer<typeof prescriptionSchema>;
-export const sessionSchema=z.object({id:z.string(),month:z.string(),blockIndex:z.number().int().min(0).max(2),week:z.number().int().min(1).max(4),day:z.number().int().min(1).max(7),optional:z.boolean(),sourceText:z.string(),sources:z.array(z.string()),exercises:z.array(prescriptionSchema)});
-export type Session=z.infer<typeof sessionSchema>;
-export const programSchema=z.object({version:z.string(),sourceCommit:z.string(),sources:z.array(z.string()),sessions:z.array(sessionSchema)});export type Program=z.infer<typeof programSchema>;
-export const velocitySchema=z.object({exerciseId:z.string(),loadKg:nullable,rangeOfMotion:z.string(),metric:z.enum(['mean','meanPropulsive','peak']),method:z.string(),setAverage:nullable,repVelocities:z.array(n),completeSeries:z.boolean()});export type VelocityRecord=z.infer<typeof velocitySchema>;
-export const rowSchema=z.object({id:z.string(),exerciseId:z.string(),name:z.string(),confirmed:z.boolean(),reps:nullable,loadKg:nullable,loadConvention:z.enum(['totalExternal','perHand','bodyweight','unknown']),perSide:z.boolean(),holdSeconds:nullable,distanceMetres:nullable,timeSeconds:nullable,rounds:nullable,workSeconds:nullable,restSeconds:nullable,setRpe:rpe,rir:nullable,tempo:z.string(),tempoFollowed:z.boolean().nullable(),kind:prescriptionSchema.shape.kind,velocity:velocitySchema.nullable(),notes:z.string()});export type ActualRow=z.infer<typeof rowSchema>;
-export const workoutSchema=z.object({id:z.string(),sessionId:z.string().nullable(),localDate:dateSchema,status:z.enum(['draft','partial','completed','skipped']),plannedDuration:nullable,plannedRpe:rpe,actualDuration:nullable,actualRpe:rpe,rows:z.array(rowSchema),substitutions:z.array(z.object({exerciseId:z.string(),original:z.string(),actual:z.string(),reason:z.string()})),notes:z.string(),createdAt:z.string(),updatedAt:z.string()});export type Workout=z.infer<typeof workoutSchema>;
-const rating=z.number().int().min(1).max(5).nullable();
-export const morningSchema=z.object({id:z.string(),localDate:dateSchema,protocolId:z.string(),trials:z.array(z.object({heightCm:z.number().finite().positive(),excluded:z.boolean(),reason:z.string()})),sleepHours:z.number().min(0).max(24).nullable(),sleepQuality:rating,fatigue:rating,soreness:rating,stress:rating,pain:z.boolean().nullable(),painLocation:z.string(),baselineEligible:z.boolean(),exclusionReason:z.string(),createdAt:z.string(),updatedAt:z.string()});export type MorningRecord=z.infer<typeof morningSchema>;
-export const baselineSchema=z.object({id:z.string(),protocolId:z.string(),eligibleRecordIds:z.array(z.string()).length(14),meanCm:n,sampleSdCm:n,createdAt:z.string(),archivedAt:z.string().nullable()});export type Baseline=z.infer<typeof baselineSchema>;
-const equipmentSchema=z.object({running:z.literal(true),rowing:z.enum(['available','unavailable','unconfirmed']),skiErg:z.enum(['available','unavailable','unconfirmed']),airBike:z.enum(['available','unavailable','unconfirmed'])});export type EquipmentProfile=z.infer<typeof equipmentSchema>;
-export const stateSchema=z.object({schemaVersion:z.literal(1),programVersion:z.literal('april-june-v1'),startDate:dateSchema,reschedules:z.record(z.string(),dateSchema),equipment:equipmentSchema,reference1RMs:z.array(z.object({exerciseId:z.string(),date:dateSchema,kg:z.number().finite().positive()})),protocols:z.array(z.object({id:z.string(),name:z.string()})),baselines:z.array(baselineSchema),workouts:z.array(workoutSchema),mornings:z.array(morningSchema)}).superRefine((s,ctx)=>{for(const key of ['workouts','mornings','baselines','protocols'] as const){const ids=s[key].map(x=>x.id);if(new Set(ids).size!==ids.length)ctx.addIssue({code:'custom',message:'Duplicate record IDs',path:[key]});} const dates=s.mornings.map(x=>x.localDate+'|'+x.protocolId);if(new Set(dates).size!==dates.length)ctx.addIssue({code:'custom',message:'Duplicate morning date/protocol'});});export type AthleteState=z.infer<typeof stateSchema>;
-export const parseProgram=(x:unknown):Program=>programSchema.parse(x);export const parseState=(x:unknown):AthleteState=>stateSchema.parse(x);
-export function localToday():LocalDate{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
-export function initialState():AthleteState{return {schemaVersion:1,programVersion:'april-june-v1',startDate:localToday(),reschedules:{},equipment:{running:true,rowing:'unconfirmed',skiErg:'unconfirmed',airBike:'unconfirmed'},reference1RMs:[],protocols:[{id:'default',name:'Jump app · morning · hands on hips · same warm-up/surface'}],baselines:[],workouts:[],mornings:[]};}
+import { z } from "zod";
+const n = z.number().finite().nonnegative();
+const nullable = n.nullable();
+const rpe = z.number().min(0).max(10).nullable();
+export const dateSchema = z
+  .string()
+  .regex(/^\d{4}-\d{2}-\d{2}$/)
+  .refine((s) => {
+    const d = new Date(s + "T12:00:00Z");
+    return !isNaN(+d) && d.toISOString().slice(0, 10) === s;
+  }, "Invalid calendar date");
+export type LocalDate = z.infer<typeof dateSchema>;
+const range = z.tuple([n, n]).refine(([a, b]) => a <= b);
+export const prescriptionSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  sourceText: z.string(),
+  kind: z.enum([
+    "strength",
+    "jump",
+    "throw",
+    "hold",
+    "sprint",
+    "conditioning",
+    "other",
+  ]),
+  sets: range.nullable(),
+  reps: range.nullable(),
+  perSide: z.boolean(),
+  loadPercent: range.nullable(),
+  referenceExerciseId: z.string().nullable(),
+  tempo: z.string().nullable(),
+  velocityTarget: range.nullable(),
+  velocityComparison: z.enum(["min", "range"]).default("range"),
+  velocityMetric: z.enum(["mean", "meanPropulsive", "peak"]).nullable(),
+  restSeconds: range.nullable(),
+  holdSeconds: range.nullable(),
+  distanceMetres: range.nullable(),
+  workSeconds: range.nullable(),
+  rounds: range.nullable(),
+  optional: z.boolean(),
+  groupId: z.string().nullable(),
+  ambiguity: z.string().nullable(),
+  purpose: z.enum(["generalAerobic", "conditioning", "technique", "other"]),
+});
+export type Prescription = z.infer<typeof prescriptionSchema>;
+export const sessionSchema = z.object({
+  id: z.string(),
+  month: z.string(),
+  blockIndex: z.number().int().min(0).max(2),
+  week: z.number().int().min(1).max(4),
+  day: z.number().int().min(1).max(7),
+  optional: z.boolean(),
+  sourceText: z.string(),
+  sources: z.array(z.string()),
+  exercises: z.array(prescriptionSchema),
+});
+export type Session = z.infer<typeof sessionSchema>;
+export const programSchema = z.object({
+  version: z.string(),
+  sourceCommit: z.string(),
+  sources: z.array(z.string()),
+  sessions: z.array(sessionSchema),
+});
+export type Program = z.infer<typeof programSchema>;
+export const velocitySchema = z.object({
+  exerciseId: z.string(),
+  loadKg: nullable,
+  rangeOfMotion: z.string(),
+  metric: z.enum(["mean", "meanPropulsive", "peak"]),
+  method: z.string(),
+  setAverage: nullable,
+  repVelocities: z.array(n),
+  completeSeries: z.boolean(),
+});
+export type VelocityRecord = z.infer<typeof velocitySchema>;
+export const rowSchema = z.object({
+  id: z.string(),
+  exerciseId: z.string(),
+  name: z.string(),
+  confirmed: z.boolean(),
+  reps: nullable,
+  loadKg: nullable,
+  loadConvention: z.enum(["totalExternal", "perHand", "bodyweight", "unknown"]),
+  perSide: z.boolean(),
+  holdSeconds: nullable,
+  distanceMetres: nullable,
+  timeSeconds: nullable,
+  rounds: nullable,
+  workSeconds: nullable,
+  restSeconds: nullable,
+  setRpe: rpe,
+  rir: nullable,
+  tempo: z.string(),
+  tempoFollowed: z.boolean().nullable(),
+  kind: prescriptionSchema.shape.kind,
+  sourceVelocityMetric: z
+    .enum(["mean", "meanPropulsive", "peak"])
+    .nullable()
+    .default(null),
+  velocity: velocitySchema.nullable(),
+  notes: z.string(),
+});
+export type ActualRow = z.infer<typeof rowSchema>;
+export const workoutSchema = z.object({
+  id: z.string(),
+  sessionId: z.string().nullable(),
+  localDate: dateSchema,
+  status: z.enum(["draft", "partial", "completed", "skipped"]),
+  plannedDuration: nullable,
+  plannedRpe: rpe,
+  actualDuration: nullable,
+  actualRpe: rpe,
+  rows: z.array(rowSchema),
+  substitutions: z.array(
+    z.object({
+      exerciseId: z.string(),
+      original: z.string(),
+      actual: z.string(),
+      reason: z.string(),
+    }),
+  ),
+  notes: z.string(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+});
+export type Workout = z.infer<typeof workoutSchema>;
+const rating = z.number().int().min(1).max(5).nullable();
+export const morningSchema = z.object({
+  id: z.string(),
+  localDate: dateSchema,
+  protocolId: z.string(),
+  trials: z.array(
+    z.object({
+      heightCm: z.number().finite().positive(),
+      excluded: z.boolean(),
+      reason: z.string(),
+    }),
+  ),
+  sleepHours: z.number().min(0).max(24).nullable(),
+  sleepQuality: rating,
+  fatigue: rating,
+  soreness: rating,
+  stress: rating,
+  pain: z.boolean().nullable(),
+  painLocation: z.string(),
+  baselineEligible: z.boolean(),
+  exclusionReason: z.string(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+});
+export type MorningRecord = z.infer<typeof morningSchema>;
+export const baselineSchema = z.object({
+  id: z.string(),
+  protocolId: z.string(),
+  eligibleRecordIds: z.array(z.string()).length(14),
+  meanCm: n,
+  sampleSdCm: n,
+  createdAt: z.string(),
+  archivedAt: z.string().nullable(),
+});
+export type Baseline = z.infer<typeof baselineSchema>;
+const equipmentSchema = z.object({
+  running: z.literal(true),
+  rowing: z.enum(["available", "unavailable", "unconfirmed"]),
+  skiErg: z.enum(["available", "unavailable", "unconfirmed"]),
+  airBike: z.enum(["available", "unavailable", "unconfirmed"]),
+});
+export type EquipmentProfile = z.infer<typeof equipmentSchema>;
+export const stateSchema = z
+  .object({
+    schemaVersion: z.literal(1),
+    programVersion: z.literal("april-june-v1"),
+    startDate: dateSchema,
+    reschedules: z.record(z.string(), dateSchema),
+    equipment: equipmentSchema,
+    reference1RMs: z.array(
+      z.object({
+        exerciseId: z.string(),
+        date: dateSchema,
+        kg: z.number().finite().positive(),
+      }),
+    ),
+    protocols: z.array(z.object({ id: z.string(), name: z.string() })),
+    baselines: z.array(baselineSchema),
+    workouts: z.array(workoutSchema),
+    mornings: z.array(morningSchema),
+  })
+  .superRefine((s, ctx) => {
+    for (const key of [
+      "workouts",
+      "mornings",
+      "baselines",
+      "protocols",
+    ] as const) {
+      const ids = s[key].map((x) => x.id);
+      if (new Set(ids).size !== ids.length)
+        ctx.addIssue({
+          code: "custom",
+          message: "Duplicate record IDs",
+          path: [key],
+        });
+    }
+    const dates = s.mornings.map((x) => x.localDate + "|" + x.protocolId);
+    if (new Set(dates).size !== dates.length)
+      ctx.addIssue({
+        code: "custom",
+        message: "Duplicate morning date/protocol",
+      });
+  });
+export type AthleteState = z.infer<typeof stateSchema>;
+export const parseProgram = (x: unknown): Program => programSchema.parse(x);
+export const parseState = (x: unknown): AthleteState => stateSchema.parse(x);
+export function localToday(): LocalDate {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+export function initialState(): AthleteState {
+  return {
+    schemaVersion: 1,
+    programVersion: "april-june-v1",
+    startDate: localToday(),
+    reschedules: {},
+    equipment: {
+      running: true,
+      rowing: "unconfirmed",
+      skiErg: "unconfirmed",
+      airBike: "unconfirmed",
+    },
+    reference1RMs: [],
+    protocols: [
+      {
+        id: "default",
+        name: "Jump app · morning · hands on hips · same warm-up/surface",
+      },
+    ],
+    baselines: [],
+    workouts: [],
+    mornings: [],
+  };
+}

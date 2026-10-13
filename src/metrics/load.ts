@@ -1,6 +1,91 @@
-import type {Workout} from '../domain/schema';
-export function sessionLoad(duration:number|null,rpe:number|null):number|null{return duration===null||rpe===null?null:duration*rpe;}
-export function loadDifference(planned:number|null,actual:number|null){return {absolute:planned===null||actual===null?null:actual-planned,percent:planned===null||actual===null||planned===0?null:(actual-planned)/planned*100};}
-export function weeklyLoad(workouts:Workout[],prescribedCount=workouts.length){const planned=workouts.map(w=>sessionLoad(w.plannedDuration,w.plannedRpe)), actual=workouts.filter(w=>w.status==='completed'||w.status==='partial').map(w=>sessionLoad(w.actualDuration,w.actualRpe));return {planned:planned.reduce<number>((a,v)=>a+(v??0),0),actual:actual.reduce<number>((a,v)=>a+(v??0),0),plannedComplete:planned.filter(v=>v!==null).length,actualComplete:actual.filter(v=>v!==null).length,prescribedCount,confirmedCount:workouts.filter(w=>w.status==='completed'||w.status==='partial'||w.status==='skipped').length};}
-export type ExternalWork={exerciseId:string;name:string;convention:string;reps:number|null;loadVolume:number|null;holdSeconds:number|null;distanceMetres:number|null;jumpContacts:number|null;kind:string};
-export function externalWork(workouts:Workout[]):ExternalWork[]{return workouts.filter(w=>w.status==='completed'||w.status==='partial').flatMap(w=>w.rows.filter(r=>r.confirmed).map(r=>{const sides=r.perSide?2:1,reps=r.reps===null?null:r.reps*sides;return {exerciseId:r.exerciseId,name:r.name,convention:r.loadConvention,reps,loadVolume:reps===null||r.loadKg===null||!['totalExternal','perHand'].includes(r.loadConvention)?null:reps*r.loadKg*(r.loadConvention==='perHand'?2:1),holdSeconds:r.holdSeconds===null?null:r.holdSeconds*sides,distanceMetres:r.distanceMetres===null?null:r.distanceMetres*sides,jumpContacts:r.kind==='jump'?reps:null,kind:r.kind};}));}
+import type { Workout } from "../domain/schema";
+export function sessionLoad(
+  duration: number | null,
+  rpe: number | null,
+): number | null {
+  return duration === null || rpe === null ? null : duration * rpe;
+}
+export function loadDifference(planned: number | null, actual: number | null) {
+  return {
+    absolute: planned === null || actual === null ? null : actual - planned,
+    percent:
+      planned === null || actual === null || planned === 0
+        ? null
+        : ((actual - planned) / planned) * 100,
+  };
+}
+export function weeklyLoad(
+  workouts: Workout[],
+  prescribedCount = workouts.length,
+) {
+  const planned = workouts.map((w) =>
+      sessionLoad(w.plannedDuration, w.plannedRpe),
+    ),
+    actual = workouts
+      .filter((w) => w.status === "completed" || w.status === "partial")
+      .map((w) => sessionLoad(w.actualDuration, w.actualRpe));
+  return {
+    planned: planned.reduce<number>((a, v) => a + (v ?? 0), 0),
+    actual: actual.reduce<number>((a, v) => a + (v ?? 0), 0),
+    plannedComplete: planned.filter((v) => v !== null).length,
+    actualComplete: actual.filter((v) => v !== null).length,
+    prescribedCount,
+    confirmedCount: workouts.filter(
+      (w) =>
+        w.status === "completed" ||
+        w.status === "partial" ||
+        w.status === "skipped",
+    ).length,
+  };
+}
+export type ExternalWork = {
+  exerciseId: string;
+  name: string;
+  convention: string;
+  reps: number | null;
+  loadVolume: number | null;
+  holdSeconds: number | null;
+  distanceMetres: number | null;
+  jumpContacts: number | null;
+  conditioningWorkSeconds: number | null;
+  kind: string;
+};
+export function externalWork(workouts: Workout[]): ExternalWork[] {
+  return workouts
+    .filter((w) => w.status === "completed" || w.status === "partial")
+    .flatMap((w) =>
+      w.rows
+        .filter((r) => r.confirmed)
+        .map((r) => {
+          const sides = r.perSide ? 2 : 1,
+            reps = r.reps === null ? null : r.reps * sides;
+          return {
+            exerciseId: r.exerciseId,
+            name: r.name,
+            convention: r.loadConvention,
+            reps,
+            loadVolume:
+              reps === null ||
+              r.loadKg === null ||
+              !["totalExternal", "perHand"].includes(r.loadConvention)
+                ? null
+                : reps *
+                  r.loadKg *
+                  (r.loadConvention === "perHand" && !r.perSide ? 2 : 1),
+            holdSeconds: r.holdSeconds === null ? null : r.holdSeconds * sides,
+            distanceMetres:
+              r.distanceMetres === null || reps === null
+                ? null
+                : r.distanceMetres * reps,
+            jumpContacts: r.kind === "jump" ? reps : null,
+            conditioningWorkSeconds:
+              r.kind === "conditioning" &&
+              r.rounds !== null &&
+              r.workSeconds !== null
+                ? r.rounds * r.workSeconds
+                : null,
+            kind: r.kind,
+          };
+        }),
+    );
+}

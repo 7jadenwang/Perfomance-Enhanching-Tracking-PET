@@ -1,30 +1,37 @@
+"""Build catalogue from visually reviewed prescriptions and bundled source images."""
 import json,re,pathlib
-records=json.load(open('/tmp/pet-ocr.json')); sessions={}; manifest=[]
-# Correct recurring OCR errors; remaining uncertain text stays visibly flagged.
-replacements={'提中':'提踵','深足':'深蹲','前足':'前蹲','后足':'后蹲','1TRM':'1RM','IRM':'1RM','静足跳':'静蹲跳','杠铃潘德雷':'杠铃潘德雷','股二':'股二','雪要':'雪橇','雪概':'雪橇','和氧':'氧','体息':'休息','躁关节':'踝关节','髋骨':'胫骨','肩腥':'肩胛','哑铃卧扒':'哑铃卧推','负和荷':'负荷'}
-for r in records:
- p=r['path']; month=pathlib.Path(p).parent.name; m=re.search(r'W(\d)D(\d)',p); key=f'{month}-W{m[1]}D{m[2]}'
- text=r['text']
- for a,b in replacements.items():text=text.replace(a,b)
- lines=text.splitlines(); lines=[l.strip() for l in lines if l.strip() and not re.search(r'次学习|铁牛|铁后|铁盾|训练计划|训练内容|^2026-|^详情|^[<>@三刹鲍借欠全]|^[—\s]+$',l)]
- text='\n'.join(lines)
- if p.endswith('April_W1D1.jpg'):text='膝上垫铃高抓\n6组 × 2次 85% 1RM\n目标 MV≥1.35 m/s\n\n1/4 深蹲\n1-5-1-5 共四组\n1次105% 1RM → 5次85% 1RM\n1次目标MV 0.25–0.35 m/s；5次目标MV≥0.65 m/s\n\n重负荷六角杠铃跳跃\n5组 × 5次 30%–40% 深蹲1RM\n目标MV 0.95–1.15 m/s\n\n克服性（单腿）等长提踵 4组 × 6秒极限发力\n弹力带快速髂腰肌提拉 3组 × 15次/侧\n杠铃片勾脚尖 3组 × 20次\n哑铃单腿RDL等长停顿 3组 × 8次\n\n能量系统\n10秒全速单车/冲刺 + 4次CMJ，执行10轮，间歇20秒'
- if p.endswith('May_W1D1.jpg'):text='90/90髋关节转换 2组 × 每侧8次\n死虫式带弹力带抗伸展 2组 × 每侧10次\n踝关节弹跳 3组 × 15次（触地时间越短越好）\n\n坐姿药球胸前推掷\n4组 × 5次（每次100%全力）\n\n侧向滑冰跳带落地稳定\n3组 × 每侧4次\n\n箱式深蹲\n4组 × 5次，70–75%深蹲1RM，RIR2\n节奏：3-1-X-1（3秒离心，箱上静止1秒，最快速度站起，顶端停顿1秒）'
- if key not in sessions:sessions[key]={'id':key,'month':month,'blockIndex':['April','May','June'].index(month),'week':int(m[1]),'day':int(m[2]),'optional':'Optional' in p,'sourceText':'','sources':[],'exercises':[]}
- s=sessions[key];s['sources'].append(p)
- supporting='_Sheet' in p
- if not supporting:s['sourceText']+=('\n\n' if s['sourceText'] else '')+text
- manifest.append({'path':p,'sessionId':key,'supporting':supporting,'review':'image-inspected; OCR uncertain fields flagged'})
-for s in sessions.values():
- # Keep whole prescription blocks for complex waves/clusters; never invent their set totals.
- chunks=re.split(r'\n\s*\n',s['sourceText'])
- if len(chunks)==1:chunks=[s['sourceText']]
- for i,chunk in enumerate(chunks):
-  lines=chunk.splitlines(); name=lines[0][:100]; sets=re.search(r'(\d+)\s*组\s*[x×X]\s*(\d+)(?:\s*[-–]\s*(\d+))?\s*次',chunk)
-  kind='hold' if '等长' in name or '支撑' in name else 'conditioning' if any(x in name for x in ['划船机','自行车','能量系统','代谢','间歇']) else 'sprint' if '冲刺' in name or '加速跑' in name else 'jump' if any(x in name for x in ['跳','Pogo','CMJ']) else 'throw' if '抛' in name or '掷' in name else 'strength'
-  s['exercises'].append({'id':s['id']+f'-{i+1}','name':name,'sourceText':chunk,'kind':kind,'sets':[int(sets[1]),int(sets[1])] if sets else None,'reps':[int(sets[2]),int(sets[3] or sets[2])] if sets else None,'perSide':bool(re.search(r'/侧|每侧|每一侧',chunk)),'loadPercent':None,'referenceExerciseId':None,'tempo':(re.search(r'\d[-:]\d[-:][xX\d][-:]\d',chunk) or [''])[0] or None,'velocityTarget':None,'velocityMetric':None,'restSeconds':None,'holdSeconds':None,'distanceMetres':None,'workSeconds':None,'rounds':None,'optional':'有条件' in chunk or '选做' in chunk,'groupId':None,'ambiguity':'Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.','purpose':'conditioning' if kind=='conditioning' else 'other'})
-sessions=sorted(sessions.values(),key=lambda s:(s['blockIndex'],s['week'],s['day']))
-data={'version':'april-june-v1','sourceCommit':'6e89e968fffe011c76eccb2f697237572eacdf8a','sources':[r['path'] for r in records],'sessions':sessions}
-pathlib.Path('src/program/catalog.json').write_text(json.dumps(data,ensure_ascii=False,indent=2))
-pathlib.Path('src/program/source-manifest.json').write_text(json.dumps({'sourceCommit':data['sourceCommit'],'entries':manifest},ensure_ascii=False,indent=2))
-print(len(records),'source images;',len(sessions),'sessions')
+curated=json.load(open('scripts/reviewed-prescriptions.json'));files=sorted(pathlib.Path('public/program').glob('*/*.jpg'));groups={};entries=[]
+for f in files:
+ m=re.search(r'W(\d)D(\d)',f.name);key=f'{f.parent.name}-W{m[1]}D{m[2]}';p=str(f).removeprefix('public/');groups.setdefault(key,[]).append(p);entries.append({'path':p,'sessionId':key,'supporting':'_Sheet' in p,'review':'visually-inspected; reviewed summary; original retained'})
+def rng(text,unit):
+ m=re.search(r'(\d+(?:\.\d+)?)(?:[–-](\d+(?:\.\d+)?))?'+unit,text)
+ return [float(m[1]),float(m[2] or m[1])] if m else None
+sessions=[]
+for key,sources in groups.items():
+ if key not in curated:raise ValueError('Missing reviewed prescription '+key)
+ month=key.split('-')[0];w,d=map(int,re.search(r'W(\d)D(\d)',key).groups());blocks=[]
+ for part in curated[key].split('；'):
+  if '｜' in part:blocks.append(part)
+  elif blocks:blocks[-1]+='；'+part
+ exercises=[]
+ for i,chunk in enumerate(blocks):
+  name,details=chunk.split('｜',1);kind='hold' if any(x in name for x in ['等长','支撑','悬挂','悬垂']) and not any(x in name for x in ['高翻','抓举','引体','触杠','举腿']) else 'conditioning' if any(x in name for x in ['划船机','自行车','单车','风扇车','能量系统','代谢','间歇','快慢跑','有氧','冷身']) else 'sprint' if any(x in name for x in ['跑','冲刺','加速','行走','雪橇']) else 'jump' if any(x in name for x in ['跳','Pogo','CMJ','DJ','SJ']) else 'throw' if any(x in name for x in ['抛','掷','药球砸']) else 'strength'
+  if name in ['训练时间','原图指导','执行提示','新牛说明','无雪橇/阻力设备时替代','测试记录','原文说明','复合循环','第一复合组','第二复合组','第三复合组','第三循环','第四循环','第一循环','群聚循环']:kind='other'
+  complex_=any(x in name+details for x in ['群聚','两波','三波','Wave','循环','计数','需确认','组合'])
+  sets=rng(details,'组') or (rng(details,'趟') if kind=='sprint' else None);reps=rng(details,'次')
+  percent=re.search(r'(\d+(?:\.\d+)?)(?:[–-](\d+(?:\.\d+)?))?%([^，；]*?)1RM',details)
+  load=[float(percent[1]),float(percent[2] or percent[1])] if percent and not complex_ else None
+  ref=(percent[3] or None) if percent else None
+  v=re.search(r'MV([≥>]?)(\d+(?:\.\d+)?)(?:[–-](\d+(?:\.\d+)?))?m/s',details)
+  velocity=[float(v[2]),float(v[3] or v[2])] if v and not complex_ else None
+  tempo=re.search(r'\d[-:/]\d[-:/][Xx\d](?:[-:/]\d)?',details)
+  rest=re.search(r'休(?:息)?(\d+(?:\.\d+)?)(?:[–-](\d+(?:\.\d+)?))?(秒|分钟)',details)
+  restRange=[float(rest[1])*(60 if rest[3]=='分钟' else 1),float(rest[2] or rest[1])*(60 if rest[3]=='分钟' else 1)] if rest and not complex_ else None
+  hold=rng(details,'秒') if kind=='hold' else None
+  distance=rng(name,'米') or rng(details,'米') if kind=='sprint' else None
+  work=rng(details,'秒') if kind=='conditioning' else None
+  ambiguity='Complex structure: use original instructions; record each actual set separately.' if complex_ else '1RM reference is not specified by the source.' if load and not ref else None
+  exercises.append({'id':key+f'-{i+1}','name':name,'sourceText':chunk.replace('｜','\n'),'kind':kind,'sets':None if complex_ else sets,'reps':None if complex_ else reps,'perSide':bool(re.search(r'/侧|每侧|每方向|/手',details)),'loadPercent':load,'referenceExerciseId':ref,'tempo':tempo[0] if tempo else None,'velocityTarget':velocity,'velocityMetric':None,'velocityComparison':'min' if v and v[1] else 'range','restSeconds':restRange,'holdSeconds':hold,'distanceMetres':distance,'workSeconds':work,'rounds':None if complex_ else rng(details,'轮'),'optional':any(x in name+details for x in ['选做','自愿','有条件']),'groupId':key+'-complex' if complex_ else None,'ambiguity':ambiguity,'purpose':'generalAerobic' if kind=='conditioning' and any(x in name for x in ['冷身','有氧']) else 'conditioning' if kind=='conditioning' and '代谢' not in name else 'other'})
+ sessions.append({'id':key,'month':month,'blockIndex':['April','May','June'].index(month),'week':w,'day':d,'optional':any('Optional' in p for p in sources),'sourceText':curated[key].replace('；','\n\n').replace('｜','\n'),'sources':sources,'exercises':exercises})
+p={'version':'april-june-v1','sourceCommit':'6e89e968fffe011c76eccb2f697237572eacdf8a','sources':[e['path'] for e in entries],'sessions':sorted(sessions,key=lambda s:(s['blockIndex'],s['week'],s['day']))}
+pathlib.Path('src/program/catalog.json').write_text(json.dumps(p,ensure_ascii=False,indent=2));pathlib.Path('src/program/source-manifest.json').write_text(json.dumps({'sourceCommit':p['sourceCommit'],'entries':entries},ensure_ascii=False,indent=2));print(len(entries),'images;',len(sessions),'sessions;',sum(len(s['exercises']) for s in sessions),'prescription blocks')
