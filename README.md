@@ -2,6 +2,8 @@
 
 A phone-friendly web app for following the April–June training program, comparing planned and actual training, logging measured lifting velocity, and monitoring morning CMJ trends.
 
+The repository’s original longer-term goals—creating monthly/quarterly plans and evaluating performance—remain future work. This version establishes the logging and measurement foundation needed to assess those features.
+
 ## Run locally
 
 Use Node.js 24 or later.
