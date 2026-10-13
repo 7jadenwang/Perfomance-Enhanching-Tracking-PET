@@ -17,6 +17,7 @@ test("caches program images and supports offline records and backups", async ({
   await page.getByLabel("CMJ trial 2 (cm)").fill("31");
   await page.getByLabel("CMJ trial 3 (cm)").fill("32");
   await page.getByRole("button", { name: "Save morning" }).click();
+  await expect(page.getByText("31.0 cm", { exact: true })).toBeVisible();
   await page.reload();
   await expect(page.getByText("31.0 cm", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Program", exact: true }).click();
