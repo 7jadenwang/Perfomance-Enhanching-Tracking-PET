@@ -1,0 +1,3113 @@
+{
+  "version": "april-june-v1",
+  "sourceCommit": "6e89e968fffe011c76eccb2f697237572eacdf8a",
+  "sources": [
+    "program/April/April_W1D1.jpg",
+    "program/April/April_W1D2.jpg",
+    "program/April/April_W1D3.jpg",
+    "program/April/April_W1D5.jpg",
+    "program/April/April_W1D6.jpg",
+    "program/April/April_W2D1.jpg",
+    "program/April/April_W2D2.jpg",
+    "program/April/April_W2D4.jpg",
+    "program/April/April_W2D4_Sheet.jpg",
+    "program/April/April_W2D5.jpg",
+    "program/April/April_W2D7.jpg",
+    "program/April/April_W3D1.jpg",
+    "program/April/April_W3D2.jpg",
+    "program/April/April_W3D3.jpg",
+    "program/April/April_W3D5.jpg",
+    "program/April/April_W3D6.jpg",
+    "program/April/April_W4D1.jpg",
+    "program/April/April_W4D2.jpg",
+    "program/April/April_W4D4.jpg",
+    "program/April/April_W4D7_Optional.jpg",
+    "program/June/June_W1D1.jpg",
+    "program/June/June_W1D1_Continued.jpg",
+    "program/June/June_W1D2.jpg",
+    "program/June/June_W1D4.jpg",
+    "program/June/June_W1D5.jpg",
+    "program/June/June_W1D5_Continued.jpg",
+    "program/June/June_W1D5_Continued_2.jpg",
+    "program/June/June_W1D5_Continued_3.jpg",
+    "program/June/June_W1D5_Continued_4.jpg",
+    "program/June/June_W1D6.jpg",
+    "program/June/June_W2D1.jpg",
+    "program/June/June_W2D1_Continued.jpg",
+    "program/June/June_W2D2.jpg",
+    "program/June/June_W2D2_Continued.jpg",
+    "program/June/June_W2D2_Continued_2.jpg",
+    "program/June/June_W2D3.jpg",
+    "program/June/June_W2D5.jpg",
+    "program/June/June_W2D6.jpg",
+    "program/June/June_W3D1.jpg",
+    "program/June/June_W3D1_Continued.jpg",
+    "program/June/June_W3D1_Continued_2.jpg",
+    "program/June/June_W3D2.jpg",
+    "program/June/June_W3D2_Continued.jpg",
+    "program/June/June_W3D4.jpg",
+    "program/June/June_W3D4_Continued.jpg",
+    "program/June/June_W3D5.jpg",
+    "program/June/June_W3D6.jpg",
+    "program/June/June_W4D1.jpg",
+    "program/June/June_W4D3.jpg",
+    "program/June/June_W4D5.jpg",
+    "program/June/June_W4D6.jpg",
+    "program/May/May_W1D1.jpg",
+    "program/May/May_W1D1_Continued.jpg",
+    "program/May/May_W1D2.jpg",
+    "program/May/May_W1D4.jpg",
+    "program/May/May_W1D5.jpg",
+    "program/May/May_W1D6.jpg",
+    "program/May/May_W2D1.jpg",
+    "program/May/May_W2D2.jpg",
+    "program/May/May_W2D4.jpg",
+    "program/May/May_W2D5.jpg",
+    "program/May/May_W2D6.jpg",
+    "program/May/May_W2D6_Continued.jpg",
+    "program/May/May_W3D1.jpg",
+    "program/May/May_W3D2.jpg",
+    "program/May/May_W3D4.jpg",
+    "program/May/May_W3D4_Continued.jpg",
+    "program/May/May_W3D5.jpg",
+    "program/May/May_W3D6.jpg",
+    "program/May/May_W3D6_Continued.jpg",
+    "program/May/May_W4D1.jpg",
+    "program/May/May_W4D1_Continued.jpg",
+    "program/May/May_W4D1_Continued_2.jpg",
+    "program/May/May_W4D2.jpg",
+    "program/May/May_W4D4.jpg",
+    "program/May/May_W4D4_Continued.jpg",
+    "program/May/May_W4D4_Continued_2.jpg",
+    "program/May/May_W4D5.jpg"
+  ],
+  "sessions": [
+    {
+      "id": "April-W1D1",
+      "month": "April",
+      "blockIndex": 0,
+      "week": 1,
+      "day": 1,
+      "optional": false,
+      "sourceText": "膝上垫铃高抓\n6组 × 2次 85% 1RM\n目标 MV≥1.35 m/s\n\n1/4 深蹲\n1-5-1-5 共四组\n1次105% 1RM → 5次85% 1RM\n1次目标MV 0.25–0.35 m/s；5次目标MV≥0.65 m/s\n\n重负荷六角杠铃跳跃\n5组 × 5次 30%–40% 深蹲1RM\n目标MV 0.95–1.15 m/s\n\n克服性（单腿）等长提踵 4组 × 6秒极限发力\n弹力带快速髂腰肌提拉 3组 × 15次/侧\n杠铃片勾脚尖 3组 × 20次\n哑铃单腿RDL等长停顿 3组 × 8次\n\n能量系统\n10秒全速单车/冲刺 + 4次CMJ，执行10轮，间歇20秒",
+      "sources": [
+        "program/April/April_W1D1.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "April-W1D1-1",
+          "name": "膝上垫铃高抓",
+          "sourceText": "膝上垫铃高抓\n6组 × 2次 85% 1RM\n目标 MV≥1.35 m/s",
+          "kind": "strength",
+          "sets": [
+            6,
+            6
+          ],
+          "reps": [
+            2,
+            2
+          ],
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        },
+        {
+          "id": "April-W1D1-2",
+          "name": "1/4 深蹲",
+          "sourceText": "1/4 深蹲\n1-5-1-5 共四组\n1次105% 1RM → 5次85% 1RM\n1次目标MV 0.25–0.35 m/s；5次目标MV≥0.65 m/s",
+          "kind": "strength",
+          "sets": null,
+          "reps": null,
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": "1-5-1-5",
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        },
+        {
+          "id": "April-W1D1-3",
+          "name": "重负荷六角杠铃跳跃",
+          "sourceText": "重负荷六角杠铃跳跃\n5组 × 5次 30%–40% 深蹲1RM\n目标MV 0.95–1.15 m/s",
+          "kind": "jump",
+          "sets": [
+            5,
+            5
+          ],
+          "reps": [
+            5,
+            5
+          ],
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        },
+        {
+          "id": "April-W1D1-4",
+          "name": "克服性（单腿）等长提踵 4组 × 6秒极限发力",
+          "sourceText": "克服性（单腿）等长提踵 4组 × 6秒极限发力\n弹力带快速髂腰肌提拉 3组 × 15次/侧\n杠铃片勾脚尖 3组 × 20次\n哑铃单腿RDL等长停顿 3组 × 8次",
+          "kind": "hold",
+          "sets": [
+            3,
+            3
+          ],
+          "reps": [
+            15,
+            15
+          ],
+          "perSide": true,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        },
+        {
+          "id": "April-W1D1-5",
+          "name": "能量系统",
+          "sourceText": "能量系统\n10秒全速单车/冲刺 + 4次CMJ，执行10轮，间歇20秒",
+          "kind": "conditioning",
+          "sets": null,
+          "reps": null,
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "conditioning"
+        }
+      ]
+    },
+    {
+      "id": "April-W1D2",
+      "month": "April",
+      "blockIndex": 0,
+      "week": 1,
+      "day": 2,
+      "optional": false,
+      "sourceText": "悬垂抓举\n5组x5次 70% - 75% 1RM\nMV 要求>1.45 m/s\n离心分腿蹲\n4组 x 10 次/侧\nRPE 8/RIR2-3\n节奏: 5-0-X-0\n负重/早安式\n3组x8次RPE8\n负重静蹲跳\n5组x6次\n自重 + 10% 体重哑铃\n软落地跳接连续3次CMJ4组x4次\n弹力带辅助pogo跳3 组 x 10 次",
+      "sources": [
+        "program/April/April_W1D2.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "April-W1D2-1",
+          "name": "悬垂抓举",
+          "sourceText": "悬垂抓举\n5组x5次 70% - 75% 1RM\nMV 要求>1.45 m/s\n离心分腿蹲\n4组 x 10 次/侧\nRPE 8/RIR2-3\n节奏: 5-0-X-0\n负重/早安式\n3组x8次RPE8\n负重静蹲跳\n5组x6次\n自重 + 10% 体重哑铃\n软落地跳接连续3次CMJ4组x4次\n弹力带辅助pogo跳3 组 x 10 次",
+          "kind": "strength",
+          "sets": [
+            5,
+            5
+          ],
+          "reps": [
+            5,
+            5
+          ],
+          "perSide": true,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": "5-0-X-0",
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "April-W1D3",
+      "month": "April",
+      "blockIndex": 0,
+      "week": 1,
+      "day": 3,
+      "optional": false,
+      "sourceText": "摆臂哑铃CMJ\n5组x5次每手持 5kg或以下哑铃\n抓举宽握高拉\n4组x4次85% 1RM\n站姿/错步六角杠/RDL\n4组 x 6 次/侧\n60-75% 1RM\n炮简单臂借力推\n4组 x 6 次/侧\nRPE 8.5\n后撤雪橇拖搜 (有条件者完成)\n4组 x 20 米/侧\n负重起坐\n4组x6次\n克服性等长1/2深蹲\n3组 x 5 秒极限发力",
+      "sources": [
+        "program/April/April_W1D3.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "April-W1D3-1",
+          "name": "摆臂哑铃CMJ",
+          "sourceText": "摆臂哑铃CMJ\n5组x5次每手持 5kg或以下哑铃\n抓举宽握高拉\n4组x4次85% 1RM\n站姿/错步六角杠/RDL\n4组 x 6 次/侧\n60-75% 1RM\n炮简单臂借力推\n4组 x 6 次/侧\nRPE 8.5\n后撤雪橇拖搜 (有条件者完成)\n4组 x 20 米/侧\n负重起坐\n4组x6次\n克服性等长1/2深蹲\n3组 x 5 秒极限发力",
+          "kind": "jump",
+          "sets": [
+            5,
+            5
+          ],
+          "reps": [
+            5,
+            5
+          ],
+          "perSide": true,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": true,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "April-W1D5",
+      "month": "April",
+      "blockIndex": 0,
+      "week": 1,
+      "day": 5,
+      "optional": false,
+      "sourceText": "循环执行 4 大组。大组间严格休息 4-5 分钟\n大组内的 4 个动作，动作间有 15-20 秒的休息时间\n动作 1 背深蹲/架上蹲\n2次 85% 1RM\n动作 2 软落地纵跳 (箱高低于30cm)\n3次 (老牛可从 45cm 箱下落)\n动作 3负重跳跃\n4次 不超过30% 1RM\n动作 4弹力带辅助跳\n5次\n悬垂腿脚触枉3 组 x 8-10 次\n负重引体 3组x8\n坐姿哑铃摆臂二头弯举4组 x 12 次",
+      "sources": [
+        "program/April/April_W1D5.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "April-W1D5-1",
+          "name": "循环执行 4 大组。大组间严格休息 4-5 分钟",
+          "sourceText": "循环执行 4 大组。大组间严格休息 4-5 分钟\n大组内的 4 个动作，动作间有 15-20 秒的休息时间\n动作 1 背深蹲/架上蹲\n2次 85% 1RM\n动作 2 软落地纵跳 (箱高低于30cm)\n3次 (老牛可从 45cm 箱下落)\n动作 3负重跳跃\n4次 不超过30% 1RM\n动作 4弹力带辅助跳\n5次\n悬垂腿脚触枉3 组 x 8-10 次\n负重引体 3组x8\n坐姿哑铃摆臂二头弯举4组 x 12 次",
+          "kind": "strength",
+          "sets": [
+            3,
+            3
+          ],
+          "reps": [
+            8,
+            10
+          ],
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "April-W1D6",
+      "month": "April",
+      "blockIndex": 0,
+      "week": 1,
+      "day": 6,
+      "optional": false,
+      "sourceText": "1.50m加速跑x4\n2.阻力跑50mx5 体重30%以上\n3.触胸跳 12x4最大努力\n4.50m推雪橇x6轻阻力 体重10%以下\n若没有雪机与阻力跑设备，则跳过两项完成以下内容:\n软落地下落跳x2\n4组 x 5次\n30cm - 45cm Bk\n坐姿跳箱 (可负重不超过10%体重)\n4组 x 6次\n侧向滑冰跳\n4组x12 (一共)",
+      "sources": [
+        "program/April/April_W1D6.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "April-W1D6-1",
+          "name": "1.50m加速跑x4",
+          "sourceText": "1.50m加速跑x4\n2.阻力跑50mx5 体重30%以上\n3.触胸跳 12x4最大努力\n4.50m推雪橇x6轻阻力 体重10%以下\n若没有雪机与阻力跑设备，则跳过两项完成以下内容:\n软落地下落跳x2\n4组 x 5次\n30cm - 45cm Bk\n坐姿跳箱 (可负重不超过10%体重)\n4组 x 6次\n侧向滑冰跳\n4组x12 (一共)",
+          "kind": "sprint",
+          "sets": [
+            4,
+            4
+          ],
+          "reps": [
+            5,
+            5
+          ],
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "April-W2D1",
+      "month": "April",
+      "blockIndex": 0,
+      "week": 2,
+      "day": 1,
+      "optional": false,
+      "sourceText": "—               Ss      3    a3      rs    oo\n高翻 (RES)\n组数(3-2-1, 3-2-1):\nWave 1: 3次 80% 1RM 一 2次 85% 一 1次 90%\nWave 2: 3次 82.5% 一2次 87.5% 一 1次 92.5% - 95%\n或\n沙袋/沙球高翻\n组数 (3-2-1, 3-2-1):\nWave 1: 3次 中重一2次 重一1次 RB\nWave2: 3次 重一 2次 极重 WR 挑战重量 (比如抱起 80kg-100kg\n的沙袋过肩)\n组数(4-3-2, 4-3-2):\nWave 1: 4次 75% 一3次 80% 一2次 85%\nWave 2: 4次 77.5% 一 3次 82.5% 一 2次 87.5%\n反向弹力带深蹲\n组数(3-2-1, 3-2-1):\nWave 1: 3次 90% (顶部重量) 一 2次 100% 一 1次 105%\nWave 2: 3次 95% 一2次 105% 一1次 105%+\n中立握单侧哑铃卧推\n4组x5次 (RARER)\n悬垂腿触杠 4组 8-10 次\n大重量农夫行走3组x30m",
+      "sources": [
+        "program/April/April_W2D1.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "April-W2D1-1",
+          "name": "—               Ss      3    a3      rs    oo",
+          "sourceText": "—               Ss      3    a3      rs    oo\n高翻 (RES)\n组数(3-2-1, 3-2-1):\nWave 1: 3次 80% 1RM 一 2次 85% 一 1次 90%\nWave 2: 3次 82.5% 一2次 87.5% 一 1次 92.5% - 95%\n或\n沙袋/沙球高翻\n组数 (3-2-1, 3-2-1):\nWave 1: 3次 中重一2次 重一1次 RB\nWave2: 3次 重一 2次 极重 WR 挑战重量 (比如抱起 80kg-100kg\n的沙袋过肩)\n组数(4-3-2, 4-3-2):\nWave 1: 4次 75% 一3次 80% 一2次 85%\nWave 2: 4次 77.5% 一 3次 82.5% 一 2次 87.5%\n反向弹力带深蹲\n组数(3-2-1, 3-2-1):\nWave 1: 3次 90% (顶部重量) 一 2次 100% 一 1次 105%\nWave 2: 3次 95% 一2次 105% 一1次 105%+\n中立握单侧哑铃卧推\n4组x5次 (RARER)\n悬垂腿触杠 4组 8-10 次\n大重量农夫行走3组x30m",
+          "kind": "strength",
+          "sets": [
+            4,
+            4
+          ],
+          "reps": [
+            5,
+            5
+          ],
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "April-W2D2",
+      "month": "April",
+      "blockIndex": 0,
+      "week": 2,
+      "day": 2,
+      "optional": false,
+      "sourceText": "一一     s       s    x      oa\nARE AP IE REST\nWave 3-2-1 / 3-2-1\nWave1: 3 85% — 290% — 1 95%\nWave: 3 90% > 295% — 1 95% (高翻 1RM)\n架上深蹲 (1/2底部启动)\nWave 3-2-1 /3-2-1\nWave1:3 80% — 2 85% 一190%\nWave2: 3 85% — 290% — 195%\n架上支撑借力推\n4组 x (1+1+1)每次动作间休息 15 s\n100% - 105% 实力推 1RM\nREM SER\n4组x6次\nRPE 8.5/RIR2\n弹力带辅助收腹 3 组 x 15 次\n负重起坐3组 x 15 次\n克服性等长提踵 3组x20s",
+      "sources": [
+        "program/April/April_W2D2.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "April-W2D2-1",
+          "name": "一一     s       s    x      oa",
+          "sourceText": "一一     s       s    x      oa\nARE AP IE REST\nWave 3-2-1 / 3-2-1\nWave1: 3 85% — 290% — 1 95%\nWave: 3 90% > 295% — 1 95% (高翻 1RM)\n架上深蹲 (1/2底部启动)\nWave 3-2-1 /3-2-1\nWave1:3 80% — 2 85% 一190%\nWave2: 3 85% — 290% — 195%\n架上支撑借力推\n4组 x (1+1+1)每次动作间休息 15 s\n100% - 105% 实力推 1RM\nREM SER\n4组x6次\nRPE 8.5/RIR2\n弹力带辅助收腹 3 组 x 15 次\n负重起坐3组 x 15 次\n克服性等长提踵 3组x20s",
+          "kind": "strength",
+          "sets": [
+            4,
+            4
+          ],
+          "reps": [
+            6,
+            6
+          ],
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "April-W2D4",
+      "month": "April",
+      "blockIndex": 0,
+      "week": 2,
+      "day": 4,
+      "optional": false,
+      "sourceText": "Pogo Jump\n4组x20次\n第1组 (纯垂直) 一 第2组 (前后小幅跳) 一 第3组 (左右横移跳) 一\n第4组 (垂直)\n连续箭步蹲跳\n3 28 x10\n刚性落地+纵跳\n4组x4次 (寻找最佳箱高)\n3个收腹跳跳接+5 米冲刺\n4组x4个\n滑冰侧跳连续\n3组x10m (每侧)\n弹力带辅助跳接自重CMJ\n4组 x (3 次弹力带 + 2 次自重)\n克服性等长提踵\n3组x8秒",
+      "sources": [
+        "program/April/April_W2D4.jpg",
+        "program/April/April_W2D4_Sheet.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "April-W2D4-1",
+          "name": "Pogo Jump",
+          "sourceText": "Pogo Jump\n4组x20次\n第1组 (纯垂直) 一 第2组 (前后小幅跳) 一 第3组 (左右横移跳) 一\n第4组 (垂直)\n连续箭步蹲跳\n3 28 x10\n刚性落地+纵跳\n4组x4次 (寻找最佳箱高)\n3个收腹跳跳接+5 米冲刺\n4组x4个\n滑冰侧跳连续\n3组x10m (每侧)\n弹力带辅助跳接自重CMJ\n4组 x (3 次弹力带 + 2 次自重)\n克服性等长提踵\n3组x8秒",
+          "kind": "jump",
+          "sets": [
+            4,
+            4
+          ],
+          "reps": [
+            20,
+            20
+          ],
+          "perSide": true,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "April-W2D5",
+      "month": "April",
+      "blockIndex": 0,
+      "week": 2,
+      "day": 5,
+      "optional": false,
+      "sourceText": "刚性落地 (稳定2-3s)\n5组Xx6\n软落地接水平跳x3\n5组x3次\n连续水平跨步跳\n4组 x 303K\n弹力带辅助立定跳\n4组x4次\nAEL深蹲跳 (负重不超过10kg)\n5组 x 4次\n悬垂直腿触枉 3组 x 10 次\n药球过顶前抛3组 x 8 次\n立定跳远 + 10 米冲刺: 连续执行 8 轮，每轮间休息 30 秘",
+      "sources": [
+        "program/April/April_W2D5.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "April-W2D5-1",
+          "name": "刚性落地 (稳定2-3s)",
+          "sourceText": "刚性落地 (稳定2-3s)\n5组Xx6\n软落地接水平跳x3\n5组x3次\n连续水平跨步跳\n4组 x 303K\n弹力带辅助立定跳\n4组x4次\nAEL深蹲跳 (负重不超过10kg)\n5组 x 4次\n悬垂直腿触枉 3组 x 10 次\n药球过顶前抛3组 x 8 次\n立定跳远 + 10 米冲刺: 连续执行 8 轮，每轮间休息 30 秘",
+          "kind": "strength",
+          "sets": [
+            5,
+            5
+          ],
+          "reps": [
+            3,
+            3
+          ],
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "April-W2D7",
+      "month": "April",
+      "blockIndex": 0,
+      "week": 2,
+      "day": 7,
+      "optional": false,
+      "sourceText": "30m冲刺 5\n单腿冲刺10m 5\n侧向冲刺 10m 4组x每侧\n早安式 15 2组\n横向钻栏架 10 2组\n打墙抬腿10次=交替 3组\n400m 一 休息3分钟 一 300m 一 休息2分钟 一 200m 一 休息60秒 一 两\n轮 大组间歇5min\n原地SJ 45 (自由分组)\nPogo jump 200 (自由分组)",
+      "sources": [
+        "program/April/April_W2D7.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "April-W2D7-1",
+          "name": "30m冲刺 5",
+          "sourceText": "30m冲刺 5\n单腿冲刺10m 5\n侧向冲刺 10m 4组x每侧\n早安式 15 2组\n横向钻栏架 10 2组\n打墙抬腿10次=交替 3组\n400m 一 休息3分钟 一 300m 一 休息2分钟 一 200m 一 休息60秒 一 两\n轮 大组间歇5min\n原地SJ 45 (自由分组)\nPogo jump 200 (自由分组)",
+          "kind": "sprint",
+          "sets": null,
+          "reps": null,
+          "perSide": true,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "April-W3D1",
+      "month": "April",
+      "blockIndex": 0,
+      "week": 3,
+      "day": 1,
+      "optional": false,
+      "sourceText": "—                s       s    »      ea\n向心膝上熊猫拉:\nWave:\nW1: 3 85% > 290% > 195%\nW2: 390% > 295% 一 1 100% (基于高翻 1RM)\n(FAB) Bs\n4组 x 4次6 秒离心\n离心阶段 110% 1RM，向心阶段 75% 1RM\n垫高前脚掌 RDL\n4组x8次RIR2\n轻负荷六角杠铃跳跃\n5组x4次\n20% - 30% 1RM\nWME SS Phin\n4组x3次\n手持 5-8kg 哑铃\n大重量农夫行走3 组 x 40 米\n悬垂触杠\n4组x12次",
+      "sources": [
+        "program/April/April_W3D1.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "April-W3D1-1",
+          "name": "—                s       s    »      ea",
+          "sourceText": "—                s       s    »      ea\n向心膝上熊猫拉:\nWave:\nW1: 3 85% > 290% > 195%\nW2: 390% > 295% 一 1 100% (基于高翻 1RM)\n(FAB) Bs\n4组 x 4次6 秒离心\n离心阶段 110% 1RM，向心阶段 75% 1RM\n垫高前脚掌 RDL\n4组x8次RIR2\n轻负荷六角杠铃跳跃\n5组x4次\n20% - 30% 1RM\nWME SS Phin\n4组x3次\n手持 5-8kg 哑铃\n大重量农夫行走3 组 x 40 米\n悬垂触杠\n4组x12次",
+          "kind": "strength",
+          "sets": [
+            4,
+            4
+          ],
+          "reps": [
+            4,
+            4
+          ],
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "April-W3D2",
+      "month": "April",
+      "blockIndex": 0,
+      "week": 3,
+      "day": 2,
+      "optional": false,
+      "sourceText": "第三周第二天可测试内容\nPogo Jump 3 48 x 15 次\nA-Skip (高抬腿跳跃前进) 2组 x 15 2K\n杠铃深蹲/六角杠硬拉\n或等长深蹲 (1/4角度)\n做1组，仅 2 次重复\n每次间隔1min\n85% - 90% 1RM\nKE 3 到 4 分钟\n原地CMJ进行 2 次 80% 最大努力跳跃\n正式跳跃\n5到 10 次极限跳跃\n每次跳跃之间，休息 90 秒 - 120 秒\n弹力带助力CMJ\n4组x5次",
+      "sources": [
+        "program/April/April_W3D2.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "April-W3D2-1",
+          "name": "第三周第二天可测试内容",
+          "sourceText": "第三周第二天可测试内容\nPogo Jump 3 48 x 15 次\nA-Skip (高抬腿跳跃前进) 2组 x 15 2K\n杠铃深蹲/六角杠硬拉\n或等长深蹲 (1/4角度)\n做1组，仅 2 次重复\n每次间隔1min\n85% - 90% 1RM\nKE 3 到 4 分钟\n原地CMJ进行 2 次 80% 最大努力跳跃\n正式跳跃\n5到 10 次极限跳跃\n每次跳跃之间，休息 90 秒 - 120 秒\n弹力带助力CMJ\n4组x5次",
+          "kind": "strength",
+          "sets": [
+            4,
+            4
+          ],
+          "reps": [
+            5,
+            5
+          ],
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "April-W3D3",
+      "month": "April",
+      "blockIndex": 0,
+      "week": 3,
+      "day": 3,
+      "optional": false,
+      "sourceText": "中腿拉\n4组x6次\n110% - 120% (基于高翻1RM)\n底端深蹲(1/2处)\n5组x4次\n80% - 87.5% (基于深蹲 1RM)\n向心实力推\n80% - 85% (基于站姿实力推 1RM)\n4组x4次\n反向弹力带前蹲\n杠铃总重 (顶部锁定重量) 105% (基于前蹲 1RM)\n当弹力带拉伸后，底部体感约为 80% - 85%1RM\n4组x3次\n地雷管错步上推\n4组x5次/侧\n泽奇式单腿蹲\n3组x6 次/侧\n半跪姿单臂伐木\n3组 x 10 次/侧",
+      "sources": [
+        "program/April/April_W3D3.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "April-W3D3-1",
+          "name": "中腿拉",
+          "sourceText": "中腿拉\n4组x6次\n110% - 120% (基于高翻1RM)\n底端深蹲(1/2处)\n5组x4次\n80% - 87.5% (基于深蹲 1RM)\n向心实力推\n80% - 85% (基于站姿实力推 1RM)\n4组x4次\n反向弹力带前蹲\n杠铃总重 (顶部锁定重量) 105% (基于前蹲 1RM)\n当弹力带拉伸后，底部体感约为 80% - 85%1RM\n4组x3次\n地雷管错步上推\n4组x5次/侧\n泽奇式单腿蹲\n3组x6 次/侧\n半跪姿单臂伐木\n3组 x 10 次/侧",
+          "kind": "strength",
+          "sets": [
+            4,
+            4
+          ],
+          "reps": [
+            6,
+            6
+          ],
+          "perSide": true,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "April-W3D5",
+      "month": "April",
+      "blockIndex": 0,
+      "week": 3,
+      "day": 5,
+      "optional": false,
+      "sourceText": "复合组 (共5轮)\nAVENE: STEAL 1 个主项，只人允许休息 20 秒\nANS: 4 个主项全部做完自作 1 轮。每轮之间休息 4 OEP\n85-90% 1RM 膝上熊猫拉 3 次\n(休息 20 #)\n负重静蹲跳5 次\n(休息 20 BY)\n最大努力等长深蹲 (1/4处) 10s 4次\n(休息 20 秒)\n六角杠铃连续跳跃2096 深蹲1RM)4 次\n(休息 20 8)\n软落地接立定远跳 3 次。从 30cm 跳箱落下\n以下单独完成:\n泽奇弓步蹲 3 组 x 30 秒/侧\n弹力带帕洛夫前推 3 组 x 10次/侧\n哥本哈根 3组x12 (动态)",
+      "sources": [
+        "program/April/April_W3D5.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "April-W3D5-1",
+          "name": "复合组 (共5轮)",
+          "sourceText": "复合组 (共5轮)\nAVENE: STEAL 1 个主项，只人允许休息 20 秒\nANS: 4 个主项全部做完自作 1 轮。每轮之间休息 4 OEP\n85-90% 1RM 膝上熊猫拉 3 次\n(休息 20 #)\n负重静蹲跳5 次\n(休息 20 BY)\n最大努力等长深蹲 (1/4处) 10s 4次\n(休息 20 秒)\n六角杠铃连续跳跃2096 深蹲1RM)4 次\n(休息 20 8)\n软落地接立定远跳 3 次。从 30cm 跳箱落下\n以下单独完成:\n泽奇弓步蹲 3 组 x 30 秒/侧\n弹力带帕洛夫前推 3 组 x 10次/侧\n哥本哈根 3组x12 (动态)",
+          "kind": "strength",
+          "sets": [
+            3,
+            3
+          ],
+          "reps": [
+            10,
+            10
+          ],
+          "perSide": true,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "April-W3D6",
+      "month": "April",
+      "blockIndex": 0,
+      "week": 3,
+      "day": 6,
+      "optional": false,
+      "sourceText": "1.100m*8冲刺跑 = (HYROXPKA9200M*6+1600m 75 S88)\nrpe8\n2.5*4药球上抛 EN\n3.跨步跳100m*2\n4 .壶铃思摆15*4",
+      "sources": [
+        "program/April/April_W3D6.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "April-W3D6-1",
+          "name": "1.100m*8冲刺跑 = (HYROXPKA9200M*6+1600m 75 S88)",
+          "sourceText": "1.100m*8冲刺跑 = (HYROXPKA9200M*6+1600m 75 S88)\nrpe8\n2.5*4药球上抛 EN\n3.跨步跳100m*2\n4 .壶铃思摆15*4",
+          "kind": "sprint",
+          "sets": null,
+          "reps": null,
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "April-W4D1",
+      "month": "April",
+      "blockIndex": 0,
+      "week": 4,
+      "day": 1,
+      "optional": false,
+      "sourceText": "宽握熊猫拉 (地面)\n4组x3次\n保护杠 1/4 SARIS\n4组x4次\n颈前深蹲 1RM 的 95% - 110%\n偏载保加利亚深蹄\n4组x5次/侧\n单手持 体重的 40% - 50%重量\n4组x15次\n24kg - 32kg\n等长墙操推足\n3 组 x 10秒极限发力/侧\n4组 x 10秒\n一共1.0 倍 - 1.2 倍体重的负荷 (例如体重100kg，那么最多负重20kg负\n重，使得总重达到1.2倍体重)\n3组 x 30米\n体重的 120% - 140%\n股二弯举\n3组x5次",
+      "sources": [
+        "program/April/April_W4D1.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "April-W4D1-1",
+          "name": "宽握熊猫拉 (地面)",
+          "sourceText": "宽握熊猫拉 (地面)\n4组x3次\n保护杠 1/4 SARIS\n4组x4次\n颈前深蹲 1RM 的 95% - 110%\n偏载保加利亚深蹄\n4组x5次/侧\n单手持 体重的 40% - 50%重量\n4组x15次\n24kg - 32kg\n等长墙操推足\n3 组 x 10秒极限发力/侧\n4组 x 10秒\n一共1.0 倍 - 1.2 倍体重的负荷 (例如体重100kg，那么最多负重20kg负\n重，使得总重达到1.2倍体重)\n3组 x 30米\n体重的 120% - 140%\n股二弯举\n3组x5次",
+          "kind": "strength",
+          "sets": [
+            4,
+            4
+          ],
+          "reps": [
+            3,
+            3
+          ],
+          "perSide": true,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "April-W4D2",
+      "month": "April",
+      "blockIndex": 0,
+      "week": 4,
+      "day": 2,
+      "optional": false,
+      "sourceText": "AEL下蹲跳 (体重20%)\n4组X4\n坐姿负重垂直跳箱 (体重35%6)\n4组x4次\n上固定弹力带下蹄跳\n4组 x 10 次\n软落地纵跳摸高 (30cm)\n4组 x 6次\n等长四分之一足\nfifa (2 120-130 度)\n44x 4#\n单杠悬挂\n两组，每组悬挂一分名",
+      "sources": [
+        "program/April/April_W4D2.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "April-W4D2-1",
+          "name": "AEL下蹲跳 (体重20%)",
+          "sourceText": "AEL下蹲跳 (体重20%)\n4组X4\n坐姿负重垂直跳箱 (体重35%6)\n4组x4次\n上固定弹力带下蹄跳\n4组 x 10 次\n软落地纵跳摸高 (30cm)\n4组 x 6次\n等长四分之一足\nfifa (2 120-130 度)\n44x 4#\n单杠悬挂\n两组，每组悬挂一分名",
+          "kind": "jump",
+          "sets": [
+            4,
+            4
+          ],
+          "reps": [
+            4,
+            4
+          ],
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "April-W4D4",
+      "month": "April",
+      "blockIndex": 0,
+      "week": 4,
+      "day": 4,
+      "optional": false,
+      "sourceText": "四分之一蹲等长\n约 120-130度\n3组 5 秒\n组问休息 3 分钟\nRB EH (thm)\n3组x2\n高翻极限重量的 105% - 110%\nDrop Catch深蹲 (深蹲20-30%1RM)\n4组x3次\n保护杠保加利亚半足  (SRFB35% 1 RM)\n4组x4/侧\n滑盘侧向慢离心接哥本哈根\n3组 x 6 次/侧",
+      "sources": [
+        "program/April/April_W4D4.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "April-W4D4-1",
+          "name": "四分之一蹲等长",
+          "sourceText": "四分之一蹲等长\n约 120-130度\n3组 5 秒\n组问休息 3 分钟\nRB EH (thm)\n3组x2\n高翻极限重量的 105% - 110%\nDrop Catch深蹲 (深蹲20-30%1RM)\n4组x3次\n保护杠保加利亚半足  (SRFB35% 1 RM)\n4组x4/侧\n滑盘侧向慢离心接哥本哈根\n3组 x 6 次/侧",
+          "kind": "hold",
+          "sets": [
+            4,
+            4
+          ],
+          "reps": [
+            3,
+            3
+          ],
+          "perSide": true,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "April-W4D7",
+      "month": "April",
+      "blockIndex": 0,
+      "week": 4,
+      "day": 7,
+      "optional": true,
+      "sourceText": "速度日小测试 《自愿参加)\n十米测试\n0米起点，十米终点(手机慢动作镜头对准十米线)\n测三次，每次严格休息3分钟。取最快成绩\n6x30米反复冲刺能力测试\n冲过终点后，立刻开始倒计时二十秒\n二十秒内慢走回起点\n二十秒倒计时结束立刻开始下一次三十米全速冲刺\n连续执行六次\n记录每次的耗时\n记录第一组与第六组的成绩落差 (速度衰减指数)\n在平地上测量二十五米距离，两端放置标志物\n在二十五米的区间内，进行连续折返跑 (共计十二个折返跑，共三百\n米) 。\n每次折返必须单脚踩线\n记录总耗时",
+      "sources": [
+        "program/April/April_W4D7_Optional.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "April-W4D7-1",
+          "name": "速度日小测试 《自愿参加)",
+          "sourceText": "速度日小测试 《自愿参加)\n十米测试\n0米起点，十米终点(手机慢动作镜头对准十米线)\n测三次，每次严格休息3分钟。取最快成绩\n6x30米反复冲刺能力测试\n冲过终点后，立刻开始倒计时二十秒\n二十秒内慢走回起点\n二十秒倒计时结束立刻开始下一次三十米全速冲刺\n连续执行六次\n记录每次的耗时\n记录第一组与第六组的成绩落差 (速度衰减指数)\n在平地上测量二十五米距离，两端放置标志物\n在二十五米的区间内，进行连续折返跑 (共计十二个折返跑，共三百\n米) 。\n每次折返必须单脚踩线\n记录总耗时",
+          "kind": "strength",
+          "sets": null,
+          "reps": null,
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "May-W1D1",
+      "month": "May",
+      "blockIndex": 1,
+      "week": 1,
+      "day": 1,
+      "optional": false,
+      "sourceText": "90/90髋关节转换 2组 × 每侧8次\n死虫式带弹力带抗伸展 2组 × 每侧10次\n踝关节弹跳 3组 × 15次（触地时间越短越好）\n\n坐姿药球胸前推掷\n4组 × 5次（每次100%全力）\n\n侧向滑冰跳带落地稳定\n3组 × 每侧4次\n\n箱式深蹲\n4组 × 5次，70–75%深蹲1RM，RIR2\n节奏：3-1-X-1（3秒离心，箱上静止1秒，最快速度站起，顶端停顿1秒）\n\n对侧负重保加利亚单腿足\n3组 x 每一侧 8 次。目标强度 RPE 8/RIR2\n节奏: 2-1-1-0\n哑铃中立握地板卧扒\n负荷:3组x8-10次 (RPE 8/RIR2)\n单臂绳索/弹力带划船\n3组 x 10-12 次\n风阻单车 或 划船机\n10 秒 极限冲刺+ 50 秒 恢复\n循环 6-8 组",
+      "sources": [
+        "program/May/May_W1D1.jpg",
+        "program/May/May_W1D1_Continued.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "May-W1D1-1",
+          "name": "90/90髋关节转换 2组 × 每侧8次",
+          "sourceText": "90/90髋关节转换 2组 × 每侧8次\n死虫式带弹力带抗伸展 2组 × 每侧10次\n踝关节弹跳 3组 × 15次（触地时间越短越好）",
+          "kind": "strength",
+          "sets": [
+            3,
+            3
+          ],
+          "reps": [
+            15,
+            15
+          ],
+          "perSide": true,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        },
+        {
+          "id": "May-W1D1-2",
+          "name": "坐姿药球胸前推掷",
+          "sourceText": "坐姿药球胸前推掷\n4组 × 5次（每次100%全力）",
+          "kind": "throw",
+          "sets": [
+            4,
+            4
+          ],
+          "reps": [
+            5,
+            5
+          ],
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        },
+        {
+          "id": "May-W1D1-3",
+          "name": "侧向滑冰跳带落地稳定",
+          "sourceText": "侧向滑冰跳带落地稳定\n3组 × 每侧4次",
+          "kind": "jump",
+          "sets": null,
+          "reps": null,
+          "perSide": true,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        },
+        {
+          "id": "May-W1D1-4",
+          "name": "箱式深蹲",
+          "sourceText": "箱式深蹲\n4组 × 5次，70–75%深蹲1RM，RIR2\n节奏：3-1-X-1（3秒离心，箱上静止1秒，最快速度站起，顶端停顿1秒）",
+          "kind": "strength",
+          "sets": [
+            4,
+            4
+          ],
+          "reps": [
+            5,
+            5
+          ],
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": "3-1-X-1",
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        },
+        {
+          "id": "May-W1D1-5",
+          "name": "对侧负重保加利亚单腿足",
+          "sourceText": "对侧负重保加利亚单腿足\n3组 x 每一侧 8 次。目标强度 RPE 8/RIR2\n节奏: 2-1-1-0\n哑铃中立握地板卧扒\n负荷:3组x8-10次 (RPE 8/RIR2)\n单臂绳索/弹力带划船\n3组 x 10-12 次\n风阻单车 或 划船机\n10 秒 极限冲刺+ 50 秒 恢复\n循环 6-8 组",
+          "kind": "strength",
+          "sets": [
+            3,
+            3
+          ],
+          "reps": [
+            8,
+            10
+          ],
+          "perSide": true,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": "2-1-1-0",
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "May-W1D2",
+      "month": "May",
+      "blockIndex": 1,
+      "week": 1,
+      "day": 2,
+      "optional": false,
+      "sourceText": "胸椎风车打开2 组 x 每一侧 8 次\n鸟狗式2 组 x 每一侧 8 次\n单腿壁桥2 组 x 每一侧 10 次\n半跪姿药球侧向抛掷\n4组x每一侧4次 (RPE 9)\n罗马尼亚硬拉\n4组x6-8次 (RPE 7-8)\n4-1-1-0 (4秒离心下放，底部仅放到俩骨以下处停顿1秒)\nPSHE (脚踩垫起)\n4组x8次“(RPE8-9)\n负重引体\n4组x8次 (RIR 2)\n单臂农夫行走\n3组 x 每一侧 20 米\ni YTWL\n2组 x 每个字母8次 (轻重量或徒手)\n慢速节奏跑\n10-12 分钟保持在最大心率的 65%-70% 之间",
+      "sources": [
+        "program/May/May_W1D2.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "May-W1D2-1",
+          "name": "胸椎风车打开2 组 x 每一侧 8 次",
+          "sourceText": "胸椎风车打开2 组 x 每一侧 8 次\n鸟狗式2 组 x 每一侧 8 次\n单腿壁桥2 组 x 每一侧 10 次\n半跪姿药球侧向抛掷\n4组x每一侧4次 (RPE 9)\n罗马尼亚硬拉\n4组x6-8次 (RPE 7-8)\n4-1-1-0 (4秒离心下放，底部仅放到俩骨以下处停顿1秒)\nPSHE (脚踩垫起)\n4组x8次“(RPE8-9)\n负重引体\n4组x8次 (RIR 2)\n单臂农夫行走\n3组 x 每一侧 20 米\ni YTWL\n2组 x 每个字母8次 (轻重量或徒手)\n慢速节奏跑\n10-12 分钟保持在最大心率的 65%-70% 之间",
+          "kind": "strength",
+          "sets": [
+            4,
+            4
+          ],
+          "reps": [
+            6,
+            8
+          ],
+          "perSide": true,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": "4-1-1-0",
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "May-W1D4",
+      "month": "May",
+      "blockIndex": 1,
+      "week": 1,
+      "day": 4,
+      "optional": false,
+      "sourceText": "哥本哈根内收肌膝盖支撑: 3 组 x 每一侧 15-20 秒\n弹力带横向滑步: 2 组 x 每一侧 12 步。要求保持半足\n{Ml (eo ZG ERER ES HH\n4组x每一侧4次 (RPE 9)\nDrop catch}\n4组x 3次\n六角杠铃硬拉\n5组 x 3-4 次。强度在 85%-90% 1RM (RPE 8.5-9)\n坐姿实力推\n4组x6-8次 (RPE 8-8.5)\n3-1-1-1 (3秒离心下放)\n半跪姿绳索/弹力带下拉\n3组x每一侧 10 次\n风扇车 / 划船机\n15 秒 全力 + 45 秒恢复\n循环 8-10 组",
+      "sources": [
+        "program/May/May_W1D4.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "May-W1D4-1",
+          "name": "哥本哈根内收肌膝盖支撑: 3 组 x 每一侧 15-20 秒",
+          "sourceText": "哥本哈根内收肌膝盖支撑: 3 组 x 每一侧 15-20 秒\n弹力带横向滑步: 2 组 x 每一侧 12 步。要求保持半足\n{Ml (eo ZG ERER ES HH\n4组x每一侧4次 (RPE 9)\nDrop catch}\n4组x 3次\n六角杠铃硬拉\n5组 x 3-4 次。强度在 85%-90% 1RM (RPE 8.5-9)\n坐姿实力推\n4组x6-8次 (RPE 8-8.5)\n3-1-1-1 (3秒离心下放)\n半跪姿绳索/弹力带下拉\n3组x每一侧 10 次\n风扇车 / 划船机\n15 秒 全力 + 45 秒恢复\n循环 8-10 组",
+          "kind": "hold",
+          "sets": [
+            4,
+            4
+          ],
+          "reps": [
+            3,
+            3
+          ],
+          "perSide": true,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": "3-1-1-1",
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "May-W1D5",
+      "month": "May",
+      "blockIndex": 1,
+      "week": 1,
+      "day": 5,
+      "optional": false,
+      "sourceText": "Pogo Jumps\n3组x15次 (总触地: 45 次)\n前后Hops\n2组 x 10 次/侧 (前后左右十字跳)\nDrop Landing (刚性落地角度)\n4组x4次 (总触地: 16 次)\n跨步跳\n4组 x 20 3K\nDrop Jump - 软性落地\n4组x3次 (总触地: 12 次) 组间严格休息 3 分钟\n从 30 厘米箱子落下，前方放置一个更高 (如 45 厘米) 的跳箱\n单腿侧向跳接90 度冲刺\n4组 x 3 次/侧\n连续跳栏架\n4组 x 4个高栏/低栏\n跌落式俯卧撑",
+      "sources": [
+        "program/May/May_W1D5.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "May-W1D5-1",
+          "name": "Pogo Jumps",
+          "sourceText": "Pogo Jumps\n3组x15次 (总触地: 45 次)\n前后Hops\n2组 x 10 次/侧 (前后左右十字跳)\nDrop Landing (刚性落地角度)\n4组x4次 (总触地: 16 次)\n跨步跳\n4组 x 20 3K\nDrop Jump - 软性落地\n4组x3次 (总触地: 12 次) 组间严格休息 3 分钟\n从 30 厘米箱子落下，前方放置一个更高 (如 45 厘米) 的跳箱\n单腿侧向跳接90 度冲刺\n4组 x 3 次/侧\n连续跳栏架\n4组 x 4个高栏/低栏\n跌落式俯卧撑",
+          "kind": "jump",
+          "sets": [
+            3,
+            3
+          ],
+          "reps": [
+            15,
+            15
+          ],
+          "perSide": true,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "May-W1D6",
+      "month": "May",
+      "blockIndex": 1,
+      "week": 1,
+      "day": 6,
+      "optional": false,
+      "sourceText": "Week 1\n1.50m加速跑x4\n2.阻力跑50mx5 30%以上bw\n3.单腿脚踩跳 20次x3\n4.50m推雪橇x6轻阻力 10%以下bw\n5.北欧挺8x3\n6.坐姿提踵15x3",
+      "sources": [
+        "program/May/May_W1D6.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "May-W1D6-1",
+          "name": "Week 1",
+          "sourceText": "Week 1\n1.50m加速跑x4\n2.阻力跑50mx5 30%以上bw\n3.单腿脚踩跳 20次x3\n4.50m推雪橇x6轻阻力 10%以下bw\n5.北欧挺8x3\n6.坐姿提踵15x3",
+          "kind": "strength",
+          "sets": null,
+          "reps": null,
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "May-W2D1",
+      "month": "May",
+      "blockIndex": 1,
+      "week": 2,
+      "day": 1,
+      "optional": false,
+      "sourceText": "侧向滑步、交叉步每组10米，循环2次\nPogo Jumps 3组，每组15次\n软落地+纵跳 4组，每组 5次\n高翻 5组，每组 3次85% 1RM (单次最大负荷)\n连续45度侧向温冰跳 4组，每组每侧 6次\n杠铃后蹲5组，每组 5次80%-859% 1RM (节奏3/x/x/2)\n哈克足 3组，每组 6-8次。 (节奏5/2/x/2)\n节奏间歇一一任意有氧器械/跑步机/冲刺\n进行45秒的轻松做功，随后15秒的持续高强度冲刺，连续循环完成20组",
+      "sources": [
+        "program/May/May_W2D1.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "May-W2D1-1",
+          "name": "侧向滑步、交叉步每组10米，循环2次",
+          "sourceText": "侧向滑步、交叉步每组10米，循环2次\nPogo Jumps 3组，每组15次\n软落地+纵跳 4组，每组 5次\n高翻 5组，每组 3次85% 1RM (单次最大负荷)\n连续45度侧向温冰跳 4组，每组每侧 6次\n杠铃后蹲5组，每组 5次80%-859% 1RM (节奏3/x/x/2)\n哈克足 3组，每组 6-8次。 (节奏5/2/x/2)\n节奏间歇一一任意有氧器械/跑步机/冲刺\n进行45秒的轻松做功，随后15秒的持续高强度冲刺，连续循环完成20组",
+          "kind": "strength",
+          "sets": null,
+          "reps": null,
+          "perSide": true,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "May-W2D2",
+      "month": "May",
+      "blockIndex": 1,
+      "week": 2,
+      "day": 2,
+      "optional": false,
+      "sourceText": "A-Skips (高抬腿热步) . B-Skips (SAAR RE) ARBRE. &\n项行进20米，各进行2组\n侧向滑步、交叉步每组10米，循环2次\nPogo Jumps 3组，每组15次\n进行3趟20m加速跑，速度分别为最大速度60% 、80%和95%\n俯卧起跑冲刺: 面朝下平躺在跑道上，双手撑地。后瞬间撑起身体，并\n6超\n组间休息2分钟\n前30米的加速 (非最大速度，缓慢加速到最大速度90%) ，后20米达到\n100%的最大速度\n4趟组间休息3分钟\nZep R 〈只跑跑道直道) 80-100m\n3趟 组间休息4-5分钟\nY字型变向 2组\n每个Y字方向3 趟\nSHENAE 4组\n每侧方向完成3次 (Rit 6 次)",
+      "sources": [
+        "program/May/May_W2D2.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "May-W2D2-1",
+          "name": "A-Skips (高抬腿热步) . B-Skips (SAAR RE) ARBRE. &",
+          "sourceText": "A-Skips (高抬腿热步) . B-Skips (SAAR RE) ARBRE. &\n项行进20米，各进行2组\n侧向滑步、交叉步每组10米，循环2次\nPogo Jumps 3组，每组15次\n进行3趟20m加速跑，速度分别为最大速度60% 、80%和95%\n俯卧起跑冲刺: 面朝下平躺在跑道上，双手撑地。后瞬间撑起身体，并\n6超\n组间休息2分钟\n前30米的加速 (非最大速度，缓慢加速到最大速度90%) ，后20米达到\n100%的最大速度\n4趟组间休息3分钟\nZep R 〈只跑跑道直道) 80-100m\n3趟 组间休息4-5分钟\nY字型变向 2组\n每个Y字方向3 趟\nSHENAE 4组\n每侧方向完成3次 (Rit 6 次)",
+          "kind": "strength",
+          "sets": null,
+          "reps": null,
+          "perSide": true,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "May-W2D4",
+      "month": "May",
+      "blockIndex": 1,
+      "week": 2,
+      "day": 4,
+      "optional": false,
+      "sourceText": "空杆早安式体前届，空杆前蹲各完成10次。\n原地CMJ 3 组，每组 5 次\n5组，每组 3次\n80% - 85% 1RM (单次极限重量)\n杠铃后蹲\n5组，每组 5 次\n80%-85% 1RM\nLAM\n3组，每组4次\n等长深蹲/单腿弓步维持\n3-4 组，每组保持 15s\n各4组，推6次，划船 IDX\n哈克深蹄\n5组X4次\n药球磺地 3组，每组 8次\n静力性悬垂在单枉上悬垂 2组，每组 30-45秒",
+      "sources": [
+        "program/May/May_W2D4.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "May-W2D4-1",
+          "name": "空杆早安式体前届，空杆前蹲各完成10次。",
+          "sourceText": "空杆早安式体前届，空杆前蹲各完成10次。\n原地CMJ 3 组，每组 5 次\n5组，每组 3次\n80% - 85% 1RM (单次极限重量)\n杠铃后蹲\n5组，每组 5 次\n80%-85% 1RM\nLAM\n3组，每组4次\n等长深蹲/单腿弓步维持\n3-4 组，每组保持 15s\n各4组，推6次，划船 IDX\n哈克深蹄\n5组X4次\n药球磺地 3组，每组 8次\n静力性悬垂在单枉上悬垂 2组，每组 30-45秒",
+          "kind": "strength",
+          "sets": [
+            5,
+            5
+          ],
+          "reps": [
+            4,
+            4
+          ],
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "May-W2D5",
+      "month": "May",
+      "blockIndex": 1,
+      "week": 2,
+      "day": 5,
+      "optional": false,
+      "sourceText": "1.早安式 15 2组\n2.横向钻栏架 10 2组\n3.打墙抬腿10s全力x 3组\n4.单腿高翻 3/侧*3\n5.单腿支撑8/侧*3\n6.400m > 休息5分钟 > 300m > 休息3分钟 > 200m >\n休息90秒 > 两轮 大组间歇5min\n7.ghd山羊挺身15x3交蔡悬垂举腿15x3",
+      "sources": [
+        "program/May/May_W2D5.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "May-W2D5-1",
+          "name": "1.早安式 15 2组",
+          "sourceText": "1.早安式 15 2组\n2.横向钻栏架 10 2组\n3.打墙抬腿10s全力x 3组\n4.单腿高翻 3/侧*3\n5.单腿支撑8/侧*3\n6.400m > 休息5分钟 > 300m > 休息3分钟 > 200m >\n休息90秒 > 两轮 大组间歇5min\n7.ghd山羊挺身15x3交蔡悬垂举腿15x3",
+          "kind": "strength",
+          "sets": null,
+          "reps": null,
+          "perSide": true,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "May-W2D6",
+      "month": "May",
+      "blockIndex": 1,
+      "week": 2,
+      "day": 6,
+      "optional": false,
+      "sourceText": "20m+20m 折返冲刺测试:\n40 米 (起跑冲刺 20米，单脚蹊线后立刻 180度折返冲刺 20米)\n总组数: 6 组 (Reps)\n工作/休息比 : 控制在 1:4 到 1:5 之间。\n若 40m 折返耗时在 Z0 - 7.5 秒左右，组间休息固定设定为 30 秒主动\n恢复)\n手持秒表 (或光电门计时) 进行记录。\n预热试跑: 1 次80% 强度的折返，适应 20m 处的刹车点\nKE 2 分钟\n基线 (Rep 1): 运动员全力冲刺第一组。记录时间 (例如 7.10 秒)\n此为基线速度\n持续完成 (Rep 2 - 6): 每跑完一次，有 30 秒时间慢走回到起跑线，回\n到起跑线立刻冲刺。\n记下全部 6 次冲刺成绩。\n指标 1: 掉速百分比\n计算最慢的一次 (通常是第 5 或第 6 次) 与最快的一次 (通常是第 1\n次) 之间的速度下降比例\n公式: [人最慢用时 - 最快用时) / 最快用时] x 100%\n若大于15%则停止训练\n指标 2: 总冲刺时间将 6 次成绩相加得到总冲刺时间。\n\n后续完成:\n俯卧撑起跑 10m 冲刺 徒手冲刺 10m x 3次\n寻找最佳落台高度的 DJ 5组 x 4次",
+      "sources": [
+        "program/May/May_W2D6.jpg",
+        "program/May/May_W2D6_Continued.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "May-W2D6-1",
+          "name": "20m+20m 折返冲刺测试:",
+          "sourceText": "20m+20m 折返冲刺测试:\n40 米 (起跑冲刺 20米，单脚蹊线后立刻 180度折返冲刺 20米)\n总组数: 6 组 (Reps)\n工作/休息比 : 控制在 1:4 到 1:5 之间。\n若 40m 折返耗时在 Z0 - 7.5 秒左右，组间休息固定设定为 30 秒主动\n恢复)\n手持秒表 (或光电门计时) 进行记录。\n预热试跑: 1 次80% 强度的折返，适应 20m 处的刹车点\nKE 2 分钟\n基线 (Rep 1): 运动员全力冲刺第一组。记录时间 (例如 7.10 秒)\n此为基线速度\n持续完成 (Rep 2 - 6): 每跑完一次，有 30 秒时间慢走回到起跑线，回\n到起跑线立刻冲刺。\n记下全部 6 次冲刺成绩。\n指标 1: 掉速百分比\n计算最慢的一次 (通常是第 5 或第 6 次) 与最快的一次 (通常是第 1\n次) 之间的速度下降比例\n公式: [人最慢用时 - 最快用时) / 最快用时] x 100%\n若大于15%则停止训练\n指标 2: 总冲刺时间将 6 次成绩相加得到总冲刺时间。",
+          "kind": "sprint",
+          "sets": null,
+          "reps": null,
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        },
+        {
+          "id": "May-W2D6-2",
+          "name": "后续完成:",
+          "sourceText": "后续完成:\n俯卧撑起跑 10m 冲刺 徒手冲刺 10m x 3次\n寻找最佳落台高度的 DJ 5组 x 4次",
+          "kind": "strength",
+          "sets": [
+            5,
+            5
+          ],
+          "reps": [
+            4,
+            4
+          ],
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "May-W3D1",
+      "month": "May",
+      "blockIndex": 1,
+      "week": 3,
+      "day": 1,
+      "optional": false,
+      "sourceText": "空杆深蹲 20次 + 空杆罗马尼亚硬拉 20次\n药球砸地4组 x 10次\n以下为二选一:\n杠铃后蹲\n8组，每组 3次 80-85% 1RM 。\n组间严格休息 3 分钟\n六角杠铃硬拉\n8组，每组 2次重量设定为 85%-90% 1RM\n组间严格休息 3 分钟\n以下为全部完成:\n罗马尼亚硬拉\n4组，每组 6次\n离心下放 (3%) AS RRB Se SB ay\n6组，每组 5次 RIR3\n负重引体向上+哑铃划船\n各 5组，每组 8次 (RIRO)",
+      "sources": [
+        "program/May/May_W3D1.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "May-W3D1-1",
+          "name": "空杆深蹲 20次 + 空杆罗马尼亚硬拉 20次",
+          "sourceText": "空杆深蹲 20次 + 空杆罗马尼亚硬拉 20次\n药球砸地4组 x 10次\n以下为二选一:\n杠铃后蹲\n8组，每组 3次 80-85% 1RM 。\n组间严格休息 3 分钟\n六角杠铃硬拉\n8组，每组 2次重量设定为 85%-90% 1RM\n组间严格休息 3 分钟\n以下为全部完成:\n罗马尼亚硬拉\n4组，每组 6次\n离心下放 (3%) AS RRB Se SB ay\n6组，每组 5次 RIR3\n负重引体向上+哑铃划船\n各 5组，每组 8次 (RIRO)",
+          "kind": "strength",
+          "sets": [
+            4,
+            4
+          ],
+          "reps": [
+            10,
+            10
+          ],
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "May-W3D2",
+      "month": "May",
+      "blockIndex": 1,
+      "week": 3,
+      "day": 2,
+      "optional": false,
+      "sourceText": "Trunk n Joint\n出杠支撑 4组x20s (安全的情况下加重)\nESRI 3组x5 RPE: 8/泽奇支撑 3组x20s (安全体态的情况下加\n重) (二者选做)\nMAIR TAR 4组x12 〈尽可能重)\n摆动二头弯举12-颈后营届伸10 3组 (尽可能重)\n过头迈步上台阶 3组x6x每侧 (保证技术动作可加重)\n单腿RDL 划船 3组x8x每侧 (保证技术动作可加重)\n侧向泽奇单腿硬拉 3组x6x每侧 (保证技术动作可加重)\n本日新牛完成支撑即可，支撑情况需要做好保护措施〈例: 保护璧/保护\n带等，可按照需要增加护具)",
+      "sources": [
+        "program/May/May_W3D2.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "May-W3D2-1",
+          "name": "Trunk n Joint",
+          "sourceText": "Trunk n Joint\n出杠支撑 4组x20s (安全的情况下加重)\nESRI 3组x5 RPE: 8/泽奇支撑 3组x20s (安全体态的情况下加\n重) (二者选做)\nMAIR TAR 4组x12 〈尽可能重)\n摆动二头弯举12-颈后营届伸10 3组 (尽可能重)\n过头迈步上台阶 3组x6x每侧 (保证技术动作可加重)\n单腿RDL 划船 3组x8x每侧 (保证技术动作可加重)\n侧向泽奇单腿硬拉 3组x6x每侧 (保证技术动作可加重)\n本日新牛完成支撑即可，支撑情况需要做好保护措施〈例: 保护璧/保护\n带等，可按照需要增加护具)",
+          "kind": "strength",
+          "sets": null,
+          "reps": null,
+          "perSide": true,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": true,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "May-W3D4",
+      "month": "May",
+      "blockIndex": 1,
+      "week": 3,
+      "day": 4,
+      "optional": false,
+      "sourceText": "空杆深蹲 228 x 20次\n组间休息: 45-60秒\n空杆罗马尼亚硬拉2组 x 20次\n组间休息: 45-60秒\nPogo Jump 连续踩跳\n3组 x 20次\n组间休息: 45-60秒\n正式训练:\n5大组，每组6次\n80-85% 1RM\n执行方式:\n每完成 2次，把杠铃放下，原地休息 20-30秒; 再做 2次，再休息 20-\n30秒; 再做最后 2次。\n也就是: 2次 + 体20-30秒 + 2次 + 休20-30秒 + 2次 = 1大组\nKAZE: 3-4分钟\n如果第3大组后速度明显下降，后面降到 80% 1RM\n以下 4个动作 为 1个大循环。\n动作之间休息: 20%\n大循环之间休息: 4分钟\n总共完成: 5个大循环\n杠铃深蹲3次\n80% 1RM\n软性落地 + 纵跳4次\n\n软性落地 + 纵跳4次\nRISER\n30% iRES1RM\n弹力带助力跳跃 或 Pogo Jump10次\n二选一:\n弹力带助力跳跃10次\nPogo Jump10次\n以下单独完成:\n抓举高拉\n6组 x 3次\n80-100% 抓举1RM\n如果没有抓举1RM，可使用50-60% 深蹲1RM\n组间休息: 2-3分钟\n负重跨步跳4组 x 每侧5次\nWESUR, Bata 体重的5-10%\n组间休息: 90-120秒\n如果场地不够，改成下面动作:\n负重分腿跳 4组 x 每侧5次\nWMS, RPE 7-8\n组间休息: 90%)\n哑铃卧推\n4组 x 5次\n75-80% 1RM\n组间休息: 2分钟\n负重引体向上\n4组 x 5次\n自重或负重，控制在 RPE 8左右\n组间休息: 2分钟",
+      "sources": [
+        "program/May/May_W3D4.jpg",
+        "program/May/May_W3D4_Continued.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "May-W3D4-1",
+          "name": "空杆深蹲 228 x 20次",
+          "sourceText": "空杆深蹲 228 x 20次\n组间休息: 45-60秒\n空杆罗马尼亚硬拉2组 x 20次\n组间休息: 45-60秒\nPogo Jump 连续踩跳\n3组 x 20次\n组间休息: 45-60秒\n正式训练:\n5大组，每组6次\n80-85% 1RM\n执行方式:\n每完成 2次，把杠铃放下，原地休息 20-30秒; 再做 2次，再休息 20-\n30秒; 再做最后 2次。\n也就是: 2次 + 体20-30秒 + 2次 + 休20-30秒 + 2次 = 1大组\nKAZE: 3-4分钟\n如果第3大组后速度明显下降，后面降到 80% 1RM\n以下 4个动作 为 1个大循环。\n动作之间休息: 20%\n大循环之间休息: 4分钟\n总共完成: 5个大循环\n杠铃深蹲3次\n80% 1RM\n软性落地 + 纵跳4次",
+          "kind": "strength",
+          "sets": [
+            2,
+            2
+          ],
+          "reps": [
+            20,
+            20
+          ],
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        },
+        {
+          "id": "May-W3D4-2",
+          "name": "软性落地 + 纵跳4次",
+          "sourceText": "软性落地 + 纵跳4次\nRISER\n30% iRES1RM\n弹力带助力跳跃 或 Pogo Jump10次\n二选一:\n弹力带助力跳跃10次\nPogo Jump10次\n以下单独完成:\n抓举高拉\n6组 x 3次\n80-100% 抓举1RM\n如果没有抓举1RM，可使用50-60% 深蹲1RM\n组间休息: 2-3分钟\n负重跨步跳4组 x 每侧5次\nWESUR, Bata 体重的5-10%\n组间休息: 90-120秒\n如果场地不够，改成下面动作:\n负重分腿跳 4组 x 每侧5次\nWMS, RPE 7-8\n组间休息: 90%)\n哑铃卧推\n4组 x 5次\n75-80% 1RM\n组间休息: 2分钟\n负重引体向上\n4组 x 5次\n自重或负重，控制在 RPE 8左右\n组间休息: 2分钟",
+          "kind": "jump",
+          "sets": [
+            6,
+            6
+          ],
+          "reps": [
+            3,
+            3
+          ],
+          "perSide": true,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "May-W3D5",
+      "month": "May",
+      "blockIndex": 1,
+      "week": 3,
+      "day": 5,
+      "optional": false,
+      "sourceText": "week 3\n1.三方向跪姿启动加速20m 每个方向*3 最大努力\n2.4x5跳深，软着地 最大努力\n3. (150m+50m) *6{HYROX改为[1000m(比赛配\n速)+200Mj]变速跑*4 }rpe8\n4.跨步跳50m*4\n5.单腿罗马尼亚硬拉 15x3",
+      "sources": [
+        "program/May/May_W3D5.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "May-W3D5-1",
+          "name": "week 3",
+          "sourceText": "week 3\n1.三方向跪姿启动加速20m 每个方向*3 最大努力\n2.4x5跳深，软着地 最大努力\n3. (150m+50m) *6{HYROX改为[1000m(比赛配\n速)+200Mj]变速跑*4 }rpe8\n4.跨步跳50m*4\n5.单腿罗马尼亚硬拉 15x3",
+          "kind": "strength",
+          "sets": null,
+          "reps": null,
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "May-W3D6",
+      "month": "May",
+      "blockIndex": 1,
+      "week": 3,
+      "day": 6,
+      "optional": false,
+      "sourceText": "出杠支撑\n3组 x 15秒\n安全情况下尽量加重，保持肩胛下沉、腰背中立\naR\n348 x 4次\nRPE 9，接近力竭\n60-80% 后蹲1RM\n如果肩膀/肘部承受不了过重，可减10-15kg\n组间休息: 2-3分钟\n公事包行走\n3组 x 15秒 x 每侧\n组间休息: 90秒\n过头支撑 或过头足\n以下为二选一\n若执行过头支撑\n3组 x 15秒\n可空枉 20kg，可加至 40-50kg\n组间休息: 90RD\n若执行过头足\n3组 x 3次\n负荷说明:\n技术稳定情况下加重\n负荷建议: 40-60% 后蹲1RM\n组间休息: 2-3分钟\nBa: 保持杠铃在头顶正上方，膝盖对齐脚尖\n\nEAR PER + 快速引体\n4组x12+8\n肩胛下压用哑铃或杠铃片 10-20kg引体可负重 5-15kg\n组间休息: 90-120秒\n单侧钢线 / 弹力带夹胸\n4组 x 8/8/8 (每个角度)\n中高强度带，或者钢索选重量\n组间休息: 60-90%)\n土耳其起立\n组数 x 次数: 3组 x 3次每侧\n负荷说明:\n哑铃或壶铃中等重量\n初级 8-12kg，进阶 12-20kg\n组间休息: 90秒\n要点: 动作慢且控制，全程核心发力，肩膀稳定\n负重落地、\n3组 x 6次\n不超过体重 60%\n例如体重75kg 一 负荷约 40-45kg\n组间休息: 2-3分钟",
+      "sources": [
+        "program/May/May_W3D6.jpg",
+        "program/May/May_W3D6_Continued.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "May-W3D6-1",
+          "name": "出杠支撑",
+          "sourceText": "出杠支撑\n3组 x 15秒\n安全情况下尽量加重，保持肩胛下沉、腰背中立\naR\n348 x 4次\nRPE 9，接近力竭\n60-80% 后蹲1RM\n如果肩膀/肘部承受不了过重，可减10-15kg\n组间休息: 2-3分钟\n公事包行走\n3组 x 15秒 x 每侧\n组间休息: 90秒\n过头支撑 或过头足\n以下为二选一\n若执行过头支撑\n3组 x 15秒\n可空枉 20kg，可加至 40-50kg\n组间休息: 90RD\n若执行过头足\n3组 x 3次\n负荷说明:\n技术稳定情况下加重\n负荷建议: 40-60% 后蹲1RM\n组间休息: 2-3分钟\nBa: 保持杠铃在头顶正上方，膝盖对齐脚尖",
+          "kind": "hold",
+          "sets": [
+            3,
+            3
+          ],
+          "reps": [
+            3,
+            3
+          ],
+          "perSide": true,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        },
+        {
+          "id": "May-W3D6-2",
+          "name": "EAR PER + 快速引体",
+          "sourceText": "EAR PER + 快速引体\n4组x12+8\n肩胛下压用哑铃或杠铃片 10-20kg引体可负重 5-15kg\n组间休息: 90-120秒\n单侧钢线 / 弹力带夹胸\n4组 x 8/8/8 (每个角度)\n中高强度带，或者钢索选重量\n组间休息: 60-90%)\n土耳其起立\n组数 x 次数: 3组 x 3次每侧\n负荷说明:\n哑铃或壶铃中等重量\n初级 8-12kg，进阶 12-20kg\n组间休息: 90秒\n要点: 动作慢且控制，全程核心发力，肩膀稳定\n负重落地、\n3组 x 6次\n不超过体重 60%\n例如体重75kg 一 负荷约 40-45kg\n组间休息: 2-3分钟",
+          "kind": "strength",
+          "sets": [
+            3,
+            3
+          ],
+          "reps": [
+            3,
+            3
+          ],
+          "perSide": true,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "May-W4D1",
+      "month": "May",
+      "blockIndex": 1,
+      "week": 4,
+      "day": 1,
+      "optional": false,
+      "sourceText": "技术练习一:\n慢跑\n3分钟\n高抬腿跑\n2组 x 15米\n后踢腿跑\n2组 x 15米\nA-Skip\n2组 x 15米\nMisa\n228 x 152K / 每侧\n交叉步跑\n2组 x 153K / 每侧\n组间休息: 走回恢复\n要求:\n身体热起来，脚下逐渐变轻，不要一上来就冲。\n技术练习二:\n踝关节跪姿前移\n2组 x 每侧10次\nBi 90/90 转换\n2组 x 每侧8次\n己步转体\n2组 x 每侧6次\n弹力带侧向走\n2组 x 每侧12步\n臂桥顶峰停顿\n2组 x 10次，顶峰停1秒\n\n技术练习三:\nPogo Jump\n3组 x 20次\n低幅度连续纵跳\n2组 x 10次\n小步快频原地跑\n3组 x 5秒\n组间休息: 30-45秒\n正式强度内容:\n6组 x 10米\n90-95% 最大速度\n组间休息: 60-90%\n侧向反应启动\n5组 x 每侧1次\n距离: 5-8米\n强度: 90-95%\n组间休息: 60秘\n后撤步转身启动\n4组 x 每侧2次\n距离: 5米后撤 + 10米加速\n组间休息: 90%)\nBugs / Front Squat\n5组 x 4次\n80-87.5% 1RM\n组间休息: 3分钟\nRPE 8-9\n\n以下是组合组:\nfais\n5组 x 3次\n85% 1RM\n组间休息: 做完后蹲休息 30-45秒，进入深蹲跳\nRB RSH\n5组 x 4次\n20-25% 后蹲1RM\nAINA: 做完A2后休息 3分钟，再回到后蹲\n以下为单独完成:\n负重上台阶\n4组 x 每侧5次\n双哑铃或杠铃，RPE 8\nfis: RAN 90度以内\n组间休息: 90-120秒\n以下是组合组:\n卧推\n5组 x 4次\n80-85% 1RM\n组间休息: 2-3分钟\nRPE 8-9\n负重引体向上\n5组 x 4次\n自重或负重，RPE 8-9\n与臣推交替完成，都完成休息 2分钟",
+      "sources": [
+        "program/May/May_W4D1.jpg",
+        "program/May/May_W4D1_Continued.jpg",
+        "program/May/May_W4D1_Continued_2.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "May-W4D1-1",
+          "name": "技术练习一:",
+          "sourceText": "技术练习一:\n慢跑\n3分钟\n高抬腿跑\n2组 x 15米\n后踢腿跑\n2组 x 15米\nA-Skip\n2组 x 15米\nMisa\n228 x 152K / 每侧\n交叉步跑\n2组 x 153K / 每侧\n组间休息: 走回恢复\n要求:\n身体热起来，脚下逐渐变轻，不要一上来就冲。\n技术练习二:\n踝关节跪姿前移\n2组 x 每侧10次\nBi 90/90 转换\n2组 x 每侧8次\n己步转体\n2组 x 每侧6次\n弹力带侧向走\n2组 x 每侧12步\n臂桥顶峰停顿\n2组 x 10次，顶峰停1秒",
+          "kind": "strength",
+          "sets": [
+            2,
+            2
+          ],
+          "reps": [
+            10,
+            10
+          ],
+          "perSide": true,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        },
+        {
+          "id": "May-W4D1-2",
+          "name": "技术练习三:",
+          "sourceText": "技术练习三:\nPogo Jump\n3组 x 20次\n低幅度连续纵跳\n2组 x 10次\n小步快频原地跑\n3组 x 5秒\n组间休息: 30-45秒\n正式强度内容:\n6组 x 10米\n90-95% 最大速度\n组间休息: 60-90%\n侧向反应启动\n5组 x 每侧1次\n距离: 5-8米\n强度: 90-95%\n组间休息: 60秘\n后撤步转身启动\n4组 x 每侧2次\n距离: 5米后撤 + 10米加速\n组间休息: 90%)\nBugs / Front Squat\n5组 x 4次\n80-87.5% 1RM\n组间休息: 3分钟\nRPE 8-9",
+          "kind": "strength",
+          "sets": [
+            3,
+            3
+          ],
+          "reps": [
+            20,
+            20
+          ],
+          "perSide": true,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        },
+        {
+          "id": "May-W4D1-3",
+          "name": "以下是组合组:",
+          "sourceText": "以下是组合组:\nfais\n5组 x 3次\n85% 1RM\n组间休息: 做完后蹲休息 30-45秒，进入深蹲跳\nRB RSH\n5组 x 4次\n20-25% 后蹲1RM\nAINA: 做完A2后休息 3分钟，再回到后蹲\n以下为单独完成:\n负重上台阶\n4组 x 每侧5次\n双哑铃或杠铃，RPE 8\nfis: RAN 90度以内\n组间休息: 90-120秒\n以下是组合组:\n卧推\n5组 x 4次\n80-85% 1RM\n组间休息: 2-3分钟\nRPE 8-9\n负重引体向上\n5组 x 4次\n自重或负重，RPE 8-9\n与臣推交替完成，都完成休息 2分钟",
+          "kind": "strength",
+          "sets": [
+            5,
+            5
+          ],
+          "reps": [
+            3,
+            3
+          ],
+          "perSide": true,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "May-W4D2",
+      "month": "May",
+      "blockIndex": 1,
+      "week": 4,
+      "day": 2,
+      "optional": false,
+      "sourceText": "3组 x 5个动作 (每个动作 30 米，组间走回起点即为休息)\n双脚 Pogo Jump\nA-Skip\n侧向反复跳\n后踢腿跑\n跨步跳\n跳跃间歇\nWave 1连续 5 次收腹跳 〈栏架高度: 50-60cm)\n3 组，组间休息 2 分钟\nWave 2软落地接垂直纵跳\n3组x4次\nWave 3跌落跳接 10 米爆发冲刺\n24x32\n组间休息 3 分钟\n冲刺跑\nWave 1\n10mx2趟 (100% 强度)\n20mx2趟 (100% 强度)\n30m x2趟 (100% 强度)\nJAKE: 每跑 10 米休息 1 分钟\nWave 2\n冲刺20m/20m (20米预加速 + 20米加速) 4 趟\n组间休息: 4 分钟\n主动间歇冲刺\nWave 1\n10 轮 x (20 秒极限跑动 / 10 秒绝对静止)\nWave 2\n大组间休息 2 分钟后进入\n12 轮 x (15 秒极限跑动 / 15 秒主动走动)",
+      "sources": [
+        "program/May/May_W4D2.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "May-W4D2-1",
+          "name": "3组 x 5个动作 (每个动作 30 米，组间走回起点即为休息)",
+          "sourceText": "3组 x 5个动作 (每个动作 30 米，组间走回起点即为休息)\n双脚 Pogo Jump\nA-Skip\n侧向反复跳\n后踢腿跑\n跨步跳\n跳跃间歇\nWave 1连续 5 次收腹跳 〈栏架高度: 50-60cm)\n3 组，组间休息 2 分钟\nWave 2软落地接垂直纵跳\n3组x4次\nWave 3跌落跳接 10 米爆发冲刺\n24x32\n组间休息 3 分钟\n冲刺跑\nWave 1\n10mx2趟 (100% 强度)\n20mx2趟 (100% 强度)\n30m x2趟 (100% 强度)\nJAKE: 每跑 10 米休息 1 分钟\nWave 2\n冲刺20m/20m (20米预加速 + 20米加速) 4 趟\n组间休息: 4 分钟\n主动间歇冲刺\nWave 1\n10 轮 x (20 秒极限跑动 / 10 秒绝对静止)\nWave 2\n大组间休息 2 分钟后进入\n12 轮 x (15 秒极限跑动 / 15 秒主动走动)",
+          "kind": "strength",
+          "sets": [
+            3,
+            3
+          ],
+          "reps": [
+            4,
+            4
+          ],
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "May-W4D4",
+      "month": "May",
+      "blockIndex": 1,
+      "week": 4,
+      "day": 4,
+      "optional": false,
+      "sourceText": "风阻自行车 / 普通单车\n6分钟\n心率: 最大心率60-70%\nRPE: 3-4\n最大心率可以粗略估算 :\n最大心率 = 208 - 0.7 x 年龄\n例如20岁运动员:\n208 - 14 = 194次/分\n60-70%就是约 116-136次/分\nBae DBD AS HL\n228 x 每侧8次\nBRAD AIS\n2组 x 每侧10次\n弹力带侧向走\n2组 x 每侧12步\nPogo Jump\n2组 x 15次\n选择 风阻自行车 / 划船机 / SkiErg 之一。\n完成: 3组 x 10秒加速\n每组之间轻松骑 / 划: 50秒\n第1组: 70%最大努力\n第2组: 80%最大努力\n第3组: 90%最大努力\n\n风阻自行车/跑步全力冲刺\n10组 x 10秒\n每组休息: 110秒轻松骑/散步\n10秒全力 + 110秒轻松恢复 = 1组\n总共完成: 10组\n10秒: 100%最大努力\nRPE: 9.5-10\n恢复时间: RPE 1-2\n恢复段心率可回落到 最大心率65-759% 再进入下一组\n跑步机 / MAZE AL / 风阻自行车 / 划船机\nWRAMAZC NL, (AC AIA AL.\n没有的话，用风阻自行车更安全。\n风阻自行车重复冲刺\n3大组 x 每组6次\n每次内容:\n15秒高强度冲刺\n45秒轻松恢复\n完成6次后休息: 4分钟\n总量: 3大组 x 6次 = 18次冲刺\n强度:\n工作段: RPE 9\n恢复段: RPE 2-3\n心率: 工作后段达到最大心率 88-94%\n大组结束心率可达到最大心率 92-96%\n大组间休息时，让心率下降到最大心率 65-75%\n\nBAAR: 跑步机重复冲刺\n2-3大组 x 每组5次\n每次:\n12秒快速跑\n48秒站立或慢走恢复\n大组间休息: 4分钟\n强度:\n工作段: RPE 9\n心率: 大组后达到最大心率 88-94%\n恢复时下降到 65-75% 再开始下一大组\n划船机/滑雪机45秒高强度间歇 (没有设备可以用任意有氧器械)\n6组 x 45秒\n每组休息: 2分15秒轻松划或完全休息\n总工作时间: 4分30秒\n强度:\n工作段: RPE 9\n心率: 第3组后通常达到最大心率 90-95%\n恢复段: 心率下降到最大心率 70-80% 再开始下一组\n跑步机 30秒快 /30秒慢\n2组 x 8分钟\n快跑段:\n速度: 约最大有氧速度 MAS 的 90-100%\n或RPE 7-8\n心率: 最大心率 80-88%\n慢跑段:\n速度: 快跑速度的 40-50%\n或直接走路恢复\n坡度:\n1%\n仰卧呼吸3分钟",
+      "sources": [
+        "program/May/May_W4D4.jpg",
+        "program/May/May_W4D4_Continued.jpg",
+        "program/May/May_W4D4_Continued_2.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "May-W4D4-1",
+          "name": "风阻自行车 / 普通单车",
+          "sourceText": "风阻自行车 / 普通单车\n6分钟\n心率: 最大心率60-70%\nRPE: 3-4\n最大心率可以粗略估算 :\n最大心率 = 208 - 0.7 x 年龄\n例如20岁运动员:\n208 - 14 = 194次/分\n60-70%就是约 116-136次/分\nBae DBD AS HL\n228 x 每侧8次\nBRAD AIS\n2组 x 每侧10次\n弹力带侧向走\n2组 x 每侧12步\nPogo Jump\n2组 x 15次\n选择 风阻自行车 / 划船机 / SkiErg 之一。\n完成: 3组 x 10秒加速\n每组之间轻松骑 / 划: 50秒\n第1组: 70%最大努力\n第2组: 80%最大努力\n第3组: 90%最大努力",
+          "kind": "conditioning",
+          "sets": [
+            2,
+            2
+          ],
+          "reps": [
+            15,
+            15
+          ],
+          "perSide": true,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "conditioning"
+        },
+        {
+          "id": "May-W4D4-2",
+          "name": "风阻自行车/跑步全力冲刺",
+          "sourceText": "风阻自行车/跑步全力冲刺\n10组 x 10秒\n每组休息: 110秒轻松骑/散步\n10秒全力 + 110秒轻松恢复 = 1组\n总共完成: 10组\n10秒: 100%最大努力\nRPE: 9.5-10\n恢复时间: RPE 1-2\n恢复段心率可回落到 最大心率65-759% 再进入下一组\n跑步机 / MAZE AL / 风阻自行车 / 划船机\nWRAMAZC NL, (AC AIA AL.\n没有的话，用风阻自行车更安全。\n风阻自行车重复冲刺\n3大组 x 每组6次\n每次内容:\n15秒高强度冲刺\n45秒轻松恢复\n完成6次后休息: 4分钟\n总量: 3大组 x 6次 = 18次冲刺\n强度:\n工作段: RPE 9\n恢复段: RPE 2-3\n心率: 工作后段达到最大心率 88-94%\n大组结束心率可达到最大心率 92-96%\n大组间休息时，让心率下降到最大心率 65-75%",
+          "kind": "conditioning",
+          "sets": null,
+          "reps": null,
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "conditioning"
+        },
+        {
+          "id": "May-W4D4-3",
+          "name": "BAAR: 跑步机重复冲刺",
+          "sourceText": "BAAR: 跑步机重复冲刺\n2-3大组 x 每组5次\n每次:\n12秒快速跑\n48秒站立或慢走恢复\n大组间休息: 4分钟\n强度:\n工作段: RPE 9\n心率: 大组后达到最大心率 88-94%\n恢复时下降到 65-75% 再开始下一大组\n划船机/滑雪机45秒高强度间歇 (没有设备可以用任意有氧器械)\n6组 x 45秒\n每组休息: 2分15秒轻松划或完全休息\n总工作时间: 4分30秒\n强度:\n工作段: RPE 9\n心率: 第3组后通常达到最大心率 90-95%\n恢复段: 心率下降到最大心率 70-80% 再开始下一组\n跑步机 30秒快 /30秒慢\n2组 x 8分钟\n快跑段:\n速度: 约最大有氧速度 MAS 的 90-100%\n或RPE 7-8\n心率: 最大心率 80-88%\n慢跑段:\n速度: 快跑速度的 40-50%\n或直接走路恢复\n坡度:\n1%\n仰卧呼吸3分钟",
+          "kind": "sprint",
+          "sets": null,
+          "reps": null,
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "May-W4D5",
+      "month": "May",
+      "blockIndex": 1,
+      "week": 4,
+      "day": 5,
+      "optional": false,
+      "sourceText": "Week4\n1. 慢跑800米 + 动态拉伸 (最伟大拉伸、腿绳肌动态拉什、\n抱膝走、世界最伟大拉伸) 。\n2. 直膝踏脚/脚跟行走 20米 x 3组\n3. 仰卧辟桥匀腿3组 x 12次。\n4. 绞剪加速跑 SOK x 4次\n5飞行跑 20米助跑 + 20米最大速度保持 + 20米惯性跑 =\n6. 跳箱高度跳上+立即跳下接最大努力立定跳远) x 5次 x 3\n组\n7. 150米变速跑 (50米快@90% + 50米慢@60% + 50米冲\n刺@95%) x 3次",
+      "sources": [
+        "program/May/May_W4D5.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "May-W4D5-1",
+          "name": "Week4",
+          "sourceText": "Week4\n1. 慢跑800米 + 动态拉伸 (最伟大拉伸、腿绳肌动态拉什、\n抱膝走、世界最伟大拉伸) 。\n2. 直膝踏脚/脚跟行走 20米 x 3组\n3. 仰卧辟桥匀腿3组 x 12次。\n4. 绞剪加速跑 SOK x 4次\n5飞行跑 20米助跑 + 20米最大速度保持 + 20米惯性跑 =\n6. 跳箱高度跳上+立即跳下接最大努力立定跳远) x 5次 x 3\n组\n7. 150米变速跑 (50米快@90% + 50米慢@60% + 50米冲\n刺@95%) x 3次",
+          "kind": "strength",
+          "sets": [
+            3,
+            3
+          ],
+          "reps": [
+            12,
+            12
+          ],
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "June-W1D1",
+      "month": "June",
+      "blockIndex": 2,
+      "week": 1,
+      "day": 1,
+      "optional": false,
+      "sourceText": "自行车或划船机轻松骑 5分钟\n或HRmax 60-70%\n原地纵跳 2组x3次\nPogo Jump 2组x15次\nSeek + 侧滑步 2组x6步/侧\n5米爆发冲刺 6组x3次\n休息: 45-60秒\n强度: RPE 9-10\n侧向反应冲刺 4组x每侧2次\n距离: 5米\n(KE: 60秒\nRPE 9\n后蹲4组x5次/5次 (组内休息2min)\n75% 1RM\n组间休息: 3分钟\n单腿硬拉 5组x4次/侧\nRPE9\nSARE: 3分钟\n保加利亚分腿足 4组x6次/侧\nRPE 8\n组间休息: 90-120秒\n\nPallof Press 抗旋转推 3组x12次/侧\nRPE9\n休息: 45秒\n死虫/Dead Bug 3组x8次/侧\n侧桥 / Side Plank 3组x30秒/侧\n自行车轻松骑 5-8分钟\n或HRmax 55-65%\n90/90呼吸 3分钟",
+      "sources": [
+        "program/June/June_W1D1.jpg",
+        "program/June/June_W1D1_Continued.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "June-W1D1-1",
+          "name": "自行车或划船机轻松骑 5分钟",
+          "sourceText": "自行车或划船机轻松骑 5分钟\n或HRmax 60-70%\n原地纵跳 2组x3次\nPogo Jump 2组x15次\nSeek + 侧滑步 2组x6步/侧\n5米爆发冲刺 6组x3次\n休息: 45-60秒\n强度: RPE 9-10\n侧向反应冲刺 4组x每侧2次\n距离: 5米\n(KE: 60秒\nRPE 9\n后蹲4组x5次/5次 (组内休息2min)\n75% 1RM\n组间休息: 3分钟\n单腿硬拉 5组x4次/侧\nRPE9\nSARE: 3分钟\n保加利亚分腿足 4组x6次/侧\nRPE 8\n组间休息: 90-120秒",
+          "kind": "conditioning",
+          "sets": [
+            2,
+            2
+          ],
+          "reps": [
+            3,
+            3
+          ],
+          "perSide": true,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "conditioning"
+        },
+        {
+          "id": "June-W1D1-2",
+          "name": "Pallof Press 抗旋转推 3组x12次/侧",
+          "sourceText": "Pallof Press 抗旋转推 3组x12次/侧\nRPE9\n休息: 45秒\n死虫/Dead Bug 3组x8次/侧\n侧桥 / Side Plank 3组x30秒/侧\n自行车轻松骑 5-8分钟\n或HRmax 55-65%\n90/90呼吸 3分钟",
+          "kind": "strength",
+          "sets": [
+            3,
+            3
+          ],
+          "reps": [
+            12,
+            12
+          ],
+          "perSide": true,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "June-W1D2",
+      "month": "June",
+      "blockIndex": 2,
+      "week": 1,
+      "day": 2,
+      "optional": false,
+      "sourceText": "1a BRA LSE 10次/侧x2 aleeImin\n1b波速球上单腿站立屈骨接药球 8次/侧x2 间歌1min\n2a保加利亚分腿蹲 12次/侧x4 节奏 3:1:1 间歇1min\n2b滑冰式 10次/侧x3 节奏3:11 间歇1min\n3a坐姿提踵 12次x4 间歇1min\n3b负重引体向上 12次x4 间歇1min\n4a弹力带招财猫 (RIN) 12次/侧x3 间歇1min\n4b哥本哈根支撑 30s/侧x3 间歇30s\n5有氧自选 20min",
+      "sources": [
+        "program/June/June_W1D2.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "June-W1D2-1",
+          "name": "1a BRA LSE 10次/侧x2 aleeImin",
+          "sourceText": "1a BRA LSE 10次/侧x2 aleeImin\n1b波速球上单腿站立屈骨接药球 8次/侧x2 间歌1min\n2a保加利亚分腿蹲 12次/侧x4 节奏 3:1:1 间歇1min\n2b滑冰式 10次/侧x3 节奏3:11 间歇1min\n3a坐姿提踵 12次x4 间歇1min\n3b负重引体向上 12次x4 间歇1min\n4a弹力带招财猫 (RIN) 12次/侧x3 间歇1min\n4b哥本哈根支撑 30s/侧x3 间歇30s\n5有氧自选 20min",
+          "kind": "strength",
+          "sets": null,
+          "reps": null,
+          "perSide": true,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "June-W1D4",
+      "month": "June",
+      "blockIndex": 2,
+      "week": 1,
+      "day": 4,
+      "optional": false,
+      "sourceText": "地面高拉\nWave 2-2-1 / 2-2-1\nWave1: 3 85% > 290% > 195%\nWave: 3 90% > 295% > 195% (高翻 1RM)\nBUGS\nWave 3-1-1 / 3-1-1\nWave1: 3 80% > 2 85% > 190%\nWave2: 3 85% > 2 90% > 195%\n4组 x3\n100% - 105% 实力推 1RM\nREL eA\n4组x6次\nRPE 8.5/RIR2\n弹力带辅助收腹 3组 x 15 次\n负重起坐 3组 x 15 次",
+      "sources": [
+        "program/June/June_W1D4.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "June-W1D4-1",
+          "name": "地面高拉",
+          "sourceText": "地面高拉\nWave 2-2-1 / 2-2-1\nWave1: 3 85% > 290% > 195%\nWave: 3 90% > 295% > 195% (高翻 1RM)\nBUGS\nWave 3-1-1 / 3-1-1\nWave1: 3 80% > 2 85% > 190%\nWave2: 3 85% > 2 90% > 195%\n4组 x3\n100% - 105% 实力推 1RM\nREL eA\n4组x6次\nRPE 8.5/RIR2\n弹力带辅助收腹 3组 x 15 次\n负重起坐 3组 x 15 次",
+          "kind": "strength",
+          "sets": [
+            4,
+            4
+          ],
+          "reps": [
+            6,
+            6
+          ],
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "June-W1D5",
+      "month": "June",
+      "blockIndex": 2,
+      "week": 1,
+      "day": 5,
+      "optional": false,
+      "sourceText": "频)\n训练时间: 75-9579 3\n训练器械优先级:\n风阻自行车\n划船机\n滑雪机\n跑步机 / MAZE AL\n安全原则 :\n不在疲劳状态下做高速跑步机冲刺\n不在动作变形后继续做糖酵解间昧\n不把短爆发训练做成*硬撑耐力”\n心率、RPE、功率下降和动作质量同时监控\n训练目标是高质量重复输出，不是单纯累到崩溃\n训练前检查: 3-5分钟\n训练前先记录 :\n如果出现以下情况，当天改为休息:\n静息心率比平时高 10 bpm以上\n疲劳评分 =8/10\nRR, GRRE. FRA APA\n前一天刚做大重量下胶或大量跳路\n\nFAB: 12-15分钟\n1. 自行车轻松骑\n6分钟\n强度:\n心率: HRmax 60-70%\nRPE: 3-4\n呼吸微微加快，可以完整说话\n如果不知道最大心率，可粗略估算 :\nHRmax = 208 - 0.7 x 年龄\n例如20岁运动员:\n208 - 14 = 194 bpm\n60-70% HRmax ~ 116-136 bpm\n2. 器械递增强度热身\n选择当天主器械，优先用风阻自行车。\n完成: 3组 x 10秒加速\n每组之问轻松骑: 50RD\n强度递增:\n第1组: 70%\n第2组: 80%\n第3组: 90%\n风阻自行车 8秒全力冲刺\n8-10组 x 8%)\n每组休息: 112秒轻松骑\n也就是: 8秒全力 + 112秒轻松恢复 = 1组\n强度:\n工作段: RPE 9.5-10\n恢复段: RPE 1-2\n恢复心率: 尽量回到 HRmax 65-75%\n\n硅代方案: 划船机 10秒全力划                                           a\n如果没有风阻自行车，用划船机。\n8组 x 10秒全力划\n每组休息: 110秒轻松划\n强度:\n工作段: RPE 9.5-10\n恢复段: RPE 1-2\n重复冲刺能力 RSA\n风阻自行车 15秒冲刺 /45秒恢复\n3大组 x 每组5-6次\n每次:\n15秒高强度冲刺\n45秒轻松骑\nKANE: 4分钟\n新牛: 3 x 5次 = 15次\n老牛: 3 x 6次 = 18次\n强度:\n工作段: RPE 8.5-9\n恢复段: RPE 2-3\n大组后心率: 约HRmax 88-95%\n大组间恢复到: HRmax 65-75%\n如果是功率自行车，功率目标:\n15秒平均功率大约为8秒峰值功率的:\n70-85%\n例如8秒峰值功率900W:\n15秒平均功率目标: 630-760W\n如果同一大组内平均功率下降超过 15%，下一大组改为:\n4次 x 15秒\n如果心率大组间休息4分钟后仍在 HRmax 85%以上，下一大组减少1-2\n次，或延长休息到5分钟。\n\n无氧糖醉解系统                                                          @\n划船机 40-45秒高强度间歇\n5-6组 x 40-45%)\n每组休息: 2分15秒-3分钟\n强度:\n工作段: RPE 8.5-9\n心率: 第3组后通常达到 HRmax 90-95%\n恢复段: 尽量降到 HRmax 70-80%\n如果新牛，用: 5组 x 40秒，体3分钟\n如果老牛，用: 6组 x 45秒，休2分15秒\n配速参考:\n如果有2000米划船成绩:\n40-45秒目标配速 = 2000米平均配速 - 5到10秒/500m\n例子: 2000米平均配速为 1:50/500m\n则40-45秒间歇目标为 :\n1:40-1:45/500m\n没有数据就用RPE控制 :\n前15秒强\n中间15秒顶住\n最后10-15秒动作不能散\nBRA: SkiErg 40M aR\n如果没有划船机，用SkiErg。\n5-6组 x 40秒\n每组休息: 2-3分钟\n强度:\nRPE 8.5-9\n心率: HRmax 90-95%\n替代方案: 风阻自行车 40M R\n如果当天只用自行车，也可以做:\n5组 x 40%)\n每组休息: 2分30秒-3分钟\n强度:\nRPE 8.5-9\n心率: HRmax 90-95%\n如果全程都用风阻车，40建议只做 4-5组，避免堆过量。\n\n自行车 30秒快 /30秒慢\n1-2组 x 8分钟\n组间休息: 3分钟\n执行方式:\n30秒快骑\n30秒轻松骑\n连续8分钟\n强度: 快骑段:\n心率: HRmax 80-88%\nRPE: 7-8\n慢骑段:\nRPE: 2-3\n主动恢复\n不要完全停\n安排建议:\n状态好: 2组 x 8分钟\n状态一般: 1组 x 8分钟\n前面糖酵解间歇很累: 做 1组 x 6分钟\n冷身恢复: 10-12分钟\n自行车轻松骑/慢跑慢走\n6-8分钟\n强度:\n心率: HRmax 55-65%\nRPE: 2-3\n90/90呼吸\n3分钟",
+      "sources": [
+        "program/June/June_W1D5.jpg",
+        "program/June/June_W1D5_Continued.jpg",
+        "program/June/June_W1D5_Continued_2.jpg",
+        "program/June/June_W1D5_Continued_3.jpg",
+        "program/June/June_W1D5_Continued_4.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "June-W1D5-1",
+          "name": "频)",
+          "sourceText": "频)\n训练时间: 75-9579 3\n训练器械优先级:\n风阻自行车\n划船机\n滑雪机\n跑步机 / MAZE AL\n安全原则 :\n不在疲劳状态下做高速跑步机冲刺\n不在动作变形后继续做糖酵解间昧\n不把短爆发训练做成*硬撑耐力”\n心率、RPE、功率下降和动作质量同时监控\n训练目标是高质量重复输出，不是单纯累到崩溃\n训练前检查: 3-5分钟\n训练前先记录 :\n如果出现以下情况，当天改为休息:\n静息心率比平时高 10 bpm以上\n疲劳评分 =8/10\nRR, GRRE. FRA APA\n前一天刚做大重量下胶或大量跳路",
+          "kind": "strength",
+          "sets": null,
+          "reps": null,
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        },
+        {
+          "id": "June-W1D5-2",
+          "name": "FAB: 12-15分钟",
+          "sourceText": "FAB: 12-15分钟\n1. 自行车轻松骑\n6分钟\n强度:\n心率: HRmax 60-70%\nRPE: 3-4\n呼吸微微加快，可以完整说话\n如果不知道最大心率，可粗略估算 :\nHRmax = 208 - 0.7 x 年龄\n例如20岁运动员:\n208 - 14 = 194 bpm\n60-70% HRmax ~ 116-136 bpm\n2. 器械递增强度热身\n选择当天主器械，优先用风阻自行车。\n完成: 3组 x 10秒加速\n每组之问轻松骑: 50RD\n强度递增:\n第1组: 70%\n第2组: 80%\n第3组: 90%\n风阻自行车 8秒全力冲刺\n8-10组 x 8%)\n每组休息: 112秒轻松骑\n也就是: 8秒全力 + 112秒轻松恢复 = 1组\n强度:\n工作段: RPE 9.5-10\n恢复段: RPE 1-2\n恢复心率: 尽量回到 HRmax 65-75%",
+          "kind": "strength",
+          "sets": null,
+          "reps": null,
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        },
+        {
+          "id": "June-W1D5-3",
+          "name": "硅代方案: 划船机 10秒全力划                                           a",
+          "sourceText": "硅代方案: 划船机 10秒全力划                                           a\n如果没有风阻自行车，用划船机。\n8组 x 10秒全力划\n每组休息: 110秒轻松划\n强度:\n工作段: RPE 9.5-10\n恢复段: RPE 1-2\n重复冲刺能力 RSA\n风阻自行车 15秒冲刺 /45秒恢复\n3大组 x 每组5-6次\n每次:\n15秒高强度冲刺\n45秒轻松骑\nKANE: 4分钟\n新牛: 3 x 5次 = 15次\n老牛: 3 x 6次 = 18次\n强度:\n工作段: RPE 8.5-9\n恢复段: RPE 2-3\n大组后心率: 约HRmax 88-95%\n大组间恢复到: HRmax 65-75%\n如果是功率自行车，功率目标:\n15秒平均功率大约为8秒峰值功率的:\n70-85%\n例如8秒峰值功率900W:\n15秒平均功率目标: 630-760W\n如果同一大组内平均功率下降超过 15%，下一大组改为:\n4次 x 15秒\n如果心率大组间休息4分钟后仍在 HRmax 85%以上，下一大组减少1-2\n次，或延长休息到5分钟。",
+          "kind": "conditioning",
+          "sets": null,
+          "reps": null,
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "conditioning"
+        },
+        {
+          "id": "June-W1D5-4",
+          "name": "无氧糖醉解系统                                                          @",
+          "sourceText": "无氧糖醉解系统                                                          @\n划船机 40-45秒高强度间歇\n5-6组 x 40-45%)\n每组休息: 2分15秒-3分钟\n强度:\n工作段: RPE 8.5-9\n心率: 第3组后通常达到 HRmax 90-95%\n恢复段: 尽量降到 HRmax 70-80%\n如果新牛，用: 5组 x 40秒，体3分钟\n如果老牛，用: 6组 x 45秒，休2分15秒\n配速参考:\n如果有2000米划船成绩:\n40-45秒目标配速 = 2000米平均配速 - 5到10秒/500m\n例子: 2000米平均配速为 1:50/500m\n则40-45秒间歇目标为 :\n1:40-1:45/500m\n没有数据就用RPE控制 :\n前15秒强\n中间15秒顶住\n最后10-15秒动作不能散\nBRA: SkiErg 40M aR\n如果没有划船机，用SkiErg。\n5-6组 x 40秒\n每组休息: 2-3分钟\n强度:\nRPE 8.5-9\n心率: HRmax 90-95%\n替代方案: 风阻自行车 40M R\n如果当天只用自行车，也可以做:\n5组 x 40%)\n每组休息: 2分30秒-3分钟\n强度:\nRPE 8.5-9\n心率: HRmax 90-95%\n如果全程都用风阻车，40建议只做 4-5组，避免堆过量。",
+          "kind": "strength",
+          "sets": null,
+          "reps": null,
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        },
+        {
+          "id": "June-W1D5-5",
+          "name": "自行车 30秒快 /30秒慢",
+          "sourceText": "自行车 30秒快 /30秒慢\n1-2组 x 8分钟\n组间休息: 3分钟\n执行方式:\n30秒快骑\n30秒轻松骑\n连续8分钟\n强度: 快骑段:\n心率: HRmax 80-88%\nRPE: 7-8\n慢骑段:\nRPE: 2-3\n主动恢复\n不要完全停\n安排建议:\n状态好: 2组 x 8分钟\n状态一般: 1组 x 8分钟\n前面糖酵解间歇很累: 做 1组 x 6分钟\n冷身恢复: 10-12分钟\n自行车轻松骑/慢跑慢走\n6-8分钟\n强度:\n心率: HRmax 55-65%\nRPE: 2-3\n90/90呼吸\n3分钟",
+          "kind": "conditioning",
+          "sets": null,
+          "reps": null,
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "conditioning"
+        }
+      ]
+    },
+    {
+      "id": "June-W1D6",
+      "month": "June",
+      "blockIndex": 2,
+      "week": 1,
+      "day": 6,
+      "optional": false,
+      "sourceText": "1a杠铃片反转抓握 8/手x4\n1b增强式俯卧撑bw 12x4\n1c仰卧反向划船12x4\n2a杠铃前蹲 67%1rmx10x4 节奏3:1:1 RIR=2\n2b转体后弓步 8/侧x4\n3a启部ITY 8x3\n3bv-up 12/侧x3\n4代谢 10s做功/20s休息x6-8轮\n左右侧跳 (可持药球) 4*12次\n助力POGO 4*30次 尽可能高\n俯卧股二弯举4*30*2 轻 尽可能快",
+      "sources": [
+        "program/June/June_W1D6.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "June-W1D6-1",
+          "name": "1a杠铃片反转抓握 8/手x4",
+          "sourceText": "1a杠铃片反转抓握 8/手x4\n1b增强式俯卧撑bw 12x4\n1c仰卧反向划船12x4\n2a杠铃前蹲 67%1rmx10x4 节奏3:1:1 RIR=2\n2b转体后弓步 8/侧x4\n3a启部ITY 8x3\n3bv-up 12/侧x3\n4代谢 10s做功/20s休息x6-8轮\n左右侧跳 (可持药球) 4*12次\n助力POGO 4*30次 尽可能高\n俯卧股二弯举4*30*2 轻 尽可能快",
+          "kind": "strength",
+          "sets": null,
+          "reps": null,
+          "perSide": true,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "June-W2D1",
+      "month": "June",
+      "blockIndex": 2,
+      "week": 2,
+      "day": 1,
+      "optional": false,
+      "sourceText": "—                 x       s    hS      ox]\n悬垂高翻/悬垂熊猫拉 都使用高翻1RM\n每个Wave之间休息5min\nWave 1\n3 reps 80% 1RM (MV: > 1.05 m/s | RIR 2)\n2 reps 82.5% 1RM (MV: > 0.95 m/s | RIR 1-2)\n1 rep 85% 1RM (MV: > 0.85 m/s | RIR 1)\n每组组间休息: 严格 3 分钟\nWave 2\n3 reps 75% 1RM (MV: > 1.05 m/s | RIR 2)\n2 reps 80% 1RM (MV: > 0.95 m/s | RIR 1-2)\n1 rep 85% 1RM (MV: > 0.85 m/s | RIR 1)\n每组组间休息: 严格 3.5分钟\nWave 3 视 Wave 2 速度，加重 2.5%-5%,\n3 reps 77.5%+ 1RM (MV > 1.0 m/s)\n2 reps 82.5%+ 1RM (MV: > 0.90 m/s)\n1 rep @ 87.5%+ 1RM (MV: > 0.80 m/s)\n每组组间休息: 严格 2分钟\n\nWave 1 :\n5 reps 75% 1RM (MV: > 0.85 m/s | RIR 3)\n3 reps 77.5% 1RM (MV: > 0.75 m/s | RIR 2)\n2 reps 82.5% 1RM (MV: > 0.65 m/s | RIR 1)\n每组组间休息: 2 分钟\nWave 2 :\n5 reps 70% 1RM (MV: > 0.85 m/s | RIR 3)\n3 reps 77.5% 1RM (MV: > 0.75 m/s | RIR 2)\n2 reps 82.5% 1RM (MV: > 0.65 m/s | RIR 1)\n每组组间休息: 2 分钟\n罗马尼亚硬拉\n4组x6次\n(RIR 3，RPE7)\n保加利亚单腿蹲 每个Wave之间自由休息\n每侧独立完成。先执行弱侧 (SEAM) ，完成后立刻切换强侧。双侧\nWave 1\n5 reps 75.0% 1RM (RIR 3-4)\n3 reps 80.0% 1RM (RIR 2-3)\n2 reps 82.5% 1RM (RIR 2)\n每组组间休息: 完成双侧后，严格休息 2 分钟。\nWave 2\n5reps 80% 1RM (RIR 2-3)\n3 reps 82.5% 1RM (RIR 1-2)\n2 reps 85.0% 1RM (RIR 1)\n每组组间休息: 完成双侧后，严格休息 3 分钟。\nWave 3\n5 reps 80.0% 1RM (RIR 1-2)\n3 reps 85.0% 1RM (RIR 1)\n2 reps 87.5% 1RM (RIRO)\n每组组间休息: 完成双侧后，休息 4 分钟。",
+      "sources": [
+        "program/June/June_W2D1.jpg",
+        "program/June/June_W2D1_Continued.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "June-W2D1-1",
+          "name": "—                 x       s    hS      ox]",
+          "sourceText": "—                 x       s    hS      ox]\n悬垂高翻/悬垂熊猫拉 都使用高翻1RM\n每个Wave之间休息5min\nWave 1\n3 reps 80% 1RM (MV: > 1.05 m/s | RIR 2)\n2 reps 82.5% 1RM (MV: > 0.95 m/s | RIR 1-2)\n1 rep 85% 1RM (MV: > 0.85 m/s | RIR 1)\n每组组间休息: 严格 3 分钟\nWave 2\n3 reps 75% 1RM (MV: > 1.05 m/s | RIR 2)\n2 reps 80% 1RM (MV: > 0.95 m/s | RIR 1-2)\n1 rep 85% 1RM (MV: > 0.85 m/s | RIR 1)\n每组组间休息: 严格 3.5分钟\nWave 3 视 Wave 2 速度，加重 2.5%-5%,\n3 reps 77.5%+ 1RM (MV > 1.0 m/s)\n2 reps 82.5%+ 1RM (MV: > 0.90 m/s)\n1 rep @ 87.5%+ 1RM (MV: > 0.80 m/s)\n每组组间休息: 严格 2分钟",
+          "kind": "strength",
+          "sets": null,
+          "reps": null,
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        },
+        {
+          "id": "June-W2D1-2",
+          "name": "Wave 1 :",
+          "sourceText": "Wave 1 :\n5 reps 75% 1RM (MV: > 0.85 m/s | RIR 3)\n3 reps 77.5% 1RM (MV: > 0.75 m/s | RIR 2)\n2 reps 82.5% 1RM (MV: > 0.65 m/s | RIR 1)\n每组组间休息: 2 分钟\nWave 2 :\n5 reps 70% 1RM (MV: > 0.85 m/s | RIR 3)\n3 reps 77.5% 1RM (MV: > 0.75 m/s | RIR 2)\n2 reps 82.5% 1RM (MV: > 0.65 m/s | RIR 1)\n每组组间休息: 2 分钟\n罗马尼亚硬拉\n4组x6次\n(RIR 3，RPE7)\n保加利亚单腿蹲 每个Wave之间自由休息\n每侧独立完成。先执行弱侧 (SEAM) ，完成后立刻切换强侧。双侧\nWave 1\n5 reps 75.0% 1RM (RIR 3-4)\n3 reps 80.0% 1RM (RIR 2-3)\n2 reps 82.5% 1RM (RIR 2)\n每组组间休息: 完成双侧后，严格休息 2 分钟。\nWave 2\n5reps 80% 1RM (RIR 2-3)\n3 reps 82.5% 1RM (RIR 1-2)\n2 reps 85.0% 1RM (RIR 1)\n每组组间休息: 完成双侧后，严格休息 3 分钟。\nWave 3\n5 reps 80.0% 1RM (RIR 1-2)\n3 reps 85.0% 1RM (RIR 1)\n2 reps 87.5% 1RM (RIRO)\n每组组间休息: 完成双侧后，休息 4 分钟。",
+          "kind": "strength",
+          "sets": [
+            4,
+            4
+          ],
+          "reps": [
+            6,
+            6
+          ],
+          "perSide": true,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "June-W2D2",
+      "month": "June",
+      "blockIndex": 2,
+      "week": 2,
+      "day": 2,
+      "optional": false,
+      "sourceText": "(Sains) 自行车轻松骑\n6分钟\n心率: HRmax 60-70%\nRPE: 3-4\n空杆奥举复合热身\n以下动作为 1轮，完成 3轮。\n空杆罗马尼亚硬拉5次\n空杆高拉5次\n实力翻5次\n前蹲5次\n高翻接前蹲3次\n组间休息: GOR)\nA1. 悬垂高翻\n5组 x 3次\n60-70% 高翻TRM\n组间休息: 90秒\nA2. 箱跳 /7 Box Jump\n5组 x 3次\n组间休息: 和A1配对完成。\n悬垂高翻完成后休息 30%)\n做箱跳 3次\n然后休息 90秒\n绸进入下一组\n\n高翻/ Power Clean\n6大组，每大组6次\n75-82.5% 高翻1RM\n每大组采用群居组:\n2次+ 体20秒+ 2次+体20秒 + 2次\n这样完成 6次 = 1大组\n大组之间休息: 3-4分钟\n一共完成: 6大组 x 6次 = 36次高翻\n以下为具体安排:\n第1大组: 75% x 2+2+2\n第2大组: 77.5% x 2+2+2\n第3大组: 80% x 2+2+2\n第4大组: 80% x 2+2+2\n第5大组: 80-82.5% x 2+2+2\n第6大组: 77.5-80% x 2+2+2\n抓握高拉\n5组 x 3次\n80-100% 抓举1RM\n如果没有抓举1RM，用: 50-60% 后蹲1RM\n组间休息: 2分钟\netl\n5组 x 3次\n90-110% 高翻TRM\n组间休息: 2-3分钟\n以下为具体安排:\n第1组: 90% 高翻11RM x 3\n第2组: 95% x 3\n第3组: 100% x 3\n第4组: 100-105% x 3\n第5组: 100% x 3\n\n高翻 + 前蹲 + 借力推\n6组\n每组完成: 1次高翻 + 2次前蹲 + 1次借力推\n连续完成后算 1组。\n60-70% 高翻1RM\n组间休息: 2-3分钟\n负重引体向上\n4组 x 5次\n自重或负重，RPE 8\n组间休息: 90-120秒",
+      "sources": [
+        "program/June/June_W2D2.jpg",
+        "program/June/June_W2D2_Continued.jpg",
+        "program/June/June_W2D2_Continued_2.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "June-W2D2-1",
+          "name": "(Sains) 自行车轻松骑",
+          "sourceText": "(Sains) 自行车轻松骑\n6分钟\n心率: HRmax 60-70%\nRPE: 3-4\n空杆奥举复合热身\n以下动作为 1轮，完成 3轮。\n空杆罗马尼亚硬拉5次\n空杆高拉5次\n实力翻5次\n前蹲5次\n高翻接前蹲3次\n组间休息: GOR)\nA1. 悬垂高翻\n5组 x 3次\n60-70% 高翻TRM\n组间休息: 90秒\nA2. 箱跳 /7 Box Jump\n5组 x 3次\n组间休息: 和A1配对完成。\n悬垂高翻完成后休息 30%)\n做箱跳 3次\n然后休息 90秒\n绸进入下一组",
+          "kind": "conditioning",
+          "sets": [
+            5,
+            5
+          ],
+          "reps": [
+            3,
+            3
+          ],
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "conditioning"
+        },
+        {
+          "id": "June-W2D2-2",
+          "name": "高翻/ Power Clean",
+          "sourceText": "高翻/ Power Clean\n6大组，每大组6次\n75-82.5% 高翻1RM\n每大组采用群居组:\n2次+ 体20秒+ 2次+体20秒 + 2次\n这样完成 6次 = 1大组\n大组之间休息: 3-4分钟\n一共完成: 6大组 x 6次 = 36次高翻\n以下为具体安排:\n第1大组: 75% x 2+2+2\n第2大组: 77.5% x 2+2+2\n第3大组: 80% x 2+2+2\n第4大组: 80% x 2+2+2\n第5大组: 80-82.5% x 2+2+2\n第6大组: 77.5-80% x 2+2+2\n抓握高拉\n5组 x 3次\n80-100% 抓举1RM\n如果没有抓举1RM，用: 50-60% 后蹲1RM\n组间休息: 2分钟\netl\n5组 x 3次\n90-110% 高翻TRM\n组间休息: 2-3分钟\n以下为具体安排:\n第1组: 90% 高翻11RM x 3\n第2组: 95% x 3\n第3组: 100% x 3\n第4组: 100-105% x 3\n第5组: 100% x 3",
+          "kind": "strength",
+          "sets": [
+            5,
+            5
+          ],
+          "reps": [
+            3,
+            3
+          ],
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        },
+        {
+          "id": "June-W2D2-3",
+          "name": "高翻 + 前蹲 + 借力推",
+          "sourceText": "高翻 + 前蹲 + 借力推\n6组\n每组完成: 1次高翻 + 2次前蹲 + 1次借力推\n连续完成后算 1组。\n60-70% 高翻1RM\n组间休息: 2-3分钟\n负重引体向上\n4组 x 5次\n自重或负重，RPE 8\n组间休息: 90-120秒",
+          "kind": "strength",
+          "sets": [
+            4,
+            4
+          ],
+          "reps": [
+            5,
+            5
+          ],
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "June-W2D3",
+      "month": "June",
+      "blockIndex": 2,
+      "week": 2,
+      "day": 3,
+      "optional": false,
+      "sourceText": "自行车 / 椭圆机 624%, HRmax 60-70%\n划船机或风阻自行车/冲刺 40秒高强度\n5-6组 x 40秒全力输出\n组间休息 2-3 分钟\n强度 :\n工作段 RPE 8.5-9\n心率最高可达 HRmax 90%\n群聚组 (3-4组循环 x 3轮)\n高翻接前蹲 + ANI (组合动作)\nJANE:\n群聚组循环完成后休息 3-4 分钟\n单动作间休息 20-30 秒\n负重引体向上 3x5\n单腿箱蹲 (变式) 3组x6x每侧\n哥本哈根侧桥 3 x 每侧 30-40 秒\nPogo Jump 4组x20\n组间休息: 45-90秒",
+      "sources": [
+        "program/June/June_W2D3.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "June-W2D3-1",
+          "name": "自行车 / 椭圆机 624%, HRmax 60-70%",
+          "sourceText": "自行车 / 椭圆机 624%, HRmax 60-70%\n划船机或风阻自行车/冲刺 40秒高强度\n5-6组 x 40秒全力输出\n组间休息 2-3 分钟\n强度 :\n工作段 RPE 8.5-9\n心率最高可达 HRmax 90%\n群聚组 (3-4组循环 x 3轮)\n高翻接前蹲 + ANI (组合动作)\nJANE:\n群聚组循环完成后休息 3-4 分钟\n单动作间休息 20-30 秒\n负重引体向上 3x5\n单腿箱蹲 (变式) 3组x6x每侧\n哥本哈根侧桥 3 x 每侧 30-40 秒\nPogo Jump 4组x20\n组间休息: 45-90秒",
+          "kind": "conditioning",
+          "sets": null,
+          "reps": null,
+          "perSide": true,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "conditioning"
+        }
+      ]
+    },
+    {
+      "id": "June-W2D5",
+      "month": "June",
+      "blockIndex": 2,
+      "week": 2,
+      "day": 5,
+      "optional": false,
+      "sourceText": "顺序   动作   次数   fafa   组 | 组内休 | 组间休\n数| 息   息\n热身 | 空杆高拉   5   空杆     2\n轮\n=f BES   5   空杆     2\n轮\n空杆借力推  5   空杆     2\n轮\n组\nByes + 火箭推 | 2  60-65% 高翻1 | 4 | 30-45 | 3分钟\nRM       秒\n第二 | 抓举高拉  3  80-100% 抓举 |4 | 30%) | 2分钟\n组           1RM\n高翻拉  3  95-105% 高翻 | 4 | 30秒“| 2分钟\n1RM\n单手哑铃悬垂 |4 ( | RPE 7-8  4 |30秒 |3分钟\n抓举    共)\n第三 | 前蹲   3  80-85% 1RM |4 | 30%) | 2分钟\n组\n本\nRM",
+      "sources": [
+        "program/June/June_W2D5.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "June-W2D5-1",
+          "name": "顺序   动作   次数   fafa   组 | 组内休 | 组间休",
+          "sourceText": "顺序   动作   次数   fafa   组 | 组内休 | 组间休\n数| 息   息\n热身 | 空杆高拉   5   空杆     2\n轮\n=f BES   5   空杆     2\n轮\n空杆借力推  5   空杆     2\n轮\n组\nByes + 火箭推 | 2  60-65% 高翻1 | 4 | 30-45 | 3分钟\nRM       秒\n第二 | 抓举高拉  3  80-100% 抓举 |4 | 30%) | 2分钟\n组           1RM\n高翻拉  3  95-105% 高翻 | 4 | 30秒“| 2分钟\n1RM\n单手哑铃悬垂 |4 ( | RPE 7-8  4 |30秒 |3分钟\n抓举    共)\n第三 | 前蹲   3  80-85% 1RM |4 | 30%) | 2分钟\n组\n本\nRM",
+          "kind": "strength",
+          "sets": null,
+          "reps": null,
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "June-W2D6",
+      "month": "June",
+      "blockIndex": 2,
+      "week": 2,
+      "day": 6,
+      "optional": false,
+      "sourceText": "ED 铁线上运动表现训练营C组 (5.31期)                    >\n1.横向钼栏架 10x3组\n2.侧向摆腿20次/腿x 3组\n3.单腿高翻 3次/80%1RM/侧*3组\n4.单腿支撑哑铃上挺8次/侧”3组\n5.400m 一 休息5分钟 一 300m 一 休息3分钟 一 200m 一 休息90秒 一\n100m 两轮 大组间歇8min\n6.ghd山羊挺身15x3交替悬垂举腿15x3 (每完成15次后保持等长15s)",
+      "sources": [
+        "program/June/June_W2D6.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "June-W2D6-1",
+          "name": "ED 铁线上运动表现训练营C组 (5.31期)                    >",
+          "sourceText": "ED 铁线上运动表现训练营C组 (5.31期)                    >\n1.横向钼栏架 10x3组\n2.侧向摆腿20次/腿x 3组\n3.单腿高翻 3次/80%1RM/侧*3组\n4.单腿支撑哑铃上挺8次/侧”3组\n5.400m 一 休息5分钟 一 300m 一 休息3分钟 一 200m 一 休息90秒 一\n100m 两轮 大组间歇8min\n6.ghd山羊挺身15x3交替悬垂举腿15x3 (每完成15次后保持等长15s)",
+          "kind": "strength",
+          "sets": null,
+          "reps": null,
+          "perSide": true,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "June-W3D1",
+      "month": "June",
+      "blockIndex": 2,
+      "week": 3,
+      "day": 1,
+      "optional": false,
+      "sourceText": "自行车轻松骑\n6分钟\n强度: HRmax 60-70%\n完成 4轮\n动作之间休息: 20-30秒\n每轮休息: 90秒\n|动作                |次数 | 强度                  |\n悬垂高翻     | 3次 | 50-60% SHRM\ncmj           | 3次 | 自重\n坐姿药球过顶后抛 | 4次 | 3-5kg\n执行方式:\n休20秒\n垂直跳 3次\n休20秒\n药球过顶后抛 4次\n体90秒\n重复4轮\n\n完成 6轮\n每轮采用群聚组:\n1次+体20秒 + 1次+体20秒 + 1次\n每轮共 3次高翻\nKE: 3-4分钟\n具体执行方式:\n轮次 |强度    | 次数\n第1轮 | 75%   | 1+1+1\n第2轮 | 82.5% | 14+1+1\n第3轮 | 87.5%       1+1+1\n第4轮 | 80%   | 1+1+1\n第5轮 | 85-90% | 1+1+1\n第6轮 | 75-77.59% | 1+1+1\n18次高翻\n完成 5轮\n动作之间休息: 20秒\n每轮休息: 2分钟\n动作    次数 | 强度\n负重深蹲跳 | 4次 | 15-20% 后蹲1RM\nPogo Jump | 12次| 自重\n5米冲刺   DR |90-95%\n执行方式:\n负重深蹲跳 4次\n休20秒\nPogo Jump 12次\n休20秒\n5米启动 1次\n休2分钟\n重复5轮\n\n完成 4轮\n动作之间休息: 30秒\n每轮休息: 2-3分钟\n动作 |次数|强度\n高翻 “| 3次 | 65-70% |\nBEB ”| 3次 | 70-75%\n箱跳 ”| 3次 | 自重\n执行方式:\n高翻 3次\n休30秒\n前蹲 3次\n休30秒\n休30秒\n箱跳 3次\n休2-3分钟\n重复4轮",
+      "sources": [
+        "program/June/June_W3D1.jpg",
+        "program/June/June_W3D1_Continued.jpg",
+        "program/June/June_W3D1_Continued_2.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "June-W3D1-1",
+          "name": "自行车轻松骑",
+          "sourceText": "自行车轻松骑\n6分钟\n强度: HRmax 60-70%\n完成 4轮\n动作之间休息: 20-30秒\n每轮休息: 90秒\n|动作                |次数 | 强度                  |\n悬垂高翻     | 3次 | 50-60% SHRM\ncmj           | 3次 | 自重\n坐姿药球过顶后抛 | 4次 | 3-5kg\n执行方式:\n休20秒\n垂直跳 3次\n休20秒\n药球过顶后抛 4次\n体90秒\n重复4轮",
+          "kind": "conditioning",
+          "sets": null,
+          "reps": null,
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "conditioning"
+        },
+        {
+          "id": "June-W3D1-2",
+          "name": "完成 6轮",
+          "sourceText": "完成 6轮\n每轮采用群聚组:\n1次+体20秒 + 1次+体20秒 + 1次\n每轮共 3次高翻\nKE: 3-4分钟\n具体执行方式:\n轮次 |强度    | 次数\n第1轮 | 75%   | 1+1+1\n第2轮 | 82.5% | 14+1+1\n第3轮 | 87.5%       1+1+1\n第4轮 | 80%   | 1+1+1\n第5轮 | 85-90% | 1+1+1\n第6轮 | 75-77.59% | 1+1+1\n18次高翻\n完成 5轮\n动作之间休息: 20秒\n每轮休息: 2分钟\n动作    次数 | 强度\n负重深蹲跳 | 4次 | 15-20% 后蹲1RM\nPogo Jump | 12次| 自重\n5米冲刺   DR |90-95%\n执行方式:\n负重深蹲跳 4次\n休20秒\nPogo Jump 12次\n休20秒\n5米启动 1次\n休2分钟\n重复5轮",
+          "kind": "strength",
+          "sets": null,
+          "reps": null,
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        },
+        {
+          "id": "June-W3D1-3",
+          "name": "完成 4轮",
+          "sourceText": "完成 4轮\n动作之间休息: 30秒\n每轮休息: 2-3分钟\n动作 |次数|强度\n高翻 “| 3次 | 65-70% |\nBEB ”| 3次 | 70-75%\n箱跳 ”| 3次 | 自重\n执行方式:\n高翻 3次\n休30秒\n前蹲 3次\n休30秒\n休30秒\n箱跳 3次\n休2-3分钟\n重复4轮",
+          "kind": "strength",
+          "sets": null,
+          "reps": null,
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "June-W3D2",
+      "month": "June",
+      "blockIndex": 2,
+      "week": 3,
+      "day": 2,
+      "optional": false,
+      "sourceText": "自行车 / 划船机\n6分钟\nHRmax 60-70%\nPogo Jump 2x15\n原地纵跳 2x2\n5米加速跑 3x1 (70>85>909%6)\n风阻车 / 划船机 8秒冲刺\n10组 x 10秒全力\n休息: 110-120秒轻松骑/划\n强度: 工作: RPE 9.5-10/恢复: RPE 1-2\n体重 目标功率\n70kg 550-850W\n80kg 650-950W\n90kg 750-1050W\n\n划船机 / SkiErg 45秒冲刺\n6组 x 45秒\n休息: 2分30秒\n强度: RPE 8.5-9\n心率: HRmax 88-95%\n1000m水平 45秒目标\n1:50/500m 1:40-1:45\n1:45/500m 1:35-1:40\n1:40/500m 1:30-1:35\n风阻车 15秒冲 / 45秒恢复\n3大组 x 5次\n每次: 15秒冲刺 (RPE 9) /45秒轻松骑 (RPE 2-3)\n大组间休息: 4分钟",
+      "sources": [
+        "program/June/June_W3D2.jpg",
+        "program/June/June_W3D2_Continued.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "June-W3D2-1",
+          "name": "自行车 / 划船机",
+          "sourceText": "自行车 / 划船机\n6分钟\nHRmax 60-70%\nPogo Jump 2x15\n原地纵跳 2x2\n5米加速跑 3x1 (70>85>909%6)\n风阻车 / 划船机 8秒冲刺\n10组 x 10秒全力\n休息: 110-120秒轻松骑/划\n强度: 工作: RPE 9.5-10/恢复: RPE 1-2\n体重 目标功率\n70kg 550-850W\n80kg 650-950W\n90kg 750-1050W",
+          "kind": "conditioning",
+          "sets": null,
+          "reps": null,
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "conditioning"
+        },
+        {
+          "id": "June-W3D2-2",
+          "name": "划船机 / SkiErg 45秒冲刺",
+          "sourceText": "划船机 / SkiErg 45秒冲刺\n6组 x 45秒\n休息: 2分30秒\n强度: RPE 8.5-9\n心率: HRmax 88-95%\n1000m水平 45秒目标\n1:50/500m 1:40-1:45\n1:45/500m 1:35-1:40\n1:40/500m 1:30-1:35\n风阻车 15秒冲 / 45秒恢复\n3大组 x 5次\n每次: 15秒冲刺 (RPE 9) /45秒轻松骑 (RPE 2-3)\n大组间休息: 4分钟",
+          "kind": "conditioning",
+          "sets": null,
+          "reps": null,
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "conditioning"
+        }
+      ]
+    },
+    {
+      "id": "June-W3D4",
+      "month": "June",
+      "blockIndex": 2,
+      "week": 3,
+      "day": 4,
+      "optional": false,
+      "sourceText": "1a单腿侧向跳+90。\"旋转跳箱上跳\nfafa: 10次/侧 x 4组\n要求: 落地缓冲后立即爆发起跳，接触地面时间更短。\n1b 侧向跳栏架\nfafa: 6次/侧 x 4组\nBR: 保持低重心，落地稳定后快速起跳\n2 药球旋转对墙抛据\nfafa: 15次/侧 x 3组\nBk: 动作具有连续性\n3 膝上悬垂高翻 (加重)\nfafa: 87.5% 1RM x 3次 x 4组\n\n4a 杠铃深蹲\n负荷: 87% 1RM x 5次 x 4组\nAb 俯身杠铃划船\nfafa: 15次 x 3组 (节奏仍为3-1-X)\nSa 哥本哈根支撑 (EB)\nfafa: 75秒/侧 x 3组\nSb 高脚杯西班牙蹲 (加重)\nfafa: 15次 x 3组 (节奏保持3:1:1)",
+      "sources": [
+        "program/June/June_W3D4.jpg",
+        "program/June/June_W3D4_Continued.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "June-W3D4-1",
+          "name": "1a单腿侧向跳+90。\"旋转跳箱上跳",
+          "sourceText": "1a单腿侧向跳+90。\"旋转跳箱上跳\nfafa: 10次/侧 x 4组\n要求: 落地缓冲后立即爆发起跳，接触地面时间更短。\n1b 侧向跳栏架\nfafa: 6次/侧 x 4组\nBR: 保持低重心，落地稳定后快速起跳\n2 药球旋转对墙抛据\nfafa: 15次/侧 x 3组\nBk: 动作具有连续性\n3 膝上悬垂高翻 (加重)\nfafa: 87.5% 1RM x 3次 x 4组",
+          "kind": "jump",
+          "sets": null,
+          "reps": null,
+          "perSide": true,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        },
+        {
+          "id": "June-W3D4-2",
+          "name": "4a 杠铃深蹲",
+          "sourceText": "4a 杠铃深蹲\n负荷: 87% 1RM x 5次 x 4组\nAb 俯身杠铃划船\nfafa: 15次 x 3组 (节奏仍为3-1-X)\nSa 哥本哈根支撑 (EB)\nfafa: 75秒/侧 x 3组\nSb 高脚杯西班牙蹲 (加重)\nfafa: 15次 x 3组 (节奏保持3:1:1)",
+          "kind": "strength",
+          "sets": null,
+          "reps": null,
+          "perSide": true,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "June-W3D5",
+      "month": "June",
+      "blockIndex": 2,
+      "week": 3,
+      "day": 5,
+      "optional": false,
+      "sourceText": "HHH 4x4 RIR: 1\n颈后上挺 4x4 RIR: 2\nFR EH 4x4 RIR: 1\n若Acwr过1.2以下3ab内容选做标签的可以pass\n2a单腿罗马尼亚硬拉 12次/侧 x 4组，节秦 3:1:1 (离心2秒，底部停顿1秒)\n2b 哑铃风车 12次/侧x 3组\n3a 便向弓步杠铃片前推 10次/侧 x 4组 (可选做)\n3b 肩部ITY 8次 x 3组 (可选做)\n4 代谢训练\n20s秒做功 | 10秒休息x 8轮\n左右侧跳 持药球)\n对角线登山跑\n弹力带俯卧股二弯举\n每个轮次内依次完成以下三个动作 (循环进行，每轮每个动作做一组)",
+      "sources": [
+        "program/June/June_W3D5.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "June-W3D5-1",
+          "name": "HHH 4x4 RIR: 1",
+          "sourceText": "HHH 4x4 RIR: 1\n颈后上挺 4x4 RIR: 2\nFR EH 4x4 RIR: 1\n若Acwr过1.2以下3ab内容选做标签的可以pass\n2a单腿罗马尼亚硬拉 12次/侧 x 4组，节秦 3:1:1 (离心2秒，底部停顿1秒)\n2b 哑铃风车 12次/侧x 3组\n3a 便向弓步杠铃片前推 10次/侧 x 4组 (可选做)\n3b 肩部ITY 8次 x 3组 (可选做)\n4 代谢训练\n20s秒做功 | 10秒休息x 8轮\n左右侧跳 持药球)\n对角线登山跑\n弹力带俯卧股二弯举\n每个轮次内依次完成以下三个动作 (循环进行，每轮每个动作做一组)",
+          "kind": "strength",
+          "sets": null,
+          "reps": null,
+          "perSide": true,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": true,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "June-W3D6",
+      "month": "June",
+      "blockIndex": 2,
+      "week": 3,
+      "day": 6,
+      "optional": false,
+      "sourceText": "1.横向钻栏架 10x 32H\n2.纵向摆腿/侧向摆腿20次/腿x 3组\n3.双腿绞剪15次/边x 3组\n4.40mx2 60mx2 80mx2 150mx2 90%强度\n5.单腿支撑哑铃上挺8次/侧*3组\n6.ghd山羊挺身15x3交蔡悬垂举腿15x3 (每完成15次后保持\n等长15s)",
+      "sources": [
+        "program/June/June_W3D6.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "June-W3D6-1",
+          "name": "1.横向钻栏架 10x 32H",
+          "sourceText": "1.横向钻栏架 10x 32H\n2.纵向摆腿/侧向摆腿20次/腿x 3组\n3.双腿绞剪15次/边x 3组\n4.40mx2 60mx2 80mx2 150mx2 90%强度\n5.单腿支撑哑铃上挺8次/侧*3组\n6.ghd山羊挺身15x3交蔡悬垂举腿15x3 (每完成15次后保持\n等长15s)",
+          "kind": "strength",
+          "sets": null,
+          "reps": null,
+          "perSide": true,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "June-W4D1",
+      "month": "June",
+      "blockIndex": 2,
+      "week": 4,
+      "day": 1,
+      "optional": false,
+      "sourceText": "第四周第一天冲刺能量系统训练\n热身 20-2530 — (Re\n5米启动 ”8x5米 45-60%) 100%\n10米司动 ”8x10米60一75秒 100%\n20米加速 5 x20米90秒一2分钟 95一\n98%\n15米往返冲刺“4组x 6次 25一30秒/\n4分钟 90-95%\n7米往返冲刺 3组 x 5次 30—35#) / 4分\n钟 90一95%\n20米x 4折返 6组 90—120#) RPE 9一\n9.5\n30秒静蹲跳 6 x 30%) 75-90%) RPE\n9\n45秒路踏跳跃“5x45秒 2分一2分30\n秒 RPE 9一9.5\n冲刺跑15秒快115秒慢 1一2组 x 6分钟\n3分钟 80-88%\n冷身慢走” 10一12分钟",
+      "sources": [
+        "program/June/June_W4D1.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "June-W4D1-1",
+          "name": "第四周第一天冲刺能量系统训练",
+          "sourceText": "第四周第一天冲刺能量系统训练\n热身 20-2530 — (Re\n5米启动 ”8x5米 45-60%) 100%\n10米司动 ”8x10米60一75秒 100%\n20米加速 5 x20米90秒一2分钟 95一\n98%\n15米往返冲刺“4组x 6次 25一30秒/\n4分钟 90-95%\n7米往返冲刺 3组 x 5次 30—35#) / 4分\n钟 90一95%\n20米x 4折返 6组 90—120#) RPE 9一\n9.5\n30秒静蹲跳 6 x 30%) 75-90%) RPE\n9\n45秒路踏跳跃“5x45秒 2分一2分30\n秒 RPE 9一9.5\n冲刺跑15秒快115秒慢 1一2组 x 6分钟\n3分钟 80-88%\n冷身慢走” 10一12分钟",
+          "kind": "conditioning",
+          "sets": [
+            4,
+            4
+          ],
+          "reps": [
+            6,
+            6
+          ],
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "conditioning"
+        }
+      ]
+    },
+    {
+      "id": "June-W4D3",
+      "month": "June",
+      "blockIndex": 2,
+      "week": 4,
+      "day": 3,
+      "optional": false,
+      "sourceText": "膝上静止熊猫拉\nWave 3-2-1 / 3-2-1\nWave1: 3 85% — 290% > 195%\nWave: 3 90% — 295% — 1 95% (高翻 1RM)\n架上深蹲 (1/2底部启动)\nWave 3-2-1 / 3-2-1\nWave1: 3 80% — 2 85% — 190%\nWave2: 3 85% — 290% — 195%\n2a 保加利亚单腿蹲 60%1RM 6次/侧x3 90秒\n2b 单腿上箱 4次/侧x3 90秒\n3a ERIEME 60%1RM 8次x3 90秒\n3b 负重引体向上 8次x3 90秒\nAa 瑞士球哥本哈根支撑 45秒/侧x2 30秒\nAb 坐姿提踵 15次x2 45秒",
+      "sources": [
+        "program/June/June_W4D3.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "June-W4D3-1",
+          "name": "膝上静止熊猫拉",
+          "sourceText": "膝上静止熊猫拉\nWave 3-2-1 / 3-2-1\nWave1: 3 85% — 290% > 195%\nWave: 3 90% — 295% — 1 95% (高翻 1RM)\n架上深蹲 (1/2底部启动)\nWave 3-2-1 / 3-2-1\nWave1: 3 80% — 2 85% — 190%\nWave2: 3 85% — 290% — 195%\n2a 保加利亚单腿蹲 60%1RM 6次/侧x3 90秒\n2b 单腿上箱 4次/侧x3 90秒\n3a ERIEME 60%1RM 8次x3 90秒\n3b 负重引体向上 8次x3 90秒\nAa 瑞士球哥本哈根支撑 45秒/侧x2 30秒\nAb 坐姿提踵 15次x2 45秒",
+          "kind": "strength",
+          "sets": null,
+          "reps": null,
+          "perSide": true,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "June-W4D5",
+      "month": "June",
+      "blockIndex": 2,
+      "week": 4,
+      "day": 5,
+      "optional": false,
+      "sourceText": "单腿侧向跳+90*旋转跳箱上跳 6次/侧 x 3组\n便向跳栏架 3次/侧 x 3组\n药球旋转对墙抛抑 10次/侧 x 2组\n膝上悬垂高翻 70% 1RM 3次 x 3组\n杠铃深蹲 70% 1RM 5次 x 3组\n俯身杠铃划船 12次 x 2组\n哥本哈根支撑 45秒/侧 x 2组\n高脚杯西班牙蹲 10次 x 2组 离心3s",
+      "sources": [
+        "program/June/June_W4D5.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "June-W4D5-1",
+          "name": "单腿侧向跳+90*旋转跳箱上跳 6次/侧 x 3组",
+          "sourceText": "单腿侧向跳+90*旋转跳箱上跳 6次/侧 x 3组\n便向跳栏架 3次/侧 x 3组\n药球旋转对墙抛抑 10次/侧 x 2组\n膝上悬垂高翻 70% 1RM 3次 x 3组\n杠铃深蹲 70% 1RM 5次 x 3组\n俯身杠铃划船 12次 x 2组\n哥本哈根支撑 45秒/侧 x 2组\n高脚杯西班牙蹲 10次 x 2组 离心3s",
+          "kind": "jump",
+          "sets": null,
+          "reps": null,
+          "perSide": true,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    },
+    {
+      "id": "June-W4D6",
+      "month": "June",
+      "blockIndex": 2,
+      "week": 4,
+      "day": 6,
+      "optional": false,
+      "sourceText": "休息日《放松跑) 明日测试\n1.动态拉伸\n2.30mx4\n3.放松跑100mx3\n4.慢跑400mx2",
+      "sources": [
+        "program/June/June_W4D6.jpg"
+      ],
+      "exercises": [
+        {
+          "id": "June-W4D6-1",
+          "name": "休息日《放松跑) 明日测试",
+          "sourceText": "休息日《放松跑) 明日测试\n1.动态拉伸\n2.30mx4\n3.放松跑100mx3\n4.慢跑400mx2",
+          "kind": "strength",
+          "sets": null,
+          "reps": null,
+          "perSide": false,
+          "loadPercent": null,
+          "referenceExerciseId": null,
+          "tempo": null,
+          "velocityTarget": null,
+          "velocityMetric": null,
+          "restSeconds": null,
+          "holdSeconds": null,
+          "distanceMetres": null,
+          "workSeconds": null,
+          "rounds": null,
+          "optional": false,
+          "groupId": null,
+          "ambiguity": "Check original image before applying targets. Complex wave/cluster and OCR fields remain unconfirmed.",
+          "purpose": "other"
+        }
+      ]
+    }
+  ]
+}
