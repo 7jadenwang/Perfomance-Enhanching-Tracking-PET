@@ -7,3 +7,7 @@ playwright-report/
 pet-backup*.json
 pet-unsaved-*.json
 backups/
+.env
+.env.*
+!.env.example
+supabase/.temp/
