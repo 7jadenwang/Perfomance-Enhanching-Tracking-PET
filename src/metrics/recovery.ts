@@ -10,6 +10,7 @@ export function dailyCmj(r: MorningRecord) {
       trials.length === 3 &&
       r.baselineEligible &&
       r.pain !== true &&
+      r.illness !== true &&
       !r.exclusionReason,
   };
 }

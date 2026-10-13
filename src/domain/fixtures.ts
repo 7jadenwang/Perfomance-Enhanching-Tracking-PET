@@ -73,6 +73,7 @@ export const makeMorning = (o: Partial<MorningRecord> = {}): MorningRecord => ({
     excluded: false,
     reason: "",
   })),
+  bodyMassKg:null, restingHeartRate:null, illness:null, illnessNotes:"",hrv:null,
   sleepHours: null,
   sleepQuality: null,
   fatigue: null,

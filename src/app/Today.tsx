@@ -5,6 +5,7 @@ import {
   type MorningRecord,
   type Session,
 } from "../domain/schema";
+import {createMorning} from "../domain/records";
 import { program } from "../program/catalog";
 import { sessionsForDate } from "../program/schedule";
 import {
@@ -15,32 +16,18 @@ import {
 import { Num, Card, Select, fmt } from "./fields";
 const now = () => new Date().toISOString();
 function fresh(date: string, protocolId: string): MorningRecord {
-  return {
-    id: crypto.randomUUID(),
-    localDate: date,
-    protocolId,
-    trials: [],
-    sleepHours: null,
-    sleepQuality: null,
-    fatigue: null,
-    soreness: null,
-    stress: null,
-    pain: null,
-    painLocation: "",
-    baselineEligible: true,
-    exclusionReason: "",
-    createdAt: now(),
-    updatedAt: now(),
-  };
+  return createMorning({localDate:date,protocolId,trials:[],createdAt:now(),updatedAt:now()});
 }
 export default function Today({
   state,
   onSave,
   onLog,
+  onActivity,
 }: {
   state: AthleteState;
   onSave: (r: MorningRecord) => Promise<boolean>;
   onLog: (s: Session, date: string) => void;
+  onActivity?:(a:AthleteState["activities"][number])=>Promise<boolean>;
 }) {
   const [date, setDate] = useState(localToday()),
     [protocol, setProtocol] = useState(state.protocols.at(-1)?.id ?? "default"),
@@ -80,6 +67,7 @@ export default function Today({
       state.startDate,
       state.reschedules,
     );
+  const [hrvValue,setHrvValue]=useState<number|null>(entry.hrv?.value??null),[hrvMethod,setHrvMethod]=useState(entry.hrv?.method??""),[hrvProtocol,setHrvProtocol]=useState(entry.hrv?.protocol??""),[hrvMetric,setHrvMetric]=useState<"rMSSD"|"SDNN"|"lnRMSSD">(entry.hrv?.metric??"rMSSD");
   function patch(k: keyof MorningRecord, v: unknown) {
     setEntry((r) => ({ ...r, [k]: v }));
   }
@@ -101,6 +89,7 @@ export default function Today({
           />
         </label>
       </div>
+      {onActivity&&<Select label="Daily activity annotation" value={state.activities.find(a=>a.localDate===date)?.status??"unknown"} options={[["unknown","Unlogged / unknown"],["rest","Confirmed rest day"],["training","Training day"]]} onChange={v=>void onActivity({localDate:date,status:v as "unknown"|"rest"|"training",notes:""})}/>}
       <div className="stats">
         <Card>
           <p>Morning CMJ average</p>
@@ -193,6 +182,7 @@ export default function Today({
                 ...entry,
                 localDate: date,
                 protocolId: protocol,
+                hrv:hrvValue===null?null:{value:hrvValue,method:hrvMethod,protocol:hrvProtocol,metric:hrvMetric,unit:hrvMetric==="lnRMSSD"?"ln(ms)":"ms"},
                 trials: trials.flatMap((heightCm, i) =>
                   heightCm === null
                     ? []
@@ -210,6 +200,7 @@ export default function Today({
               });
             }}
           >
+            <details><summary>Optional HRV measurement</summary><Num label="HRV value" value={hrvValue} min={0.001} onChange={setHrvValue}/><Select label="HRV metric" value={hrvMetric} options={["rMSSD","SDNN","lnRMSSD"]} onChange={v=>setHrvMetric(v as typeof hrvMetric)}/><label className="field">HRV method/device<input value={hrvMethod} onChange={e=>setHrvMethod(e.target.value)}/></label><label className="field">HRV protocol/time/posture<input value={hrvProtocol} onChange={e=>setHrvProtocol(e.target.value)}/></label><p>Different methods and protocols use separate series.</p></details>
             <Select
               label="CMJ protocol"
               value={protocol}
@@ -243,6 +234,10 @@ export default function Today({
               ))}
             </div>
             <div className="threecols">
+              <Num label="Body mass (kg, optional)" value={entry.bodyMassKg} min={0.01} onChange={v=>patch("bodyMassKg",v)}/>
+              <Num label="Resting heart rate (bpm, optional)" value={entry.restingHeartRate} min={1} onChange={v=>patch("restingHeartRate",v)}/>
+              <Select label="Illness reported" value={entry.illness===null?"unknown":entry.illness?"yes":"no"} options={["unknown","yes","no"]} onChange={v=>patch("illness",v==="unknown"?null:v==="yes")}/>
+              <label className="field">Illness notes<input value={entry.illnessNotes} onChange={e=>patch("illnessNotes",e.target.value)}/></label>
               <Num
                 label="Sleep hours"
                 value={entry.sleepHours}

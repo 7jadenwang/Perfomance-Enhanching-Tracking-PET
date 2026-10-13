@@ -6,7 +6,7 @@ import Program from "./Program";
 import Progress from "./Progress";
 import Settings from "./Settings";
 import WorkoutLog from "./WorkoutLog";
-import { saveWorkout, saveMorning, saveSettings,exportRawStoredBackup } from "../storage/db";
+import { saveWorkout, saveMorning, saveSettings,saveActivity,exportRawStoredBackup } from "../storage/db";
 import { replaceFromBackup, exportBackup } from "../storage/backup";
 import { program } from "../program/catalog";
 import type { Session } from "../domain/schema";
@@ -109,6 +109,7 @@ export default function App() {
             state={s}
             onSave={(r) => store.perform(() => saveMorning(r))}
             onLog={(session, date) => setLog({ session, date })}
+            onActivity={activity=>store.perform(()=>saveActivity(activity))}
           />
         ) : tab === "Program" ? (
           <Program
