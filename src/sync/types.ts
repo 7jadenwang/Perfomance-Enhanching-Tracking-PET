@@ -45,13 +45,22 @@ export type SyncStatus =
   | "linkRequired";
 export const identity = (d: Pick<SyncDocument, "kind" | "key">) =>
   d.kind + "|" + d.key;
+const canonicalJson = (value: unknown) =>
+  JSON.stringify(value, (_key, item) =>
+    item !== null && typeof item === "object" && !Array.isArray(item)
+      ? Object.fromEntries(
+          Object.keys(item).sort().map((key) => [key, item[key]]),
+        )
+      : item,
+  );
+
 export const same = (
   a: SyncDocument | null | undefined,
   b: SyncDocument | null | undefined,
 ) =>
   !!a && !!b
     ? a.deleted === b.deleted &&
-      JSON.stringify(a.payload) === JSON.stringify(b.payload)
+      canonicalJson(a.payload) === canonicalJson(b.payload)
     : !a && !b;
 
 export type SyncMeta = {
