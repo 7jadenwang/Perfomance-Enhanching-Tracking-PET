@@ -3,6 +3,7 @@ import {
   getSyncMeta,
   notifyStorageChanged,
   storageNamespace,
+  queueState,
 } from "../storage/db";
 import { initialState } from "../domain/schema";
 import {
@@ -135,8 +136,11 @@ async function run(ns: string, transport: SyncTransport): Promise<SyncStatus> {
   if (remote.length) documentsToState(remote);
   await db.transaction("rw", db.state, db.sync, async () => {
     current(ns);
-    const m = await getSyncMeta(ns),
+    const meta = await getSyncMeta(ns),
       stored = await db.state.get(key(ns));
+    // Recover saved edits whose queue entry was lost before replacing the cache.
+    // An absent cache is not a request to delete acknowledged cloud records.
+    const m = stored ? queueState(meta, stored.value) : meta;
     const local = stateToDocuments(stored?.value ?? initialState()),
       r = reconcile(m.base, local, remote, m.pending);
     const next = documentsToState(r.documents); // Full cross-record validation BEFORE writes.
@@ -167,10 +171,17 @@ async function run(ns: string, transport: SyncTransport): Promise<SyncStatus> {
     });
     await acknowledge(ns, await getSyncMeta(ns), transport);
   }
-  meta = await getSyncMeta(ns);
+  // Read and update completion metadata atomically with local saves.
+  meta = await db.transaction("rw", db.sync, async () => {
+    current(ns);
+    const latest = await getSyncMeta(ns);
+    if (latest.paused || latest.pending.length || latest.inflight)
+      return latest;
+    const completed = { ...latest, lastSuccess: new Date().toISOString() };
+    await db.sync.put(completed);
+    return completed;
+  });
   if (meta.paused) return "paused";
-  if (!meta.pending.length && !meta.inflight)
-    await db.sync.put({ ...meta, lastSuccess: new Date().toISOString() });
   notifyStorageChanged();
   return meta.pending.length || meta.inflight ? "pending" : "synced";
 }
