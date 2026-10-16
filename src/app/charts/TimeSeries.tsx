@@ -44,7 +44,7 @@ export default function TimeSeries({
     y = (v: number) => height - 36 - ((v - min) / span) * (height - 68);
   const color = (name: string) =>
     warning
-      ? "#ff7d8e"
+      ? ["#ff7d8e", "#f6bd60", "#b8a1ff", "#70a9ff"][series.indexOf(name) % 4]
       : ["#6ee7b7", "#70a9ff", "#f6bd60", "#dc9eef"][series.indexOf(name) % 4];
   return (
     <section className="card chart">
@@ -103,7 +103,11 @@ export default function TimeSeries({
                 fill="none"
                 stroke={color(s)}
                 strokeWidth="2.5"
-                strokeDasharray={s === "Actual" ? "5 3" : undefined}
+                strokeDasharray={
+                  s === "Actual" || (warning && series.indexOf(s) % 2 === 1)
+                    ? "5 3"
+                    : undefined
+                }
               />
               {seg.map((p, j) => (
                 <g key={j}>
