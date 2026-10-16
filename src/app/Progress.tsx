@@ -35,15 +35,18 @@ const metrics: [keyof DoseProfile, string, string][] = [
 export default function Progress({
   state,
   onOpen,
+  onActivity,
 }: {
   state: AthleteState;
   onOpen: (w: Workout) => void;
+  onActivity?: (a: AthleteState["activities"][number]) => Promise<boolean>;
 }) {
   const [track, setTrack] = useState<"lp" | "up">("lp"),
     [enrollment, setEnrollment] = useState(""),
     [movement, setMovement] = useState(""),
     [range, setRange] = useState("program"),
-    [period, setPeriod] = useState<Period>("day");
+    [period, setPeriod] = useState<Period>("day"),
+    [activityDate, setActivityDate] = useState(localToday());
   const dose = programDoseSeries(
       track,
       state,
@@ -120,6 +123,49 @@ export default function Progress({
           onChange={setRange}
         />
       </div>
+      {onActivity && (
+        <details className="metric-details">
+          <summary>Correct a rest / training day</summary>
+          <div className="progress-controls">
+            <label className="field">
+              Activity date
+              <input
+                type="date"
+                value={activityDate}
+                onChange={(e) => {
+                  if (e.target.value) setActivityDate(e.target.value);
+                }}
+              />
+            </label>
+            <Select
+              label="Daily activity annotation"
+              value={
+                state.activities.find((a) => a.localDate === activityDate)
+                  ?.status ?? "unknown"
+              }
+              options={[
+                ["unknown", "Unlogged / unknown"],
+                ["rest", "Confirmed rest day"],
+                ["training", "Training day"],
+              ]}
+              onChange={(v) =>
+                void onActivity({
+                  localDate: activityDate,
+                  status: v as "rest" | "training" | "unknown",
+                  notes:
+                    state.activities.find((a) => a.localDate === activityDate)
+                      ?.notes ?? "",
+                })
+              }
+            />
+          </div>
+          <p className="hint">
+            Confirmed rest is zero load. Missing records remain unknown.
+            Existing completed workouts are preserved; conflicting training must
+            be reviewed in the log.
+          </p>
+        </details>
+      )}
       <DemandCharts state={state} start={start} end={today} period={period} />
       <RecoveryCharts state={state} start={start} end={today} period={period} />
       <div className="stats">
