@@ -1,3 +1,4 @@
+import type { Period } from "../../metrics/periods";
 import type { AthleteState } from "../../domain/schema";
 import { buildTimeline, rollingLoad } from "../../metrics/timeline";
 import { dailyCmj, baselineForDate } from "../../metrics/recovery";
@@ -7,10 +8,12 @@ export default function RecoveryCharts({
   state,
   start,
   end,
+  period = "day",
 }: {
   state: AthleteState;
   start: string;
   end: string;
+  period?: Period;
 }) {
   const timeline = buildTimeline(state, { start, end }),
     mornings = timeline.flatMap((p) => p.mornings),
@@ -90,6 +93,8 @@ export default function RecoveryCharts({
     <>
       <div className="chartgrid">
         <TimeSeries
+          period={period}
+          aggregation="sum"
           title="Planned versus actual session load"
           unit="AU"
           points={timeline.flatMap((p) => [
@@ -103,6 +108,7 @@ export default function RecoveryCharts({
           ])}
         />
         <TimeSeries
+          period={period}
           title="Recorded load trends"
           unit="AU/day"
           points={[
@@ -119,6 +125,7 @@ export default function RecoveryCharts({
           ]}
         />
         <TimeSeries
+          period={period}
           title="CMJ height"
           unit="cm"
           points={
@@ -132,24 +139,33 @@ export default function RecoveryCharts({
           }
         />
         <TimeSeries
+          period={period}
           title="CMJ baseline deviation"
           unit="%"
           points={deviations}
           warning
         />
-        <TimeSeries title="Sleep duration" unit="hours" points={sleep} />
         <TimeSeries
+          period={period}
+          title="Sleep duration"
+          unit="hours"
+          points={sleep}
+        />
+        <TimeSeries
+          period={period}
           title="Sleep quality"
           unit="1 poor – 5 good"
           points={ratings("sleepQuality")}
         />
         <TimeSeries
+          period={period}
           title="Perceived fatigue"
           unit="1 low – 5 high"
           points={ratings("fatigue")}
           warning
         />
         <TimeSeries
+          period={period}
           title="Soreness and stress"
           unit="1 low – 5 high"
           points={[...ratings("soreness"), ...ratings("stress")]}
@@ -157,6 +173,7 @@ export default function RecoveryCharts({
         />
         {mornings.some((m) => m.bodyMassKg !== null) && (
           <TimeSeries
+            period={period}
             title="Body mass"
             unit="kg"
             points={bodily("bodyMassKg")}
@@ -164,6 +181,7 @@ export default function RecoveryCharts({
         )}
         {mornings.some((m) => m.restingHeartRate !== null) && (
           <TimeSeries
+            period={period}
             title="Resting heart rate"
             unit="bpm"
             points={bodily("restingHeartRate")}
@@ -171,6 +189,7 @@ export default function RecoveryCharts({
         )}
         {hrvKeys.map((key) => (
           <TimeSeries
+            period={period}
             key={key}
             title={`HRV · ${key.split("|").slice(0, 3).join(" · ")}`}
             unit={key.split("|")[3]}
@@ -192,6 +211,7 @@ export default function RecoveryCharts({
         ))}
         {cohorts.map((group, i) => (
           <TimeSeries
+            period={period}
             key={i}
             title={`Measured velocity · ${group[0].row.name} · ${group[0].velocity.loadKg}kg · ${group[0].velocity.metric}`}
             unit="m/s"
