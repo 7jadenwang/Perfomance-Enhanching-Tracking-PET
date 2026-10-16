@@ -15,6 +15,10 @@ export function aggregatePoints(
   method: "sum" | "mean",
 ): ChartPoint[] {
   if (period === "day") return points;
+  const firstDate = points.reduce(
+    (first, p) => (!first || p.label < first ? p.label : first),
+    "",
+  );
   const groups = new Map<string, ChartPoint[]>();
   for (const p of points) {
     const key = JSON.stringify([
@@ -29,7 +33,10 @@ export function aggregatePoints(
       total = known.reduce((s, p) => s + p.value!, 0);
     const notes = [...new Set(group.map((p) => p.note).filter(Boolean))];
     return {
-      label: periodStart(group[0].label, period),
+      label:
+        periodStart(group[0].label, period) < firstDate
+          ? firstDate
+          : periodStart(group[0].label, period),
       series: group[0].series,
       segment: group[0].segment,
       value: known.length
