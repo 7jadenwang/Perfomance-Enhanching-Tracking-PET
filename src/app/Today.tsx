@@ -16,9 +16,11 @@ import {
   recoverySignals,
 } from "../metrics/recovery";
 import { Num, Card, Select, fmt } from "./fields";
+import { ratingOnTen, editRating } from "../metrics/recovery-ratings";
 const now = () => new Date().toISOString();
 function fresh(date: string, protocolId: string): MorningRecord {
   return createMorning({
+    ratingScale: 10,
     localDate: date,
     protocolId,
     trials: [],
@@ -452,14 +454,14 @@ export default function Today({
                     key={k}
                     label={
                       k === "sleepQuality"
-                        ? "Sleep quality (1 poor–5 good)"
-                        : `${k[0].toUpperCase() + k.slice(1)} (1 low–5 high)`
+                        ? "Sleep quality (1 poor–10 good)"
+                        : `${k[0].toUpperCase() + k.slice(1)} (1 low–10 high)`
                     }
-                    value={entry[k]}
+                    value={ratingOnTen(entry, k)}
                     min={1}
-                    max={5}
-                    step="1"
-                    onChange={(v) => patch(k, v)}
+                    max={10}
+                    step="0.5"
+                    onChange={(v) => setEntry((r) => editRating(r, k, v))}
                   />
                 ),
               )}
