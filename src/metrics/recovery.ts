@@ -1,3 +1,4 @@
+import { ratingOnTen } from "./recovery-ratings";
 import type { MorningRecord, Baseline } from "../domain/schema";
 export function dailyCmj(r: MorningRecord) {
   const trials = r.trials.filter((t) => !t.excluded);
@@ -55,9 +56,10 @@ export function recoverySignals(r: MorningRecord, b: Baseline | null) {
     compatible = b && b.protocolId === r.protocolId && cmj.validTrials === 3;
   const reasons: string[] = [];
   for (const key of ["fatigue", "soreness", "stress"] as const)
-    if (r[key] !== null && r[key]! >= 4) reasons.push(`${key}: ${r[key]}/5`);
-  if (r.sleepQuality !== null && r.sleepQuality <= 2)
-    reasons.push(`sleep quality: ${r.sleepQuality}/5`);
+    if (ratingOnTen(r, key)! >= 8)
+      reasons.push(`${key}: ${ratingOnTen(r, key)}/10`);
+  if (r.sleepQuality !== null && ratingOnTen(r, "sleepQuality")! <= 4)
+    reasons.push(`sleep quality: ${ratingOnTen(r, "sleepQuality")}/10`);
   const lowCmj =
     !!compatible &&
     b.sampleSdCm > 0 &&
