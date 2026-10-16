@@ -83,3 +83,9 @@ The dark blue/purple dashboard includes CMJ, sleep, subjective fatigue/soreness/
 ## Private device synchronization
 
 See [the complete Supabase and HTTPS setup guide](docs/device-sync-setup.md). No Supabase project is configured by default; local logging works until you configure the public settings and sign in. Guest/account caches are separate, first-link upload requires a preview, and conflicts preserve both versions. Source pages are bundled for offline use; **Offline ready** verifies all 119 source assets.
+
+## Movement log and progress update
+
+The log groups sets by movement, adds sets progressively, and saves edits automatically with local refresh recovery. Progress leads with daily recovery and estimated Force / Explosive-power / Metabolic trends, with day, week, and month views. Historical records are calculated for display without rewriting them.
+
+See [frontend update and data-preservation instructions](docs/training-update-deployment.md). This update requires a frontend rebuild/redeployment and no new Supabase migration.
