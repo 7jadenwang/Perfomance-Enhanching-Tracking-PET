@@ -1,0 +1,119 @@
+import type { AthleteState } from "../../domain/schema";
+import { demandAxes, demandTimeline } from "../../metrics/training-demand";
+import { addDays } from "../../program/schedule";
+import type { Period } from "../../metrics/periods";
+import TimeSeries from "./TimeSeries";
+const names = {
+  force: "Force",
+  power: "Explosive / power",
+  metabolic: "Metabolic",
+};
+export default function DemandCharts({
+  state,
+  start,
+  end,
+  period,
+}: {
+  state: AthleteState;
+  start: string;
+  end: string;
+  period: Period;
+}) {
+  const history = demandTimeline(state, addDays(start, -6), end),
+    days = history.filter((p) => p.date >= start);
+  return (
+    <section className="demand-panel">
+      <div className="sectionhead">
+        <div>
+          <h2>Training demand</h2>
+          <p className="hint">
+            Every session can contribute to all three trends.
+          </p>
+        </div>
+        <span className="model-label">Estimated exposure · model v1</span>
+      </div>
+      <div className="chartgrid">
+        <TimeSeries
+          title="Session demand trends"
+          unit="exposure AU"
+          period={period}
+          aggregation="sum"
+          points={days.flatMap((p) =>
+            demandAxes.map((axis) => ({
+              label: p.date,
+              value: p[axis],
+              series: names[axis],
+              note: `${p.classified}/${p.confirmed} blocks classified · ${p.measuredIntensity} with measured relative load · ${p.measuredVelocity} with compatible velocity`,
+            })),
+          )}
+        />
+        <TimeSeries
+          title="Seven-day accumulated demand"
+          unit="exposure AU"
+          period={period}
+          points={history.flatMap((p, i) => {
+            if (p.date < start) return [];
+            const window = history.slice(Math.max(0, i - 6), i + 1);
+            return demandAxes.map((axis) => {
+              const known = window.filter((d) => d[axis] !== null);
+              return {
+                label: p.date,
+                value: known.length
+                  ? known.reduce((s, d) => s + d[axis]!, 0)
+                  : null,
+                series: names[axis],
+                note: `${known.length}/7 known days · partial totals remain estimates${period !== "day" ? " · period mean of seven-day totals" : ""}`,
+              };
+            });
+          })}
+        />
+      </div>
+      <details className="metric-details">
+        <summary>How scores work and what is covered</summary>
+        <p>
+          Overall session load is duration × whole-session RPE. The three
+          overlapping demand scores multiply that load by the mean emphasis of
+          confirmed sets/blocks. They are descriptive estimates, not measured
+          force, power, energy expenditure, or validated physiological stress.
+          Do not add the three scores together.
+        </p>
+        <p>
+          Force covers resistance and isometric work. Explosive / power covers
+          force–velocity work, jumps, throws, sprints and reactive/RFD-oriented
+          work; it does not measure RFD directly. Metabolic covers conditioning
+          and the endurance contribution of other work. Technical movements also
+          retain a practice-set count below.
+        </p>
+        <p>
+          Model v1 coefficients (Force / Power / Metabolic): resistance 0.8 /
+          0.3 / 0.3; holds 0.8 / 0 / 0.2; jumps, throws and power lifts 0.5 / 1
+          / 0.2; sprints 0.4 / 1 / 0.5; conditioning 0.1 / 0.1 / 1. Each
+          set/block has equal influence; this is a coarse session-emphasis
+          model, not an estimate of time spent in each system.
+        </p>
+        <p>
+          When a dated matching 1RM and total external load are recorded, force
+          emphasis becomes 0.3 + 0.7 × relative load (capped at 100%); ordinary
+          resistance power emphasis becomes 0.15 + 0.35 × (1 − relative load).
+          Compatible measured velocity adjusts power emphasis relative to that
+          movement’s target, capped between 0 and 1. Missing measurements use
+          the disclosed work-type estimate; prescribed loads are never presented
+          as measured.
+        </p>
+        <p>
+          Unclassified “other” work, missing session RPE/duration, and unlogged
+          days remain unknown. Record a rest day to show zero. Weekly/monthly
+          load shows known totals; recovery shows means. Coverage is available
+          on each point. Seven-day totals show known exposure even with
+          incomplete days.
+        </p>
+        <p>
+          Technique/skill practice:{" "}
+          {days.reduce((sum, p) => sum + p.practiceSets, 0)} confirmed sets in
+          mapped technical/control movements. Unmapped practice remains in the
+          log; this count does not measure learning quality.
+        </p>
+      </details>
+    </section>
+  );
+}
