@@ -144,6 +144,7 @@ test("two independent devices converge saved dates and preserve same-record conf
   // Keep a dirty draft while a validated incoming record changes.
   await phone.getByLabel("CMJ trial 1 (cm)").fill("34");
   await pc.getByRole("button", { name: "Today", exact: true }).click();
+  await pc.getByLabel("Training date", { exact: true }).fill("2026-10-13");
   await pc.getByLabel("CMJ trial 1 (cm)").fill("35");
   await pc.getByRole("button", { name: "Save morning" }).click();
   await pc.getByRole("button", { name: "Settings", exact: true }).click();
@@ -174,6 +175,7 @@ test("two independent devices converge saved dates and preserve same-record conf
     .click();
   await phone.getByRole("button", { name: "Save morning" }).click();
   await pc.getByRole("button", { name: "Today", exact: true }).click();
+  await pc.getByLabel("Training date", { exact: true }).fill("2026-10-13");
   await pc.getByLabel("CMJ trial 1 (cm)").fill("36");
   await pc.getByRole("button", { name: "Save morning" }).click();
   await pc.getByRole("button", { name: "Settings", exact: true }).click();
@@ -195,6 +197,7 @@ test("two independent devices converge saved dates and preserve same-record conf
   ).toBeVisible();
   await phone.getByRole("button", { name: "Keep cloud version" }).click();
   await phone.getByRole("button", { name: "Today", exact: true }).click();
+  await phone.getByLabel("Training date", { exact: true }).fill("2026-10-13");
   await expect(phone.getByLabel("CMJ trial 1 (cm)")).toHaveValue("36");
   await phone.getByRole("button", { name: "Settings", exact: true }).click();
   await phone.getByRole("button", { name: "Pause account sync" }).click();
@@ -202,6 +205,7 @@ test("two independent devices converge saved dates and preserve same-record conf
     phone.getByText("Account sync paused", { exact: true }).first(),
   ).toBeVisible();
   await phone.getByRole("button", { name: "Today", exact: true }).click();
+  await phone.getByLabel("Training date", { exact: true }).fill("2026-10-13");
   await phone.getByLabel("Sleep hours").fill("8");
   await phone.getByRole("button", { name: "Save morning" }).click();
   await phone.getByRole("button", { name: "Settings", exact: true }).click();

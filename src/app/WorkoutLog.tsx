@@ -1,4 +1,12 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useWorkoutDraft } from "./useWorkoutDraft";
+import {
+  movementGroups,
+  movementKey,
+  prescribedSet,
+  startMovements,
+  nextSet,
+} from "../domain/movement-log";
 import type {
   AthleteState,
   Workout,
@@ -36,54 +44,55 @@ export default function WorkoutLog({
   onSave: (w: Workout, expected: string) => Promise<boolean>;
   onBack: () => void;
 }) {
+  const identity = useRef(workoutId);
   const existing = state.workouts.find((w) =>
-    workoutId
-      ? w.id === workoutId
+    identity.current
+      ? w.id === identity.current
       : w.enrollmentId === enrollmentId &&
         w.sessionId === session.id &&
         (enrollmentId !== null || w.localDate === date),
   );
-  const [w, setW] = useState<Workout>(
-    () =>
-      existing ??
-      createWorkout({
-        id: crypto.randomUUID(),
-        sessionId: session.id,
-        enrollmentId,
-        targetSnapshot: session.exercises,
-        localDate: date,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      }),
-  );
+  const { w, update, save, message, error, remoteChanged, acceptIncomingBase } =
+    useWorkoutDraft(
+      session.id +
+        ":" +
+        (enrollmentId ?? date) +
+        (session.id === "custom" ? ":" + workoutId : ""),
+      existing,
+      () =>
+        createWorkout({
+          id: crypto.randomUUID(),
+          sessionId: session.id,
+          enrollmentId,
+          targetSnapshot: session.exercises,
+          rows: startMovements([], session.exercises),
+          localDate: date,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        }),
+      onSave,
+    );
+  identity.current = w.id;
   const prescriptions =
     w.targetRevisions.at(-1)?.prescriptions ??
     (w.targetSnapshot.length ? w.targetSnapshot : session.exercises);
-  const [saved, setSaved] = useState(false),
-    [remoteChanged, setRemoteChanged] = useState(false);
-  const dirty = useRef(false),
-    baseRecord = useRef(JSON.stringify(existing ?? null));
-  const existingSignature = JSON.stringify(existing ?? null);
+  const groups = movementGroups(w.rows, prescriptions);
+  const ongoing =
+    groups.find(
+      (g) =>
+        g.rows.length > 0 &&
+        (g.rows.some((r) => !r.confirmed) ||
+          (g.prescription?.sets &&
+            g.rows.filter((r) => r.confirmed).length < g.prescription.sets[0])),
+    )?.key ?? null;
+  const [expanded, setExpanded] = useState<string[]>(ongoing ? [ongoing] : []);
   useEffect(() => {
-    if (existingSignature === baseRecord.current) return;
-    if (dirty.current) {
-      setRemoteChanged(true);
-      return;
-    }
-    baseRecord.current = existingSignature;
-    if (existing) setW(existing);
-  }, [existingSignature]);
-  function update(v: Partial<Workout>) {
-    dirty.current = true;
-    setSaved(false);
-    setW((w) => ({ ...w, ...v }));
-  }
+    setExpanded(ongoing ? [ongoing] : []);
+  }, [ongoing]);
   function updateRow(id: string, v: Partial<ActualRow>) {
-    dirty.current = true;
-    setSaved(false);
-    setW((w) => ({
-      ...w,
-      rows: w.rows.map((r) => {
+    update((current) => ({
+      ...current,
+      rows: current.rows.map((r) => {
         if (r.id !== id) return r;
         const next = { ...r, ...v };
         if (next.velocity)
@@ -98,47 +107,29 @@ export default function WorkoutLog({
       }),
     }));
   }
-  function add(p?: Prescription) {
-    const row = createRow({
-      id: crypto.randomUUID(),
-      exerciseId: p?.name ?? "custom",
-      prescriptionId: p?.id ?? null,
-      movementId: p?.movementId ?? null,
-      name: p?.name ?? "Custom exercise",
-      kind: p?.kind ?? "strength",
-      perSide: p?.perSide ?? false,
-      reps: p?.reps?.[0] ?? null,
-      tempo: p?.tempo ?? "",
-    });
+  function add(p?: Prescription, key?: string) {
+    const groupRows = groups.find((g) => g.key === (key ?? p?.id))?.rows ?? [];
+    const prior = groupRows.find((r) => r.confirmed);
+    const first = groupRows[0];
+    const row = prior
+      ? nextSet(prior)
+      : p
+        ? prescribedSet(p)
+        : createRow({
+            exerciseId: first?.exerciseId ?? "custom-" + crypto.randomUUID(),
+            movementId: first?.movementId ?? null,
+            prescriptionId:
+              first?.prescriptionId ??
+              (first ? null : "custom-" + crypto.randomUUID()),
+            kind: first?.kind ?? "strength",
+            name: first?.name ?? "Custom exercise",
+          });
+    if (p && !row.prescriptionId) row.prescriptionId = p.id;
     update({ rows: [...w.rows, row] });
+    setExpanded([p?.id ?? movementKey(row)]);
   }
   function copy() {
-    const rows = prescriptions
-      .filter(
-        (p) =>
-          p.sets && p.kind !== "other" && !p.optional && !p.conditionalGroup,
-      )
-      .flatMap((p) =>
-        Array.from({ length: Math.min(p.sets![0], 50) }, () =>
-          createRow({
-            id: crypto.randomUUID(),
-            exerciseId: p.name,
-            prescriptionId: p.id,
-            movementId: p.movementId,
-            name: p.name,
-            kind: p.kind,
-            reps: p.reps?.[0] ?? null,
-            perSide: p.perSide,
-            holdSeconds: p.holdSeconds?.[0] ?? null,
-            distanceMetres: p.distanceMetres?.[0] ?? null,
-            restSeconds: p.restSeconds?.[0] ?? null,
-            workSeconds: p.workSeconds?.[0] ?? null,
-            rounds: p.rounds?.[0] ?? null,
-            tempo: p.tempo ?? "",
-          }),
-        ),
-      );
-    update({ rows: [...w.rows, ...rows] });
+    update({ rows: startMovements(w.rows, prescriptions) });
   }
   function velocity(r: ActualRow, v: Partial<VelocityRecord>) {
     updateRow(r.id, {
@@ -167,73 +158,76 @@ export default function WorkoutLog({
         <p>Keep the prescription. Record the work you actually did.</p>
       </div>
       <Card>
-        <Sources session={session} />
-        {[
-          ...new Set(
-            prescriptions.flatMap((p) =>
-              p.conditionalGroup ? [p.conditionalGroup] : [],
-            ),
-          ),
-        ].map((group) => (
-          <div className="notice" key={group}>
-            <h3>Choose one source alternative</h3>
-            <p>
-              {group} · These alternatives are excluded from automatic set
-              copying until selected.
-            </p>
-            {prescriptions
-              .filter((p) => p.conditionalGroup === group)
-              .map((p) => (
-                <button
-                  type="button"
-                  key={p.id}
-                  onClick={() =>
-                    update({
-                      targetRevisions: [
-                        ...w.targetRevisions,
-                        {
-                          id: crypto.randomUUID(),
-                          sessionId: session.id,
-                          prescriptions: selectConditionalTarget(
-                            prescriptions,
-                            group,
-                            p.id,
-                          ),
-                          reason: "Explicit source choice: " + p.name,
-                          createdAt: new Date().toISOString(),
-                          kind: "alternative",
-                        },
-                      ],
-                    })
-                  }
-                >
-                  Choose {p.name}
-                </button>
-              ))}
-          </div>
-        ))}
-        {prescriptions.map((p) => (
-          <SubstitutionPreview
-            key={p.id}
-            prescription={p}
-            state={state}
-            date={date}
-            onAccept={(preview) => update(acceptSubstitution(w, preview))}
-          />
-        ))}
-        {w.targetRevisions.length > 0 && (
-          <button
-            type="button"
-            onClick={() =>
-              update({ targetRevisions: w.targetRevisions.slice(0, -1) })
-            }
-          >
-            Undo last target change
-          </button>
-        )}
         <details>
-          <summary>All original prescriptions</summary>
-          <p className="sourceText">{session.sourceText}</p>
+          <summary>Session plan and substitutions</summary>
+          <Sources session={session} />
+          {[
+            ...new Set(
+              prescriptions.flatMap((p) =>
+                p.conditionalGroup ? [p.conditionalGroup] : [],
+              ),
+            ),
+          ].map((group) => (
+            <div className="notice" key={group}>
+              <h3>Choose one source alternative</h3>
+              <p>
+                {group} · These alternatives are excluded from automatic set
+                copying until selected.
+              </p>
+              {prescriptions
+                .filter((p) => p.conditionalGroup === group)
+                .map((p) => (
+                  <button
+                    type="button"
+                    key={p.id}
+                    onClick={() =>
+                      update({
+                        targetRevisions: [
+                          ...w.targetRevisions,
+                          {
+                            id: crypto.randomUUID(),
+                            sessionId: session.id,
+                            prescriptions: selectConditionalTarget(
+                              prescriptions,
+                              group,
+                              p.id,
+                            ),
+                            reason: "Explicit source choice: " + p.name,
+                            createdAt: new Date().toISOString(),
+                            kind: "alternative",
+                          },
+                        ],
+                      })
+                    }
+                  >
+                    Choose {p.name}
+                  </button>
+                ))}
+            </div>
+          ))}
+          {prescriptions.map((p) => (
+            <SubstitutionPreview
+              key={p.id}
+              prescription={p}
+              state={state}
+              date={date}
+              onAccept={(preview) => update(acceptSubstitution(w, preview))}
+            />
+          ))}
+          {w.targetRevisions.length > 0 && (
+            <button
+              type="button"
+              onClick={() =>
+                update({ targetRevisions: w.targetRevisions.slice(0, -1) })
+              }
+            >
+              Undo last target change
+            </button>
+          )}
+          <details>
+            <summary>All original prescriptions</summary>
+            <p className="sourceText">{session.sourceText}</p>
+          </details>
         </details>
       </Card>
       {remoteChanged && (
@@ -246,8 +240,7 @@ export default function WorkoutLog({
           <button
             type="button"
             onClick={() => {
-              baseRecord.current = existingSignature;
-              setRemoteChanged(false);
+              acceptIncomingBase();
             }}
           >
             Keep workout draft after reviewing
@@ -255,21 +248,9 @@ export default function WorkoutLog({
         </div>
       )}
       <form
-        onSubmit={async (e) => {
+        onSubmit={(e) => {
           e.preventDefault();
-          if (remoteChanged) return;
-          const next = { ...w, updatedAt: new Date().toISOString() },
-            previous = baseRecord.current;
-          baseRecord.current = JSON.stringify(next);
-          const ok = await onSave(next, previous);
-          setSaved(ok);
-          if (ok) {
-            dirty.current = false;
-            setW(next);
-          } else {
-            baseRecord.current = previous;
-            dirty.current = true;
-          }
+          void save();
         }}
       >
         <Card>
@@ -339,380 +320,488 @@ export default function WorkoutLog({
           <div className="sectionhead">
             <h2>Actual sets</h2>
             <button type="button" onClick={copy}>
-              Copy planned sets
+              Load first sets
             </button>
           </div>
-          <p>
-            Copied values remain drafts. Confirm each completed set and choose
-            partial/completed status before it counts.
+          <p className="hint">
+            One set to start each movement. Add the next set when ready; it
+            copies inputs from your first completed set. Confirm sets and choose
+            partial/completed status to count them.
           </p>
-          <div className="addbuttons">
-            {prescriptions.map((p) => (
-              <button type="button" key={p.id} onClick={() => add(p)}>
-                + {p.name}
-              </button>
-            ))}
-          </div>
+          <p role="status" className="autosave-status">
+            {message || "Edits save automatically on this device"}
+          </p>
+          {error && (
+            <p role="alert" className="error">
+              {error}
+            </p>
+          )}
           <button type="button" onClick={() => add()}>
             + Custom exercise
           </button>
         </Card>
-        {w.rows.map((r, i) => (
-          <Card key={r.id} className="setcard">
-            <div className="sectionhead">
-              <h3>
-                Set {i + 1} · {r.name}
-              </h3>
+        {groups.map((group) => {
+          const complete = group.rows.filter((r) => r.confirmed).length;
+          const target = group.prescription?.sets;
+          const targetLabel = target
+            ? target[0] === target[1]
+              ? String(target[0])
+              : target.join("–")
+            : "open";
+          const isOpen = expanded.includes(group.key);
+          return (
+            <section key={group.key} className="movement-group">
               <button
                 type="button"
-                className="subtle"
-                onClick={() => {
-                  if (confirm("Remove this set?"))
-                    update({ rows: w.rows.filter((x) => x.id !== r.id) });
-                }}
+                className="movement-toggle"
+                aria-expanded={isOpen}
+                aria-controls={"movement-" + group.key}
+                onClick={() =>
+                  setExpanded((current) =>
+                    current.includes(group.key)
+                      ? current.filter((k) => k !== group.key)
+                      : [...current, group.key],
+                  )
+                }
               >
-                Remove
+                <span>
+                  <strong>{group.name}</strong>
+                  <small>
+                    {group.rows.some((r) => !r.confirmed)
+                      ? "In progress"
+                      : complete
+                        ? target && complete < target[0]
+                          ? "Ready for next set"
+                          : "Sets completed"
+                        : "Not started"}
+                  </small>
+                </span>
+                <span className="movement-count">
+                  {complete}/{targetLabel} sets{" "}
+                  <span aria-hidden="true">{isOpen ? "−" : "+"}</span>
+                </span>
               </button>
-            </div>
-            <div className="threecols">
-              <label className="field">
-                Exercise name
-                <input
-                  value={r.name}
-                  onChange={(e) =>
-                    updateRow(r.id, {
-                      name: e.target.value,
-                      exerciseId: e.target.value,
-                      velocity: r.velocity
-                        ? { ...r.velocity, exerciseId: e.target.value }
-                        : null,
-                    })
-                  }
-                />
-              </label>
-              <Select
-                label="Work type"
-                value={r.kind}
-                options={[
-                  "strength",
-                  "jump",
-                  "throw",
-                  "hold",
-                  "sprint",
-                  "conditioning",
-                  "other",
-                ]}
-                onChange={(v) =>
-                  updateRow(r.id, { kind: v as ActualRow["kind"] })
-                }
-              />
-              <label className="check">
-                <input
-                  type="checkbox"
-                  aria-label="Completed set"
-                  checked={r.confirmed}
-                  onChange={(e) =>
-                    updateRow(r.id, { confirmed: e.target.checked })
-                  }
-                />
-                Completed set
-              </label>
-            </div>
-            <div className="threecols">
-              {["strength", "jump", "throw", "other", "sprint"].includes(
-                r.kind,
-              ) && (
-                <Num
-                  label={
-                    r.kind === "sprint" ? "Efforts completed" : "Repetitions"
-                  }
-                  value={r.reps}
-                  onChange={(v) => updateRow(r.id, { reps: v })}
-                />
-              )}
-              <Num
-                label="External load (kg)"
-                value={r.loadKg}
-                onChange={(v) =>
-                  updateRow(r.id, {
-                    loadKg: v,
-                    velocity: r.velocity ? { ...r.velocity, loadKg: v } : null,
-                  })
-                }
-              />
-              <Select
-                label="Load convention"
-                value={r.loadConvention}
-                options={["totalExternal", "perHand", "bodyweight", "unknown"]}
-                onChange={(v) =>
-                  updateRow(r.id, {
-                    loadConvention: v as ActualRow["loadConvention"],
-                  })
-                }
-              />
-              {r.loadConvention === "perHand" && (
-                <Select
-                  label="Loaded hands per repetition"
-                  value={
-                    r.loadedHands === null ? "unknown" : String(r.loadedHands)
-                  }
-                  options={[
-                    ["unknown", "Unconfirmed"],
-                    ["1", "One loaded hand"],
-                    ["2", "Two loaded hands"],
-                  ]}
-                  onChange={(v) =>
-                    updateRow(r.id, {
-                      loadedHands: v === "unknown" ? null : Number(v),
-                    })
-                  }
-                />
-              )}
-              {r.kind === "hold" && (
-                <Num
-                  label="Hold duration (seconds)"
-                  value={r.holdSeconds}
-                  onChange={(v) => updateRow(r.id, { holdSeconds: v })}
-                />
-              )}
-              <label className="check">
-                <input
-                  type="checkbox"
-                  checked={r.perSide}
-                  onChange={(e) =>
-                    updateRow(r.id, { perSide: e.target.checked })
-                  }
-                />
-                Entered per side (both sides done)
-              </label>
-              {r.kind === "sprint" && (
-                <>
-                  <Num
-                    label="Distance per effort (metres)"
-                    value={r.distanceMetres}
-                    onChange={(v) => updateRow(r.id, { distanceMetres: v })}
-                  />
-                  <Num
-                    label="Time per effort (seconds)"
-                    value={r.timeSeconds}
-                    onChange={(v) => updateRow(r.id, { timeSeconds: v })}
-                  />
-                </>
-              )}
-              {r.kind === "conditioning" && (
-                <>
-                  <Num
-                    label="Rounds completed"
-                    value={r.rounds}
-                    onChange={(v) => updateRow(r.id, { rounds: v })}
-                  />
-                  <Num
-                    label="Work duration (seconds)"
-                    value={r.workSeconds}
-                    onChange={(v) => updateRow(r.id, { workSeconds: v })}
-                  />
-                </>
-              )}
-              <Num
-                label="Rest duration (seconds)"
-                value={r.restSeconds}
-                onChange={(v) => updateRow(r.id, { restSeconds: v })}
-              />
-              <Num
-                label="Set RPE"
-                value={r.setRpe}
-                max={10}
-                onChange={(v) => updateRow(r.id, { setRpe: v })}
-              />
-              <Num
-                label="Reps in reserve"
-                value={r.rir}
-                onChange={(v) => updateRow(r.id, { rir: v })}
-              />
-            </div>
-            <details>
-              <summary>Tempo and measured velocity</summary>
-              <p className="sourceText">
-                {prescriptions.find((p) => p.name === r.exerciseId)?.sourceText}
-              </p>
-              <Select
-                label="Source target velocity metric"
-                value={r.sourceVelocityMetric ?? "unknown"}
-                options={[
-                  ["unknown", "Unconfirmed"],
-                  "mean",
-                  "meanConcentric",
-                  "meanPropulsive",
-                  "peak",
-                ]}
-                onChange={(v) =>
-                  updateRow(r.id, {
-                    sourceVelocityMetric:
-                      v === "unknown" ? null : (v as VelocityRecord["metric"]),
-                  })
-                }
-              />
-              {r.velocity && (
-                <p>
-                  Target comparison:{" "}
-                  {(() => {
-                    const p = prescriptions.find(
-                      (p) => p.name === r.exerciseId,
-                    );
-                    return p
-                      ? compareVelocityTarget(
-                          { ...p, velocityMetric: r.sourceVelocityMetric },
-                          r.velocity!,
-                        )
-                      : "unknown";
-                  })()}
-                </p>
-              )}
-              <VelocityGuidance
-                prescription={prescriptions.find(
-                  (p) => p.id === r.prescriptionId || p.name === r.exerciseId,
+              <div id={"movement-" + group.key} hidden={!isOpen}>
+                {group.prescription && (
+                  <p className="movement-target">
+                    {group.prescription.sourceText}
+                  </p>
                 )}
-                row={r}
-                state={state}
-                enabled={session.autoregulation !== "none"}
-                onAccept={(p, reason) => {
-                  const targets = prescriptions.map((x) =>
-                    x.id === p.id ? p : x,
-                  );
-                  update({
-                    targetRevisions: [
-                      ...w.targetRevisions,
-                      {
-                        id: crypto.randomUUID(),
-                        sessionId: session.id,
-                        prescriptions: targets,
-                        reason,
-                        createdAt: new Date().toISOString(),
-                        kind: "velocity",
-                      },
-                    ],
-                  });
-                }}
-              />
-              {(prescriptions.find(
-                (p) => p.id === r.prescriptionId || p.name === r.exerciseId,
-              )?.components.length ?? 0) > 0 && (
-                <Select
-                  label="Velocity component"
-                  value={r.velocity?.componentId ?? "unknown"}
-                  options={[
-                    ["unknown", "Choose component"],
-                    ...(
-                      prescriptions.find(
+                {group.rows.map((r, i) => (
+                  <Card key={r.id} className="setcard">
+                    <div className="sectionhead">
+                      <h3>
+                        {r.name} · Set {i + 1}
+                      </h3>
+                      <button
+                        type="button"
+                        className="subtle"
+                        onClick={() => {
+                          if (confirm("Remove this set?"))
+                            update({
+                              rows: w.rows.filter((x) => x.id !== r.id),
+                            });
+                        }}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                    <div className="threecols">
+                      <label className="field">
+                        Exercise name
+                        <input
+                          value={r.name}
+                          onChange={(e) =>
+                            updateRow(r.id, {
+                              name: e.target.value,
+                              exerciseId: e.target.value,
+                              velocity: r.velocity
+                                ? { ...r.velocity, exerciseId: e.target.value }
+                                : null,
+                            })
+                          }
+                        />
+                      </label>
+                      <Select
+                        label="Work type"
+                        value={r.kind}
+                        options={[
+                          "strength",
+                          "jump",
+                          "throw",
+                          "hold",
+                          "sprint",
+                          "conditioning",
+                          "other",
+                        ]}
+                        onChange={(v) =>
+                          updateRow(r.id, { kind: v as ActualRow["kind"] })
+                        }
+                      />
+                      <label className="check">
+                        <input
+                          type="checkbox"
+                          aria-label="Completed set"
+                          checked={r.confirmed}
+                          onChange={(e) =>
+                            updateRow(r.id, { confirmed: e.target.checked })
+                          }
+                        />
+                        Completed set
+                      </label>
+                    </div>
+                    <div className="threecols">
+                      {[
+                        "strength",
+                        "jump",
+                        "throw",
+                        "other",
+                        "sprint",
+                      ].includes(r.kind) && (
+                        <Num
+                          label={
+                            r.kind === "sprint"
+                              ? "Efforts completed"
+                              : "Repetitions"
+                          }
+                          value={r.reps}
+                          onChange={(v) => updateRow(r.id, { reps: v })}
+                        />
+                      )}
+                      <Num
+                        label="External load (kg)"
+                        value={r.loadKg}
+                        onChange={(v) =>
+                          updateRow(r.id, {
+                            loadKg: v,
+                            velocity: r.velocity
+                              ? { ...r.velocity, loadKg: v }
+                              : null,
+                          })
+                        }
+                      />
+                      <Select
+                        label="Load convention"
+                        value={r.loadConvention}
+                        options={[
+                          "totalExternal",
+                          "perHand",
+                          "bodyweight",
+                          "unknown",
+                        ]}
+                        onChange={(v) =>
+                          updateRow(r.id, {
+                            loadConvention: v as ActualRow["loadConvention"],
+                          })
+                        }
+                      />
+                      {r.loadConvention === "perHand" && (
+                        <Select
+                          label="Loaded hands per repetition"
+                          value={
+                            r.loadedHands === null
+                              ? "unknown"
+                              : String(r.loadedHands)
+                          }
+                          options={[
+                            ["unknown", "Unconfirmed"],
+                            ["1", "One loaded hand"],
+                            ["2", "Two loaded hands"],
+                          ]}
+                          onChange={(v) =>
+                            updateRow(r.id, {
+                              loadedHands: v === "unknown" ? null : Number(v),
+                            })
+                          }
+                        />
+                      )}
+                      {r.kind === "hold" && (
+                        <Num
+                          label="Hold duration (seconds)"
+                          value={r.holdSeconds}
+                          onChange={(v) => updateRow(r.id, { holdSeconds: v })}
+                        />
+                      )}
+                      <label className="check">
+                        <input
+                          type="checkbox"
+                          checked={r.perSide}
+                          onChange={(e) =>
+                            updateRow(r.id, { perSide: e.target.checked })
+                          }
+                        />
+                        Entered per side (both sides done)
+                      </label>
+                      {r.kind === "sprint" && (
+                        <>
+                          <Num
+                            label="Distance per effort (metres)"
+                            value={r.distanceMetres}
+                            onChange={(v) =>
+                              updateRow(r.id, { distanceMetres: v })
+                            }
+                          />
+                          <Num
+                            label="Time per effort (seconds)"
+                            value={r.timeSeconds}
+                            onChange={(v) =>
+                              updateRow(r.id, { timeSeconds: v })
+                            }
+                          />
+                        </>
+                      )}
+                      {r.kind === "conditioning" && (
+                        <>
+                          <Num
+                            label="Rounds completed"
+                            value={r.rounds}
+                            onChange={(v) => updateRow(r.id, { rounds: v })}
+                          />
+                          <Num
+                            label="Work duration (seconds)"
+                            value={r.workSeconds}
+                            onChange={(v) =>
+                              updateRow(r.id, { workSeconds: v })
+                            }
+                          />
+                        </>
+                      )}
+                      <Num
+                        label="Rest duration (seconds)"
+                        value={r.restSeconds}
+                        onChange={(v) => updateRow(r.id, { restSeconds: v })}
+                      />
+                      <Num
+                        label="Set RPE"
+                        value={r.setRpe}
+                        max={10}
+                        onChange={(v) => updateRow(r.id, { setRpe: v })}
+                      />
+                      <Num
+                        label="Reps in reserve"
+                        value={r.rir}
+                        onChange={(v) => updateRow(r.id, { rir: v })}
+                      />
+                    </div>
+                    <details>
+                      <summary>Tempo and measured velocity</summary>
+                      <p className="sourceText">
+                        {
+                          prescriptions.find((p) => p.name === r.exerciseId)
+                            ?.sourceText
+                        }
+                      </p>
+                      <Select
+                        label="Source target velocity metric"
+                        value={r.sourceVelocityMetric ?? "unknown"}
+                        options={[
+                          ["unknown", "Unconfirmed"],
+                          "mean",
+                          "meanConcentric",
+                          "meanPropulsive",
+                          "peak",
+                        ]}
+                        onChange={(v) =>
+                          updateRow(r.id, {
+                            sourceVelocityMetric:
+                              v === "unknown"
+                                ? null
+                                : (v as VelocityRecord["metric"]),
+                          })
+                        }
+                      />
+                      {r.velocity && (
+                        <p>
+                          Target comparison:{" "}
+                          {(() => {
+                            const p = prescriptions.find(
+                              (p) => p.name === r.exerciseId,
+                            );
+                            return p
+                              ? compareVelocityTarget(
+                                  {
+                                    ...p,
+                                    velocityMetric: r.sourceVelocityMetric,
+                                  },
+                                  r.velocity!,
+                                )
+                              : "unknown";
+                          })()}
+                        </p>
+                      )}
+                      <VelocityGuidance
+                        prescription={prescriptions.find(
+                          (p) =>
+                            p.id === r.prescriptionId ||
+                            p.name === r.exerciseId,
+                        )}
+                        row={r}
+                        state={state}
+                        enabled={session.autoregulation !== "none"}
+                        onAccept={(p, reason) => {
+                          const targets = prescriptions.map((x) =>
+                            x.id === p.id ? p : x,
+                          );
+                          update({
+                            targetRevisions: [
+                              ...w.targetRevisions,
+                              {
+                                id: crypto.randomUUID(),
+                                sessionId: session.id,
+                                prescriptions: targets,
+                                reason,
+                                createdAt: new Date().toISOString(),
+                                kind: "velocity",
+                              },
+                            ],
+                          });
+                        }}
+                      />
+                      {(prescriptions.find(
                         (p) =>
                           p.id === r.prescriptionId || p.name === r.exerciseId,
-                      )?.components ?? []
-                    ).map((c) => [c.id, c.name] as [string, string]),
-                  ]}
-                  onChange={(v) =>
-                    velocity(r, { componentId: v === "unknown" ? null : v })
-                  }
-                />
-              )}
-              <div className="threecols">
-                <label className="field">
-                  Tempo instruction
-                  <input
-                    value={r.tempo}
-                    onChange={(e) => updateRow(r.id, { tempo: e.target.value })}
-                  />
-                </label>
-                <Select
-                  label="Followed prescribed tempo"
-                  value={
-                    r.tempoFollowed === null
-                      ? "unknown"
-                      : r.tempoFollowed
-                        ? "yes"
-                        : "no"
-                  }
-                  options={["unknown", "yes", "no"]}
-                  onChange={(v) =>
-                    updateRow(r.id, {
-                      tempoFollowed: v === "unknown" ? null : v === "yes",
-                    })
-                  }
-                />
-                <Select
-                  label="Velocity metric"
-                  value={r.velocity?.metric ?? "mean"}
-                  options={["mean", "meanConcentric", "meanPropulsive", "peak"]}
-                  onChange={(v) =>
-                    velocity(r, { metric: v as VelocityRecord["metric"] })
-                  }
-                />
-                <label className="field">
-                  Velocity device / method
-                  <input
-                    value={r.velocity?.method ?? ""}
-                    onChange={(e) => velocity(r, { method: e.target.value })}
-                  />
-                </label>
-                <label className="field">
-                  Range of motion
-                  <input
-                    value={r.velocity?.rangeOfMotion ?? ""}
-                    onChange={(e) =>
-                      velocity(r, { rangeOfMotion: e.target.value })
-                    }
-                  />
-                </label>
-                <Num
-                  label="Set-average velocity (m/s)"
-                  value={r.velocity?.setAverage ?? null}
-                  onChange={(v) => velocity(r, { setAverage: v })}
-                />
+                      )?.components.length ?? 0) > 0 && (
+                        <Select
+                          label="Velocity component"
+                          value={r.velocity?.componentId ?? "unknown"}
+                          options={[
+                            ["unknown", "Choose component"],
+                            ...(
+                              prescriptions.find(
+                                (p) =>
+                                  p.id === r.prescriptionId ||
+                                  p.name === r.exerciseId,
+                              )?.components ?? []
+                            ).map((c) => [c.id, c.name] as [string, string]),
+                          ]}
+                          onChange={(v) =>
+                            velocity(r, {
+                              componentId: v === "unknown" ? null : v,
+                            })
+                          }
+                        />
+                      )}
+                      <div className="threecols">
+                        <label className="field">
+                          Tempo instruction
+                          <input
+                            value={r.tempo}
+                            onChange={(e) =>
+                              updateRow(r.id, { tempo: e.target.value })
+                            }
+                          />
+                        </label>
+                        <Select
+                          label="Followed prescribed tempo"
+                          value={
+                            r.tempoFollowed === null
+                              ? "unknown"
+                              : r.tempoFollowed
+                                ? "yes"
+                                : "no"
+                          }
+                          options={["unknown", "yes", "no"]}
+                          onChange={(v) =>
+                            updateRow(r.id, {
+                              tempoFollowed:
+                                v === "unknown" ? null : v === "yes",
+                            })
+                          }
+                        />
+                        <Select
+                          label="Velocity metric"
+                          value={r.velocity?.metric ?? "mean"}
+                          options={[
+                            "mean",
+                            "meanConcentric",
+                            "meanPropulsive",
+                            "peak",
+                          ]}
+                          onChange={(v) =>
+                            velocity(r, {
+                              metric: v as VelocityRecord["metric"],
+                            })
+                          }
+                        />
+                        <label className="field">
+                          Velocity device / method
+                          <input
+                            value={r.velocity?.method ?? ""}
+                            onChange={(e) =>
+                              velocity(r, { method: e.target.value })
+                            }
+                          />
+                        </label>
+                        <label className="field">
+                          Range of motion
+                          <input
+                            value={r.velocity?.rangeOfMotion ?? ""}
+                            onChange={(e) =>
+                              velocity(r, { rangeOfMotion: e.target.value })
+                            }
+                          />
+                        </label>
+                        <Num
+                          label="Set-average velocity (m/s)"
+                          value={r.velocity?.setAverage ?? null}
+                          onChange={(v) => velocity(r, { setAverage: v })}
+                        />
+                      </div>
+                      <VelocityInput
+                        key={r.id}
+                        values={r.velocity?.repVelocities ?? []}
+                        onChange={(values) =>
+                          velocity(r, { repVelocities: values })
+                        }
+                      />
+                      <label className="check">
+                        <input
+                          type="checkbox"
+                          checked={r.velocity?.completeSeries ?? false}
+                          onChange={(e) =>
+                            velocity(r, { completeSeries: e.target.checked })
+                          }
+                        />
+                        Complete series for this set
+                      </label>
+                      {r.velocity && (
+                        <p>
+                          End-of-set velocity loss:{" "}
+                          {fmt(velocityLoss(r.velocity), 1)}
+                          {velocityLoss(r.velocity) !== null ? "%" : ""}.
+                          Fastest rep compared with final rep. A set average
+                          cannot produce this value.
+                        </p>
+                      )}
+                      <p className="hint">
+                        MV in the source is not automatically assumed to match
+                        your device's metric. Match measurement definitions
+                        before comparing targets.
+                      </p>
+                    </details>
+                    <label className="field">
+                      Set notes
+                      <input
+                        value={r.notes}
+                        onChange={(e) =>
+                          updateRow(r.id, { notes: e.target.value })
+                        }
+                      />
+                    </label>
+                  </Card>
+                ))}
+                <button
+                  type="button"
+                  className="add-next-set"
+                  onClick={() => add(group.prescription, group.key)}
+                >
+                  {group.rows.length ? "Add next set" : "Start movement"} ·{" "}
+                  {group.name}
+                </button>
               </div>
-              <label className="field">
-                Per-repetition velocity (comma separated m/s)
-                <input
-                  defaultValue={r.velocity?.repVelocities.join(", ") ?? ""}
-                  onBlur={(e) => {
-                    const values = e.target.value.trim()
-                      ? e.target.value.split(",").map((x) => Number(x.trim()))
-                      : [];
-                    velocity(r, { repVelocities: values });
-                  }}
-                />
-              </label>
-              <label className="check">
-                <input
-                  type="checkbox"
-                  checked={r.velocity?.completeSeries ?? false}
-                  onChange={(e) =>
-                    velocity(r, { completeSeries: e.target.checked })
-                  }
-                />
-                Complete series for this set
-              </label>
-              {r.velocity && (
-                <p>
-                  End-of-set velocity loss: {fmt(velocityLoss(r.velocity), 1)}
-                  {velocityLoss(r.velocity) !== null ? "%" : ""}. Fastest rep
-                  compared with final rep. A set average cannot produce this
-                  value.
-                </p>
-              )}
-              <p className="hint">
-                MV in the source is not automatically assumed to match your
-                device's metric. Match measurement definitions before comparing
-                targets.
-              </p>
-            </details>
-            <label className="field">
-              Set notes
-              <input
-                value={r.notes}
-                onChange={(e) => updateRow(r.id, { notes: e.target.value })}
-              />
-            </label>
-          </Card>
-        ))}
+            </section>
+          );
+        })}
         <Card>
           <h2>Equipment alternatives</h2>
           {session.exercises
@@ -787,9 +876,46 @@ export default function WorkoutLog({
               Export this entry
             </button>
           </div>
-          {saved && <p role="status">Saved on this device</p>}
         </Card>
       </form>
     </>
+  );
+}
+
+function VelocityInput({
+  values,
+  onChange,
+}: {
+  values: number[];
+  onChange: (values: number[]) => void;
+}) {
+  const [text, setText] = useState(values.join(", "));
+  const [invalid, setInvalid] = useState(false);
+  return (
+    <label className="field">
+      Per-repetition velocity (comma separated m/s)
+      <input
+        value={text}
+        aria-invalid={invalid}
+        onChange={(e) => {
+          const raw = e.target.value;
+          setText(raw);
+          const pieces = raw
+            .split(",")
+            .map((s) => s.trim())
+            .filter(Boolean);
+          const numbers = pieces.map(Number);
+          const valid = numbers.every((n) => Number.isFinite(n) && n >= 0);
+          setInvalid(!valid);
+          if (valid) onChange(numbers);
+        }}
+      />
+      {invalid && (
+        <small role="alert">
+          Enter non-negative numbers separated by commas. Invalid text is not
+          saved.
+        </small>
+      )}
+    </label>
   );
 }

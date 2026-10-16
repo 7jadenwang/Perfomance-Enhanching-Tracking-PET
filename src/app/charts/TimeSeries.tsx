@@ -1,4 +1,5 @@
 import { useState, useId } from "react";
+import { aggregatePoints, type Period } from "../../metrics/periods";
 export type ChartPoint = {
   label: string;
   value: number | null;
@@ -11,14 +12,19 @@ export type ChartPoint = {
 export default function TimeSeries({
   title,
   unit,
-  points,
+  points: rawPoints,
+  period = "day",
+  aggregation = "mean",
   warning = false,
 }: {
   title: string;
   unit: string;
   points: ChartPoint[];
+  period?: Period;
+  aggregation?: "sum" | "mean";
   warning?: boolean;
 }) {
+  const points = aggregatePoints(rawPoints, period, aggregation);
   const [hover, setHover] = useState<ChartPoint | null>(null),
     [table, setTable] = useState(false),
     id = useId();
@@ -37,7 +43,9 @@ export default function TimeSeries({
         (width - pad - 18),
     y = (v: number) => height - 36 - ((v - min) / span) * (height - 68);
   const color = (name: string) =>
-    warning ? "#ff7d8e" : series.indexOf(name) === 0 ? "#b599ff" : "#70a9ff";
+    warning
+      ? "#ff7d8e"
+      : ["#6ee7b7", "#70a9ff", "#f6bd60", "#dc9eef"][series.indexOf(name) % 4];
   return (
     <section className="card chart">
       <div className="sectionhead">

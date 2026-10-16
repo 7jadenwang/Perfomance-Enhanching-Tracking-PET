@@ -34,6 +34,9 @@ test("shows complete prescribed load profiles before any actual training exists"
 }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Progress", exact: true }).click();
+  await page
+    .getByText("Detailed program exposure and prescriptions", { exact: true })
+    .click();
   await expect(
     page.getByRole("heading", { name: "Planned and actual training dose" }),
   ).toBeVisible();

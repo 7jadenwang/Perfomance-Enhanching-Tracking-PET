@@ -15,6 +15,8 @@ import { sessionLoad } from "../metrics/load";
 import { addDays } from "../program/schedule";
 import { movementFor } from "../program/movements";
 import TimeSeries from "./charts/TimeSeries";
+import DemandCharts from "./charts/DemandCharts";
+import type { Period } from "../metrics/periods";
 import RecoveryCharts from "./charts/RecoveryCharts";
 import { Card, Select } from "./fields";
 const metrics: [keyof DoseProfile, string, string][] = [
@@ -40,7 +42,8 @@ export default function Progress({
   const [track, setTrack] = useState<"lp" | "up">("lp"),
     [enrollment, setEnrollment] = useState(""),
     [movement, setMovement] = useState(""),
-    [range, setRange] = useState("28");
+    [range, setRange] = useState("28"),
+    [period, setPeriod] = useState<Period>("day");
   const dose = programDoseSeries(
       track,
       state,
@@ -85,11 +88,34 @@ export default function Progress({
       <div className="pagehead">
         <p className="eyebrow">LOAD, PERFORMANCE & RECOVERY</p>
         <h1>Progress in context.</h1>
-        <p>
-          See prescribed progression and your actual work across separate
-          training demands.
-        </p>
+        <p>Follow your training demand and recovery, one day at a time.</p>
       </div>
+      <h2>Daily recovery and recorded load</h2>
+      <div className="progress-controls">
+        <Select
+          label="Time step"
+          value={period}
+          options={[
+            ["day", "Day"],
+            ["week", "Week"],
+            ["month", "Month"],
+          ]}
+          onChange={(v) => setPeriod(v as Period)}
+        />
+        <Select
+          label="Recovery chart range"
+          value={range}
+          options={[
+            ["7", "7 days"],
+            ["28", "28 days"],
+            ["84", "84 days"],
+            ["all", "All history"],
+          ]}
+          onChange={setRange}
+        />
+      </div>
+      <DemandCharts state={state} start={start} end={today} period={period} />
+      <RecoveryCharts state={state} start={start} end={today} period={period} />
       <div className="stats">
         <Card>
           <p>Recorded actual load</p>
@@ -129,184 +155,179 @@ export default function Progress({
           <small>Use consistent measurement protocols</small>
         </Card>
       </div>
-      <h2>Planned and actual training dose</h2>
-      <div className="threecols">
-        <Select
-          label="Dose comparison program"
-          value={track}
-          options={programDefinitions.map((p) => [p.id, p.name])}
-          onChange={(v) => {
-            setTrack(v as typeof track);
-            setEnrollment("");
-            setMovement("");
-          }}
-        />
-        <Select
-          label="Dose comparison enrollment"
-          value={enrollment}
-          options={[
-            ["", "Original source plan / actuals across runs"],
-            ...state.enrollments
-              .filter((e) => e.programId === track)
-              .map(
-                (e) =>
-                  [e.id, `${e.startDate} · ${e.status}`] as [string, string],
-              ),
-          ]}
-          onChange={setEnrollment}
-        />
-        <Select
-          label="Dose comparison movement"
-          value={movement}
-          options={[
-            ["", "All movements — dimensions remain separate"],
-            ...movements.map((m) => [m, m] as [string, string]),
-          ]}
-          onChange={setMovement}
-        />
-      </div>
-      <p className="hint">
-        All source weeks are shown before logging. Lines use prescribed range
-        midpoints; bars retain the bounds. Volume totals cover readable known
-        quantities. %1RM/rest summaries describe the selected prescriptions, not
-        universal stress. Conditional choices and unmapped work are disclosed
-        below. Compare individual movements to interpret velocity.
-      </p>
-      {dose.every((w) => w.actual === null) && <p>No actual sessions logged</p>}
-      <div className="chartgrid">
-        {metrics.map(([key, title, unit]) => (
-          <TimeSeries
-            key={key}
-            title={title}
-            unit={unit}
-            points={dose.flatMap((w) => {
-              const v = w.planned[key],
-                planned =
-                  Array.isArray(v) && v.length === 2 && typeof v[0] === "number"
-                    ? (v as [number, number])
-                    : null;
-              let actual: number | null = null;
-              if (w.actual) {
-                if (
-                  key === "strengthReps" ||
-                  key === "kgReps" ||
-                  key === "sprintMetres" ||
-                  key === "conditioningWorkSeconds" ||
-                  key === "restSeconds" ||
-                  key === "sets" ||
-                  key === "relativeIntensity" ||
-                  key === "workRestRatio" ||
-                  key === "velocity"
-                )
-                  actual = w.actual[key];
-                if (key === "jumpContacts") actual = w.actual.jumpContactTotal;
-              }
-              return [
-                {
-                  label: `W${w.week}`,
-                  value: planned ? (planned[0] + planned[1]) / 2 : null,
-                  low: planned?.[0],
-                  high: planned?.[1],
-                  series: "Planned",
-                  segment: w.phaseId,
-                  note: `${w.planned.unknown} incomplete/conditional fields`,
-                },
-                {
-                  label: `W${w.week}`,
-                  value: actual,
-                  series: "Actual",
-                  segment: w.phaseId,
-                  note: w.actual
-                    ? (() => {
-                        const c =
-                          w.actual.coverage[
-                            (key === "jumpContacts"
-                              ? "jumpContactTotal"
-                              : key) as ExposureDimension
-                          ];
-                        return c
-                          ? `${c.measured}/${c.expected} measured rows${c.measured < c.expected ? " · partial known total" : ""}`
-                          : `${w.actual.unknown} incomplete fields`;
-                      })()
-                    : "",
-                },
-              ];
-            })}
+      <details className="metric-details legacy-dose">
+        <summary>Detailed program exposure and prescriptions</summary>
+        <h2>Planned and actual training dose</h2>
+        <div className="threecols">
+          <Select
+            label="Dose comparison program"
+            value={track}
+            options={programDefinitions.map((p) => [p.id, p.name])}
+            onChange={(v) => {
+              setTrack(v as typeof track);
+              setEnrollment("");
+              setMovement("");
+            }}
           />
-        ))}
-      </div>
-      <Card>
-        <h3>Source dose details and completeness</h3>
-        <div className="tablewrap">
-          <table aria-label="Program dose prescriptions">
-            <thead>
-              <tr>
-                <th>Week</th>
-                <th>Phase</th>
-                <th>Coverage</th>
-                <th>Tempo / velocity / energy instructions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {dose.map((w) => (
-                <tr key={w.week}>
-                  <td>W{w.week}</td>
-                  <td>{w.phaseId}</td>
-                  <td>
-                    {w.planned.count} prescription blocks · {w.planned.unknown}{" "}
-                    incomplete/conditional fields
-                  </td>
-                  <td>
-                    {w.planned.tempoInstructions.join("; ")}
-                    <details>
-                      <summary>See original dose requirements</summary>
-                      {program.sessions
-                        .filter((s) => w.sessions.includes(s.id))
-                        .flatMap((s) =>
-                          s.exercises.filter(
-                            (p) =>
-                              !movement ||
-                              (movementFor(p)?.id ?? p.name) === movement,
-                          ),
-                        )
-                        .map((p) => (
-                          <p key={p.id}>
-                            {p.sourceText}
-                            {p.velocityVariants.length > 0 && (
-                              <span>
-                                {" "}
-                                ·{" "}
-                                {p.velocityVariants
-                                  .map(
-                                    (v) =>
-                                      `${v.loadPercent[0]}%: ${v.target.join("–")} ${v.metric} m/s, floor ${v.floor}`,
-                                  )
-                                  .join("; ")}
-                              </span>
-                            )}
-                          </p>
-                        ))}
-                    </details>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <Select
+            label="Dose comparison enrollment"
+            value={enrollment}
+            options={[
+              ["", "Original source plan / actuals across runs"],
+              ...state.enrollments
+                .filter((e) => e.programId === track)
+                .map(
+                  (e) =>
+                    [e.id, `${e.startDate} · ${e.status}`] as [string, string],
+                ),
+            ]}
+            onChange={setEnrollment}
+          />
+          <Select
+            label="Dose comparison movement"
+            value={movement}
+            options={[
+              ["", "All movements — dimensions remain separate"],
+              ...movements.map((m) => [m, m] as [string, string]),
+            ]}
+            onChange={setMovement}
+          />
         </div>
-      </Card>
-      <h2>Daily recovery and recorded load</h2>
-      <Select
-        label="Recovery chart range"
-        value={range}
-        options={[
-          ["7", "7 days"],
-          ["28", "28 days"],
-          ["84", "84 days"],
-          ["all", "All history"],
-        ]}
-        onChange={setRange}
-      />
-      <RecoveryCharts state={state} start={start} end={today} />
+        <p className="hint">
+          All source weeks are shown before logging. Lines use prescribed range
+          midpoints; bars retain the bounds. Volume totals cover readable known
+          quantities. %1RM/rest summaries describe the selected prescriptions,
+          not universal stress. Conditional choices and unmapped work are
+          disclosed below. Compare individual movements to interpret velocity.
+        </p>
+        {dose.every((w) => w.actual === null) && (
+          <p>No actual sessions logged</p>
+        )}
+        <div className="chartgrid">
+          {metrics.map(([key, title, unit]) => (
+            <TimeSeries
+              key={key}
+              title={title}
+              unit={unit}
+              points={dose.flatMap((w) => {
+                const v = w.planned[key],
+                  planned =
+                    Array.isArray(v) &&
+                    v.length === 2 &&
+                    typeof v[0] === "number"
+                      ? (v as [number, number])
+                      : null;
+                let actual: number | null = null;
+                if (w.actual) {
+                  if (
+                    key === "strengthReps" ||
+                    key === "kgReps" ||
+                    key === "sprintMetres" ||
+                    key === "conditioningWorkSeconds" ||
+                    key === "restSeconds" ||
+                    key === "sets" ||
+                    key === "relativeIntensity" ||
+                    key === "workRestRatio" ||
+                    key === "velocity"
+                  )
+                    actual = w.actual[key];
+                  if (key === "jumpContacts")
+                    actual = w.actual.jumpContactTotal;
+                }
+                return [
+                  {
+                    label: `W${w.week}`,
+                    value: planned ? (planned[0] + planned[1]) / 2 : null,
+                    low: planned?.[0],
+                    high: planned?.[1],
+                    series: "Planned",
+                    segment: w.phaseId,
+                    note: `${w.planned.unknown} incomplete/conditional fields`,
+                  },
+                  {
+                    label: `W${w.week}`,
+                    value: actual,
+                    series: "Actual",
+                    segment: w.phaseId,
+                    note: w.actual
+                      ? (() => {
+                          const c =
+                            w.actual.coverage[
+                              (key === "jumpContacts"
+                                ? "jumpContactTotal"
+                                : key) as ExposureDimension
+                            ];
+                          return c
+                            ? `${c.measured}/${c.expected} measured rows${c.measured < c.expected ? " · partial known total" : ""}`
+                            : `${w.actual.unknown} incomplete fields`;
+                        })()
+                      : "",
+                  },
+                ];
+              })}
+            />
+          ))}
+        </div>
+        <Card>
+          <h3>Source dose details and completeness</h3>
+          <div className="tablewrap">
+            <table aria-label="Program dose prescriptions">
+              <thead>
+                <tr>
+                  <th>Week</th>
+                  <th>Phase</th>
+                  <th>Coverage</th>
+                  <th>Tempo / velocity / energy instructions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {dose.map((w) => (
+                  <tr key={w.week}>
+                    <td>W{w.week}</td>
+                    <td>{w.phaseId}</td>
+                    <td>
+                      {w.planned.count} prescription blocks ·{" "}
+                      {w.planned.unknown} incomplete/conditional fields
+                    </td>
+                    <td>
+                      {w.planned.tempoInstructions.join("; ")}
+                      <details>
+                        <summary>See original dose requirements</summary>
+                        {program.sessions
+                          .filter((s) => w.sessions.includes(s.id))
+                          .flatMap((s) =>
+                            s.exercises.filter(
+                              (p) =>
+                                !movement ||
+                                (movementFor(p)?.id ?? p.name) === movement,
+                            ),
+                          )
+                          .map((p) => (
+                            <p key={p.id}>
+                              {p.sourceText}
+                              {p.velocityVariants.length > 0 && (
+                                <span>
+                                  {" "}
+                                  ·{" "}
+                                  {p.velocityVariants
+                                    .map(
+                                      (v) =>
+                                        `${v.loadPercent[0]}%: ${v.target.join("–")} ${v.metric} m/s, floor ${v.floor}`,
+                                    )
+                                    .join("; ")}
+                                </span>
+                              )}
+                            </p>
+                          ))}
+                      </details>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Card>
+      </details>
       <Card>
         <h2>Saved training history</h2>
         <p>
