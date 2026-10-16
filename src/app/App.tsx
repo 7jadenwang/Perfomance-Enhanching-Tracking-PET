@@ -36,15 +36,37 @@ export default function App() {
     store = useAthleteStore(),
     [tab, setTab] = useState("Today"),
     [transfer, setTransfer] = useState(false),
-    [log, setLog] = useState<{
+    [log, setLogState] = useState<{
       session: Session;
       date: string;
       enrollmentId: string | null;
       workoutId?: string;
     } | null>(null);
   const s = store.state;
+  function setLog(next: typeof log) {
+    setLogState(next);
+    try {
+      if (next)
+        sessionStorage.setItem(
+          "pet-open-log:" + storageNamespace(),
+          JSON.stringify(next),
+        );
+      else sessionStorage.removeItem("pet-open-log:" + storageNamespace());
+    } catch {
+      /* Draft persistence reports storage errors separately. */
+    }
+  }
   useEffect(() => {
-    setLog(null);
+    setLogState(null);
+    try {
+      const raw = sessionStorage.getItem("pet-open-log:" + storageNamespace());
+      if (raw) {
+        const saved = JSON.parse(raw);
+        setLogState({ ...saved, session: sessionSchema.parse(saved.session) });
+      }
+    } catch {
+      /* Invalid navigation state never replaces athlete records. */
+    }
     setTransfer(false);
   }, [sync.user?.id]);
   useEffect(() => {
@@ -167,6 +189,7 @@ export default function App() {
         {log ? (
           <WorkoutLog
             key={
+              storageNamespace() +
               log.session.id +
               log.date +
               (log.workoutId ?? "") +
@@ -178,9 +201,26 @@ export default function App() {
             date={log.date}
             state={s}
             onBack={() => setLog(null)}
-            onSave={(w, expected) =>
-              store.perform(() => saveWorkout(w, expected))
-            }
+            onSave={(w, expected) => {
+              // Preserve identity through a date edit and refresh without remounting this editor.
+              try {
+                const key = "pet-open-log:" + storageNamespace();
+                const raw = sessionStorage.getItem(key);
+                const open = raw ? JSON.parse(raw) : null;
+                if (
+                  open?.session.id === log.session.id &&
+                  open?.date === log.date &&
+                  open?.enrollmentId === log.enrollmentId
+                )
+                  sessionStorage.setItem(
+                    key,
+                    JSON.stringify({ ...log, workoutId: w.id }),
+                  );
+              } catch {
+                /* Draft reports persistence failures. */
+              }
+              return store.perform(() => saveWorkout(w, expected));
+            }}
           />
         ) : tab === "Today" ? (
           <Today
