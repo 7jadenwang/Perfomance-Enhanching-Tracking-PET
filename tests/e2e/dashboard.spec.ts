@@ -42,3 +42,41 @@ test("provides keyboard chart values, raw tables and dark layouts without overfl
     fullPage: true,
   });
 });
+
+test("starts progress at the active program onset and distinguishes soreness from stress", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Program", exact: true }).click();
+  await page.getByLabel("Requested program start").fill("2026-10-12");
+  await page.getByRole("button", { name: "Queue selected program" }).click();
+  await page.getByRole("button", { name: "Start queued program" }).click();
+  await page.getByRole("button", { name: "Progress", exact: true }).click();
+  await expect(page.getByLabel("Recovery chart range")).toHaveValue("program");
+  await page
+    .getByRole("button", { name: "Session demand trends data", exact: true })
+    .click();
+  const table = page.getByRole("table", { name: "Session demand trends data" });
+  await expect(
+    table.locator("tbody tr").first().locator("td").first(),
+  ).toHaveText("2026-10-12");
+  await page.getByLabel("Time step").selectOption("month");
+  await expect(
+    table.locator("tbody tr").first().locator("td").first(),
+  ).toHaveText("2026-10-12");
+  const chart = page
+    .locator("section.chart")
+    .filter({
+      has: page.getByRole("heading", {
+        name: "Soreness and stress",
+        exact: true,
+      }),
+    });
+  const colors = await chart
+    .locator(".legend i")
+    .evaluateAll((nodes) =>
+      nodes.map((n) => getComputedStyle(n).backgroundColor),
+    );
+  expect(colors).toHaveLength(2);
+  expect(colors[0]).not.toBe(colors[1]);
+});
