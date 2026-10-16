@@ -22,3 +22,20 @@ it("never merges different measurement protocols", () => {
   }));
   expect(aggregatePoints(points, "week", "mean")).toHaveLength(2);
 });
+
+it("starts partial week and month buckets at the visible program onset", () => {
+  const points = [
+    { label: "2026-10-14", series: "Load", value: 100 },
+    { label: "2026-10-19", series: "Load", value: 200 },
+    { label: "2026-11-02", series: "Load", value: 300 },
+  ];
+  expect(aggregatePoints(points, "week", "sum").map((p) => p.label)).toEqual([
+    "2026-10-14",
+    "2026-10-19",
+    "2026-11-02",
+  ]);
+  expect(aggregatePoints(points, "month", "sum").map((p) => p.label)).toEqual([
+    "2026-10-14",
+    "2026-11-01",
+  ]);
+});

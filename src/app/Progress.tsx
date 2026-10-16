@@ -42,7 +42,7 @@ export default function Progress({
   const [track, setTrack] = useState<"lp" | "up">("lp"),
     [enrollment, setEnrollment] = useState(""),
     [movement, setMovement] = useState(""),
-    [range, setRange] = useState("28"),
+    [range, setRange] = useState("program"),
     [period, setPeriod] = useState<Period>("day");
   const dose = programDoseSeries(
       track,
@@ -56,10 +56,15 @@ export default function Progress({
       ...state.workouts.map((w) => w.localDate),
       ...state.mornings.map((m) => m.localDate),
     ],
+    onset =
+      state.enrollments.find((e) => e.status === "active")?.startDate ??
+      state.startDate,
     start =
-      range === "all"
-        ? (dates.sort()[0] ?? addDays(today, -83))
-        : addDays(today, 1 - Number(range));
+      range === "program"
+        ? onset
+        : range === "all"
+          ? (dates.sort()[0] ?? addDays(today, -83))
+          : addDays(today, 1 - Number(range));
   const movements = [
     ...new Set(
       program.sessions
@@ -106,6 +111,7 @@ export default function Progress({
           label="Recovery chart range"
           value={range}
           options={[
+            ["program", "Current program"],
             ["7", "7 days"],
             ["28", "28 days"],
             ["84", "84 days"],
