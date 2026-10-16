@@ -315,7 +315,11 @@ export default function App() {
             />
           </>
         ) : tab === "Progress" ? (
-          <Progress state={s} onOpen={openSaved} />
+          <Progress
+            state={s}
+            onOpen={openSaved}
+            onActivity={(a) => store.perform(() => saveActivity(a))}
+          />
         ) : (
           <Settings
             key={storageNamespace()}

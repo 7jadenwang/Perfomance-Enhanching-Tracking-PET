@@ -545,9 +545,9 @@ export default function Settings({
         <p>
           CMJ means use three valid trials. Technique and landing posture
           influence flight-time height. Check-in concerns use
-          fatigue/soreness/stress 4–5 or sleep quality 1–2. No flag is a
-          guarantee of readiness, and the app never changes your plan
-          automatically.
+          fatigue/soreness/stress 8–10 or sleep quality 1–4 (on the 10-point
+          scale). No flag is a guarantee of readiness, and the app never changes
+          your plan automatically.
         </p>
         <p>
           Transfer comparisons use actual global exposure and recovery coverage.

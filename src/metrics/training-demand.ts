@@ -33,6 +33,11 @@ export function trainingDemand(w: Workout, state: AthleteState): Demand {
   };
   if (!["completed", "partial"].includes(w.status)) return result;
   result.total = sessionLoad(w.actualDuration, w.actualRpe);
+  if (result.total === 0) {
+    result.force = 0;
+    result.power = 0;
+    result.metabolic = 0;
+  }
   const rows = w.rows.filter((r) => r.confirmed);
   result.confirmed = rows.length;
   const sums = { force: 0, power: 0, metabolic: 0 };

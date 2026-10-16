@@ -236,7 +236,7 @@ test("keeps all existing saved fields unchanged when viewing the new progress an
 }) => {
   const { initialState, parseProgram } =
     await import("../../src/domain/schema");
-  const { createWorkout, createRow, createVelocity } =
+  const { createWorkout, createRow, createVelocity, createMorning } =
     await import("../../src/domain/records");
   const { readFile } = await import("node:fs/promises");
   const program = parseProgram(
@@ -278,6 +278,16 @@ test("keeps all existing saved fields unchanged when viewing the new progress an
     ),
   });
   state.workouts = [oldWorkout];
+  state.mornings = [
+    createMorning({
+      id: "historical-morning",
+      localDate: "2026-10-13",
+      fatigue: 4,
+      soreness: 3,
+      sleepQuality: 2,
+      stress: 5,
+    }),
+  ];
   await page.getByRole("button", { name: "Settings", exact: true }).click();
   await page.getByLabel("Import backup").setInputFiles({
     name: "history.json",

@@ -72,3 +72,21 @@ it("uses dated matching relative load and ignores future 1RMs without mutating h
   expect(result.force).toBe(310);
   expect(JSON.stringify(state)).toBe(before);
 });
+
+it("keeps explicitly zero-load completed sessions at zero without inventing missing load", () => {
+  const w = createWorkout({
+    status: "completed",
+    actualDuration: 0,
+    actualRpe: 0,
+    rows: [],
+  });
+  expect(trainingDemand(w, initialState())).toMatchObject({
+    total: 0,
+    force: 0,
+    power: 0,
+    metabolic: 0,
+  });
+  expect(
+    trainingDemand({ ...w, actualRpe: null }, initialState()).force,
+  ).toBeNull();
+});

@@ -2,9 +2,9 @@ import { z } from "zod";
 const n = z.number().finite().nonnegative();
 const nullable = n.nullable();
 const rpe = z.number().min(0).max(10).nullable();
-import {dateSchema, type LocalDate} from "./values";
-export {dateSchema, type LocalDate} from "./values";
-import {enrollmentSchema, targetRevisionSchema} from "./enrollment-schema";
+import { dateSchema, type LocalDate } from "./values";
+export { dateSchema, type LocalDate } from "./values";
+import { enrollmentSchema, targetRevisionSchema } from "./enrollment-schema";
 export * from "./enrollment-schema";
 import { prescriptionSchema, velocityMetricSchema } from "./program-schema";
 export * from "./program-schema";
@@ -17,7 +17,7 @@ export const velocitySchema = z.object({
   loadedHands: z.number().int().min(1).max(2).nullable().default(null),
   rangeOfMotion: z.string(),
   metric: velocityMetricSchema,
-  componentId:z.string().nullable().default(null),
+  componentId: z.string().nullable().default(null),
   method: z.string(),
   setAverage: nullable,
   repVelocities: z.array(n),
@@ -29,8 +29,8 @@ export const rowSchema = z.object({
   exerciseId: z.string(),
   name: z.string(),
   confirmed: z.boolean(),
-  prescriptionId:z.string().nullable().default(null),
-  movementId:z.string().nullable().default(null),
+  prescriptionId: z.string().nullable().default(null),
+  movementId: z.string().nullable().default(null),
   reps: nullable,
   loadKg: nullable,
   loadConvention: z.enum(["totalExternal", "perHand", "bodyweight", "unknown"]),
@@ -81,35 +81,64 @@ export const workoutSchema = z.object({
   updatedAt: z.string(),
 });
 export type Workout = z.infer<typeof workoutSchema>;
-const rating = z.number().int().min(1).max(5).nullable();
-export const morningSchema = z.object({
-  id: z.string(),
-  localDate: dateSchema,
-  protocolId: z.string(),
-  trials: z.array(
-    z.object({
-      heightCm: z.number().finite().positive(),
-      excluded: z.boolean(),
-      reason: z.string(),
-    }),
-  ),
-  bodyMassKg:z.number().finite().positive().nullable().default(null),
-  restingHeartRate:z.number().finite().positive().nullable().default(null),
-  illness:z.boolean().nullable().default(null),
-  illnessNotes:z.string().default(""),
-  hrv:z.object({value:z.number().finite().positive(),metric:z.enum(["rMSSD","SDNN","lnRMSSD"]),unit:z.enum(["ms","ln(ms)"]),method:z.string().min(1),protocol:z.string().min(1)}).nullable().default(null),
-  sleepHours: z.number().min(0).max(24).nullable(),
-  sleepQuality: rating,
-  fatigue: rating,
-  soreness: rating,
-  stress: rating,
-  pain: z.boolean().nullable(),
-  painLocation: z.string(),
-  baselineEligible: z.boolean(),
-  exclusionReason: z.string(),
-  createdAt: z.string(),
-  updatedAt: z.string(),
-});
+const rating = z.number().min(1).max(10).multipleOf(0.5).nullable();
+export const morningSchema = z
+  .object({
+    ratingScale: z.literal(10).optional(),
+    id: z.string(),
+    localDate: dateSchema,
+    protocolId: z.string(),
+    trials: z.array(
+      z.object({
+        heightCm: z.number().finite().positive(),
+        excluded: z.boolean(),
+        reason: z.string(),
+      }),
+    ),
+    bodyMassKg: z.number().finite().positive().nullable().default(null),
+    restingHeartRate: z.number().finite().positive().nullable().default(null),
+    illness: z.boolean().nullable().default(null),
+    illnessNotes: z.string().default(""),
+    hrv: z
+      .object({
+        value: z.number().finite().positive(),
+        metric: z.enum(["rMSSD", "SDNN", "lnRMSSD"]),
+        unit: z.enum(["ms", "ln(ms)"]),
+        method: z.string().min(1),
+        protocol: z.string().min(1),
+      })
+      .nullable()
+      .default(null),
+    sleepHours: z.number().min(0).max(24).nullable(),
+    sleepQuality: rating,
+    fatigue: rating,
+    soreness: rating,
+    stress: rating,
+    pain: z.boolean().nullable(),
+    painLocation: z.string(),
+    baselineEligible: z.boolean(),
+    exclusionReason: z.string(),
+    createdAt: z.string(),
+    updatedAt: z.string(),
+  })
+  .superRefine((record, context) => {
+    if (record.ratingScale !== 10)
+      for (const key of [
+        "sleepQuality",
+        "fatigue",
+        "soreness",
+        "stress",
+      ] as const) {
+        const value = record[key];
+        if (value !== null && (!Number.isInteger(value) || value > 5))
+          context.addIssue({
+            code: "custom",
+            path: [key],
+            message:
+              "Legacy ratings must be integers from 1 to 5; use ratingScale 10 for new ratings",
+          });
+      }
+  });
 export type MorningRecord = z.infer<typeof morningSchema>;
 export const baselineSchema = z.object({
   id: z.string(),
@@ -123,7 +152,9 @@ export const baselineSchema = z.object({
 export type Baseline = z.infer<typeof baselineSchema>;
 const equipmentSchema = z.object({
   running: z.literal(true),
-  extra:z.record(z.string(),z.enum(["available","unavailable","unconfirmed"])).default({}),
+  extra: z
+    .record(z.string(), z.enum(["available", "unavailable", "unconfirmed"]))
+    .default({}),
   rowing: z.enum(["available", "unavailable", "unconfirmed"]),
   skiErg: z.enum(["available", "unavailable", "unconfirmed"]),
   airBike: z.enum(["available", "unavailable", "unconfirmed"]),
@@ -135,10 +166,32 @@ export const stateSchema = z
     programVersion: z.literal("lp-up-v2"),
     startDate: dateSchema,
     enrollments: z.array(enrollmentSchema).default([]),
-    activities: z.array(z.object({localDate:dateSchema,status:z.enum(["rest","training","unknown"]),notes:z.string().default("")})).default([]),
-    velocityExperience:z.enum(["unconfirmed","beginner","experienced"]).default("unconfirmed"),
+    activities: z
+      .array(
+        z.object({
+          localDate: dateSchema,
+          status: z.enum(["rest", "training", "unknown"]),
+          notes: z.string().default(""),
+        }),
+      )
+      .default([]),
+    velocityExperience: z
+      .enum(["unconfirmed", "beginner", "experienced"])
+      .default("unconfirmed"),
     familiarity: z.array(z.string()).default([]),
-    velocityProfiles: z.array(z.object({exerciseId:z.string(), date:dateSchema, rangeOfMotion:z.string(),metric:z.enum(["mean","meanConcentric","meanPropulsive","peak"]),method:z.string(), loadPercent:z.tuple([n,n]),target:z.tuple([n,n])})).default([]),
+    velocityProfiles: z
+      .array(
+        z.object({
+          exerciseId: z.string(),
+          date: dateSchema,
+          rangeOfMotion: z.string(),
+          metric: z.enum(["mean", "meanConcentric", "meanPropulsive", "peak"]),
+          method: z.string(),
+          loadPercent: z.tuple([n, n]),
+          target: z.tuple([n, n]),
+        }),
+      )
+      .default([]),
     reschedules: z.record(z.string(), dateSchema),
     equipment: equipmentSchema,
     reference1RMs: z.array(
@@ -169,11 +222,36 @@ export const stateSchema = z
           path: [key],
         });
     }
-    for (const status of ["active","queued"]) if(s.enrollments.filter(e=>e.status===status).length>1) ctx.addIssue({code:"custom",message:"Only one "+status+" enrollment allowed"});
-    for(const w of s.workouts) if(w.enrollmentId && !s.enrollments.some(e=>e.id===w.enrollmentId)) ctx.addIssue({code:"custom",message:"Unknown workout enrollment"});
-    for(const r of s.mornings) if(!s.protocols.some(p=>p.id===r.protocolId))ctx.addIssue({code:"custom",message:"Unknown morning protocol"});
-    for(const b of s.baselines) if(!s.protocols.some(p=>p.id===b.protocolId)||b.eligibleRecordIds.some(id=>!s.mornings.some(m=>m.id===id&&m.protocolId===b.protocolId)))ctx.addIssue({code:"custom",message:"Unknown baseline measurement references"});
-    if(new Set(s.activities.map(a=>a.localDate)).size!==s.activities.length)ctx.addIssue({code:"custom",message:"Duplicate activity date"});
+    for (const status of ["active", "queued"])
+      if (s.enrollments.filter((e) => e.status === status).length > 1)
+        ctx.addIssue({
+          code: "custom",
+          message: "Only one " + status + " enrollment allowed",
+        });
+    for (const w of s.workouts)
+      if (w.enrollmentId && !s.enrollments.some((e) => e.id === w.enrollmentId))
+        ctx.addIssue({ code: "custom", message: "Unknown workout enrollment" });
+    for (const r of s.mornings)
+      if (!s.protocols.some((p) => p.id === r.protocolId))
+        ctx.addIssue({ code: "custom", message: "Unknown morning protocol" });
+    for (const b of s.baselines)
+      if (
+        !s.protocols.some((p) => p.id === b.protocolId) ||
+        b.eligibleRecordIds.some(
+          (id) =>
+            !s.mornings.some(
+              (m) => m.id === id && m.protocolId === b.protocolId,
+            ),
+        )
+      )
+        ctx.addIssue({
+          code: "custom",
+          message: "Unknown baseline measurement references",
+        });
+    if (
+      new Set(s.activities.map((a) => a.localDate)).size !== s.activities.length
+    )
+      ctx.addIssue({ code: "custom", message: "Duplicate activity date" });
     const dates = s.mornings.map((x) => x.localDate + "|" + x.protocolId);
     if (new Set(dates).size !== dates.length)
       ctx.addIssue({
@@ -190,14 +268,17 @@ export function localToday(): LocalDate {
 export function initialState(): AthleteState {
   return {
     schemaVersion: 2,
-    velocityExperience:"unconfirmed",
-    enrollments: [], activities: [], familiarity: [], velocityProfiles: [],
+    velocityExperience: "unconfirmed",
+    enrollments: [],
+    activities: [],
+    familiarity: [],
+    velocityProfiles: [],
     programVersion: "lp-up-v2",
     startDate: localToday(),
     reschedules: {},
     equipment: {
       running: true,
-      extra:{},
+      extra: {},
       rowing: "unconfirmed",
       skiErg: "unconfirmed",
       airBike: "unconfirmed",
@@ -215,4 +296,4 @@ export function initialState(): AthleteState {
   };
 }
 
-export type DailyActivity=AthleteState["activities"][number];
+export type DailyActivity = AthleteState["activities"][number];

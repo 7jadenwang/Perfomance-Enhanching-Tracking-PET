@@ -1,3 +1,4 @@
+import { ratingOnTen } from "../../metrics/recovery-ratings";
 import type { Period } from "../../metrics/periods";
 import type { AthleteState } from "../../domain/schema";
 import { buildTimeline, rollingLoad } from "../../metrics/timeline";
@@ -55,7 +56,7 @@ export default function RecoveryCharts({
   const ratings = (key: "sleepQuality" | "fatigue" | "soreness" | "stress") =>
     timeline.map((p) => ({
       label: p.date,
-      value: p.mornings.at(-1)?.[key] ?? null,
+      value: p.mornings.at(-1) ? ratingOnTen(p.mornings.at(-1)!, key) : null,
       series: key,
       note: p.mornings.at(-1)?.pain
         ? "Pain reported"
@@ -127,6 +128,8 @@ export default function RecoveryCharts({
         <TimeSeries
           period={period}
           title="CMJ height"
+          yAxis="data"
+          minimumSpan={1}
           unit="cm"
           points={
             cmj.length
@@ -154,20 +157,23 @@ export default function RecoveryCharts({
         <TimeSeries
           period={period}
           title="Sleep quality"
-          unit="1 poor – 5 good"
+          unit="1 poor – 10 good"
+          yRange={[1, 10]}
           points={ratings("sleepQuality")}
         />
         <TimeSeries
           period={period}
           title="Perceived fatigue"
-          unit="1 low – 5 high"
+          unit="1 low – 10 high"
+          yRange={[1, 10]}
           points={ratings("fatigue")}
           warning
         />
         <TimeSeries
           period={period}
           title="Soreness and stress"
-          unit="1 low – 5 high"
+          unit="1 low – 10 high"
+          yRange={[1, 10]}
           points={[...ratings("soreness"), ...ratings("stress")]}
           warning
         />
@@ -175,6 +181,8 @@ export default function RecoveryCharts({
           <TimeSeries
             period={period}
             title="Body mass"
+            yAxis="data"
+            minimumSpan={0.5}
             unit="kg"
             points={bodily("bodyMassKg")}
           />
@@ -259,7 +267,9 @@ export default function RecoveryCharts({
           ))}
         <p>
           Load trends are descriptive exposure estimates. CMJ deviation is
-          performance change; perceived fatigue is your own check-in.
+          performance change; perceived fatigue is your own check-in. Earlier
+          1–5 ratings are displayed ×2 on the 10-point scale; saved values
+          remain unchanged.
         </p>
       </div>
     </>

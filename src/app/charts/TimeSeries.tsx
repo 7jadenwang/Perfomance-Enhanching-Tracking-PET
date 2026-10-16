@@ -1,3 +1,4 @@
+import { chartDomain } from "../../metrics/chart-domain";
 import { useState, useId } from "react";
 import { aggregatePoints, type Period } from "../../metrics/periods";
 export type ChartPoint = {
@@ -16,6 +17,9 @@ export default function TimeSeries({
   period = "day",
   aggregation = "mean",
   warning = false,
+  yAxis = "zero",
+  minimumSpan = 1,
+  yRange,
 }: {
   title: string;
   unit: string;
@@ -23,6 +27,9 @@ export default function TimeSeries({
   period?: Period;
   aggregation?: "sum" | "mean";
   warning?: boolean;
+  yAxis?: "zero" | "data";
+  minimumSpan?: number;
+  yRange?: [number, number];
 }) {
   const points = aggregatePoints(rawPoints, period, aggregation);
   const [hover, setHover] = useState<ChartPoint | null>(null),
@@ -34,8 +41,13 @@ export default function TimeSeries({
     width = 660,
     height = 245,
     pad = 44;
-  const min = Math.min(0, ...valid.map((p) => p.low ?? p.value!)),
-    max = Math.max(1, ...valid.map((p) => p.high ?? p.value!)),
+  const [min, max] =
+      yRange ??
+      chartDomain(
+        valid.flatMap((p) => [p.low ?? p.value, p.high ?? p.value]),
+        yAxis === "zero",
+        minimumSpan,
+      ),
     span = max - min || 1;
   const x = (label: string) =>
       pad +
@@ -60,6 +72,11 @@ export default function TimeSeries({
           </span>
         ))}
       </div>
+      {yAxis === "data" && (
+        <p className="chart-axis-note hint">
+          Zoomed Y-axis · {min.toFixed(2)}–{max.toFixed(2)} {unit}
+        </p>
+      )}
       <svg
         viewBox={`0 0 ${width} ${height}`}
         role="img"
@@ -76,7 +93,11 @@ export default function TimeSeries({
               className="gridline"
             />
             <text x={pad - 7} y={y(min + span * t) + 4} textAnchor="end">
-              {(min + span * t).toFixed(span < 5 ? 1 : 0)}
+              {Number(
+                (min + span * t).toFixed(
+                  yAxis === "data" || yRange ? 2 : span < 5 ? 1 : 0,
+                ),
+              )}
             </text>
           </g>
         ))}
