@@ -1,7 +1,11 @@
 import { expect, it } from "vitest";
 import { initialState } from "../src/domain/schema";
 import { createRow, createWorkout } from "../src/domain/records";
-import { trainingDemand, demandTimeline } from "../src/metrics/training-demand";
+import {
+  trainingDemand,
+  demandTimeline,
+  demandChartTimeline,
+} from "../src/metrics/training-demand";
 it("keeps mixed-session demand on shared axes while distinguishing emphasis", () => {
   const w = (kind: "strength" | "jump" | "conditioning") =>
     createWorkout({
@@ -127,4 +131,38 @@ it("fills empty demand-chart days with zero without changing records or treating
   expect(days[4]).toMatchObject({ force: 0, assumedZero: true });
   expect(JSON.stringify(state)).toBe(before);
   expect(demandTimeline(state, "2026-10-13", "2026-10-13")[0].force).toBeNull();
+});
+
+it("never zero-fills unfinished training logs or explicitly annotated training days", () => {
+  const s = initialState();
+  s.workouts = [
+    createWorkout({
+      localDate: "2026-10-13",
+      status: "draft",
+      rows: [createRow({ confirmed: true, reps: 5 })],
+    }),
+  ];
+  s.activities = [{ localDate: "2026-10-14", status: "training", notes: "" }];
+  const points = demandChartTimeline(s, "2026-10-13", "2026-10-15");
+  expect(points[0]).toMatchObject({ force: null, assumedZero: false });
+  expect(points[0].missingInputs).toContain("Actual duration is missing");
+  expect(points[0].missingInputs).toContain("Whole-session RPE is missing");
+  expect(points[1]).toMatchObject({ force: null, assumedZero: false });
+  expect(points[2]).toMatchObject({ force: 0, assumedZero: true });
+});
+
+it("does not hide confirmed draft training behind an older rest annotation", () => {
+  const s = initialState();
+  s.workouts = [
+    createWorkout({
+      localDate: "2026-10-13",
+      status: "draft",
+      rows: [createRow({ confirmed: true, reps: 5 })],
+    }),
+  ];
+  s.activities = [{ localDate: "2026-10-13", status: "rest", notes: "" }];
+  expect(demandChartTimeline(s, "2026-10-13", "2026-10-13")[0]).toMatchObject({
+    force: null,
+    assumedZero: false,
+  });
 });
