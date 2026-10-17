@@ -79,3 +79,69 @@ test("saves half-point recovery ratings, records rest as zero, and zooms measure
     "rest",
   );
 });
+
+test("connects demand trends through an unlogged rest day and subsequent empty days", async ({
+  page,
+}) => {
+  const { initialState } = await import("../../src/domain/schema");
+  const { createWorkout, createRow } = await import("../../src/domain/records");
+  const state = initialState();
+  state.startDate = "2026-10-12";
+  state.workouts = ["2026-10-12", "2026-10-14"].map((date, i) =>
+    createWorkout({
+      id: "recorded-" + i,
+      localDate: date,
+      status: "completed",
+      actualDuration: 60,
+      actualRpe: 6,
+      rows: [createRow({ kind: "strength", confirmed: true, reps: 5 })],
+    }),
+  );
+  await page.goto("/");
+  await page.getByRole("button", { name: "Settings", exact: true }).click();
+  await page
+    .getByLabel("Import backup")
+    .setInputFiles({
+      name: "history.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(state)),
+    });
+  await expect(
+    page.getByText("Compatible backup:", { exact: false }),
+  ).toBeVisible();
+  page.once("dialog", (d) => d.accept());
+  await page.getByRole("button", { name: "Confirm replacement" }).click();
+  await page.getByRole("button", { name: "Progress", exact: true }).click();
+  const chart = page
+    .locator("section.chart")
+    .filter({
+      has: page.getByRole("heading", {
+        name: "Session demand trends",
+        exact: true,
+      }),
+    });
+  await chart
+    .getByRole("button", { name: "Session demand trends data", exact: true })
+    .click();
+  const rows = chart.locator("tbody tr").filter({ hasText: "2026-10-13" });
+  await expect(rows).toHaveCount(3);
+  for (const row of await rows.all()) {
+    await expect(row.locator("td").nth(2)).toHaveText("0.00");
+    await expect(row).toContainText("displayed as zero");
+  }
+  const lines = await chart.locator("svg polyline").evaluateAll((nodes) =>
+    nodes.map((n) =>
+      n
+        .getAttribute("points")!
+        .split(" ")
+        .map((pair) => pair.split(",").map(Number)),
+    ),
+  );
+  expect(lines).toHaveLength(3);
+  for (const points of lines) {
+    expect(points[0][1]).toBeLessThan(points[1][1]);
+    expect(points[2][1]).toBeLessThan(points[1][1]);
+    expect(points[1][1]).toBe(points[3][1]);
+  }
+  await chart.screenshot({ path: "/tmp/pet-demand-zero-connected.png" });
+});
