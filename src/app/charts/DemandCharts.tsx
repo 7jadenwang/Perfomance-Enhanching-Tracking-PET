@@ -1,5 +1,5 @@
 import type { AthleteState } from "../../domain/schema";
-import { demandAxes, demandTimeline } from "../../metrics/training-demand";
+import { demandAxes, demandChartTimeline } from "../../metrics/training-demand";
 import { addDays } from "../../program/schedule";
 import type { Period } from "../../metrics/periods";
 import TimeSeries from "./TimeSeries";
@@ -19,7 +19,7 @@ export default function DemandCharts({
   end: string;
   period: Period;
 }) {
-  const history = demandTimeline(state, addDays(start, -6), end),
+  const history = demandChartTimeline(state, addDays(start, -6), end),
     days = history.filter((p) => p.date >= start);
   return (
     <section className="demand-panel">
@@ -38,12 +38,15 @@ export default function DemandCharts({
           unit="exposure AU"
           period={period}
           aggregation="sum"
+          caption="Days without recorded training are shown as zero and connected. Recorded sessions with missing load measurements remain gaps."
           points={days.flatMap((p) =>
             demandAxes.map((axis) => ({
               label: p.date,
               value: p[axis],
               series: names[axis],
-              note: `${p.classified}/${p.confirmed} blocks classified · ${p.measuredIntensity} with measured relative load · ${p.measuredVelocity} with compatible velocity`,
+              note: p.assumedZero
+                ? "No recorded training · displayed as zero"
+                : `${p.classified}/${p.confirmed} blocks classified · ${p.measuredIntensity} with measured relative load · ${p.measuredVelocity} with compatible velocity`,
             })),
           )}
         />
@@ -55,14 +58,16 @@ export default function DemandCharts({
             if (p.date < start) return [];
             const window = history.slice(Math.max(0, i - 6), i + 1);
             return demandAxes.map((axis) => {
-              const known = window.filter((d) => d[axis] !== null);
+              const known = window.filter((d) => d[axis] !== null),
+                recorded = known.filter((d) => !d.assumedZero),
+                assumed = known.filter((d) => d.assumedZero);
               return {
                 label: p.date,
                 value: known.length
                   ? known.reduce((s, d) => s + d[axis]!, 0)
                   : null,
                 series: names[axis],
-                note: `${known.length}/7 known days · partial totals remain estimates${period !== "day" ? " · period mean of seven-day totals" : ""}`,
+                note: `${recorded.length}/7 recorded or confirmed-rest days · ${assumed.length} unlogged days displayed as zero${period !== "day" ? " · period mean of seven-day totals" : ""}`,
               };
             });
           })}
@@ -101,11 +106,13 @@ export default function DemandCharts({
           as measured.
         </p>
         <p>
-          Unclassified “other” work, missing session RPE/duration, and unlogged
-          days remain unknown. Record a rest day to show zero. Weekly/monthly
-          load shows known totals; recovery shows means. Coverage is available
-          on each point. Seven-day totals show known exposure even with
-          incomplete days.
+          Days with no completed or partial training session are displayed as
+          zero and connected, including unlogged days. This is a chart
+          assumption; it does not mark the day as confirmed rest or change saved
+          records. Unclassified work and recorded sessions with missing
+          RPE/duration remain unknown. Weekly/monthly load shows recorded totals
+          plus displayed zeroes; recovery shows means. Point details distinguish
+          confirmed records from assumed zeroes.
         </p>
         <p>
           Technique/skill practice:{" "}
