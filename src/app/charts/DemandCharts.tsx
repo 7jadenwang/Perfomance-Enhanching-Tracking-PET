@@ -38,7 +38,7 @@ export default function DemandCharts({
           unit="exposure AU"
           period={period}
           aggregation="sum"
-          caption="Days without recorded training are shown as zero and connected. Recorded sessions with missing load measurements remain gaps."
+          caption="Days without recorded training are shown as zero and connected. Recorded sessions, unfinished logs and annotated training days with missing load measurements remain gaps."
           points={days.flatMap((p) =>
             demandAxes.map((axis) => ({
               label: p.date,
@@ -46,7 +46,9 @@ export default function DemandCharts({
               series: names[axis],
               note: p.assumedZero
                 ? "No recorded training · displayed as zero"
-                : `${p.classified}/${p.confirmed} blocks classified · ${p.measuredIntensity} with measured relative load · ${p.measuredVelocity} with compatible velocity`,
+                : p[axis] === null && p.missingInputs.length
+                  ? p.missingInputs.join(" · ")
+                  : `${p.classified}/${p.confirmed} blocks classified · ${p.measuredIntensity} with measured relative load · ${p.measuredVelocity} with compatible velocity`,
             })),
           )}
         />
@@ -106,12 +108,12 @@ export default function DemandCharts({
           as measured.
         </p>
         <p>
-          Days with no completed or partial training session are displayed as
-          zero and connected, including unlogged days. This is a chart
-          assumption; it does not mark the day as confirmed rest or change saved
-          records. Unclassified work and recorded sessions with missing
-          RPE/duration remain unknown. Weekly/monthly load shows recorded totals
-          plus displayed zeroes; recovery shows means. Point details distinguish
+          Days with no training log or training annotation are displayed as zero
+          and connected, including unlogged days. This is a chart assumption; it
+          does not mark the day as confirmed rest or change saved records.
+          Unclassified work and recorded sessions with missing RPE/duration
+          remain unknown. Weekly/monthly load shows recorded totals plus
+          displayed zeroes; recovery shows means. Point details distinguish
           confirmed records from assumed zeroes.
         </p>
         <p>
