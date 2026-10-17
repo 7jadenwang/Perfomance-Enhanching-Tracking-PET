@@ -186,3 +186,22 @@ export function demandTimeline(
   }
   return points;
 }
+
+// Display-only zero filling: never persist inferred rest or modify recorded work.
+export function demandChartTimeline(
+  state: AthleteState,
+  start: string,
+  end: string,
+) {
+  const recordedDates = new Set(
+    state.workouts
+      .filter((w) => ["completed", "partial"].includes(w.status))
+      .map((w) => w.localDate),
+  );
+  return demandTimeline(state, start, end).map((p) => {
+    const assumedZero = p.total === null && !recordedDates.has(p.date);
+    return assumedZero
+      ? { ...p, total: 0, force: 0, power: 0, metabolic: 0, assumedZero: true }
+      : { ...p, assumedZero: false };
+  });
+}
