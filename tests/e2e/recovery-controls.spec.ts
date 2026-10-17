@@ -99,27 +99,23 @@ test("connects demand trends through an unlogged rest day and subsequent empty d
   );
   await page.goto("/");
   await page.getByRole("button", { name: "Settings", exact: true }).click();
-  await page
-    .getByLabel("Import backup")
-    .setInputFiles({
-      name: "history.json",
-      mimeType: "application/json",
-      buffer: Buffer.from(JSON.stringify(state)),
-    });
+  await page.getByLabel("Import backup").setInputFiles({
+    name: "history.json",
+    mimeType: "application/json",
+    buffer: Buffer.from(JSON.stringify(state)),
+  });
   await expect(
     page.getByText("Compatible backup:", { exact: false }),
   ).toBeVisible();
   page.once("dialog", (d) => d.accept());
   await page.getByRole("button", { name: "Confirm replacement" }).click();
   await page.getByRole("button", { name: "Progress", exact: true }).click();
-  const chart = page
-    .locator("section.chart")
-    .filter({
-      has: page.getByRole("heading", {
-        name: "Session demand trends",
-        exact: true,
-      }),
-    });
+  const chart = page.locator("section.chart").filter({
+    has: page.getByRole("heading", {
+      name: "Session demand trends",
+      exact: true,
+    }),
+  });
   await chart
     .getByRole("button", { name: "Session demand trends data", exact: true })
     .click();
@@ -144,4 +140,51 @@ test("connects demand trends through an unlogged rest day and subsequent empty d
     expect(points[1][1]).toBe(points[3][1]);
   }
   await chart.screenshot({ path: "/tmp/pet-demand-zero-connected.png" });
+});
+
+test("shows missing-input reasons rather than zero for a recorded training day", async ({
+  page,
+}) => {
+  const { initialState } = await import("../../src/domain/schema");
+  const { createWorkout, createRow } = await import("../../src/domain/records");
+  const state = initialState();
+  state.startDate = "2026-10-12";
+  state.workouts = [
+    createWorkout({
+      id: "training-oct13",
+      localDate: "2026-10-13",
+      status: "draft",
+      actualDuration: null,
+      actualRpe: null,
+      rows: [createRow({ kind: "strength", confirmed: true, reps: 5 })],
+    }),
+  ];
+  await page.goto("/");
+  await page.getByRole("button", { name: "Settings", exact: true }).click();
+  await page
+    .getByLabel("Import backup")
+    .setInputFiles({
+      name: "training.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(state)),
+    });
+  await expect(
+    page.getByText("Compatible backup:", { exact: false }),
+  ).toBeVisible();
+  page.once("dialog", (d) => d.accept());
+  await page.getByRole("button", { name: "Confirm replacement" }).click();
+  await page.getByRole("button", { name: "Progress", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Session demand trends data", exact: true })
+    .click();
+  const rows = page
+    .getByRole("table", { name: "Session demand trends data" })
+    .locator("tbody tr")
+    .filter({ hasText: "2026-10-13" });
+  await expect(rows).toHaveCount(3);
+  for (const row of await rows.all()) {
+    await expect(row.locator("td").nth(2)).toHaveText("Unknown");
+    await expect(row).toContainText("Actual duration is missing");
+    await expect(row).toContainText("Whole-session RPE is missing");
+  }
 });
