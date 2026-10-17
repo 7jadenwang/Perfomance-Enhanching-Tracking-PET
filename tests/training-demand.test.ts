@@ -90,3 +90,41 @@ it("keeps explicitly zero-load completed sessions at zero without inventing miss
     trainingDemand({ ...w, actualRpe: null }, initialState()).force,
   ).toBeNull();
 });
+
+it("fills empty demand-chart days with zero without changing records or treating incomplete training as rest", async () => {
+  const { demandChartTimeline } =
+    await import("../src/metrics/training-demand");
+  const state = initialState();
+  state.workouts = [
+    createWorkout({
+      localDate: "2026-10-12",
+      status: "completed",
+      actualDuration: 60,
+      actualRpe: 6,
+      rows: [createRow({ confirmed: true, kind: "strength" })],
+    }),
+    createWorkout({
+      id: "incomplete",
+      localDate: "2026-10-15",
+      status: "partial",
+      actualDuration: null,
+      actualRpe: 6,
+      rows: [createRow({ confirmed: true })],
+    }),
+  ];
+  const before = JSON.stringify(state);
+  const days = demandChartTimeline(state, "2026-10-12", "2026-10-16");
+  expect(days[0].force).toBeGreaterThan(0);
+  expect(days[1]).toMatchObject({
+    date: "2026-10-13",
+    force: 0,
+    power: 0,
+    metabolic: 0,
+    assumedZero: true,
+  });
+  expect(days[2]).toMatchObject({ force: 0, assumedZero: true });
+  expect(days[3]).toMatchObject({ force: null, assumedZero: false });
+  expect(days[4]).toMatchObject({ force: 0, assumedZero: true });
+  expect(JSON.stringify(state)).toBe(before);
+  expect(demandTimeline(state, "2026-10-13", "2026-10-13")[0].force).toBeNull();
+});
